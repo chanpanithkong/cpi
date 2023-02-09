@@ -8,8 +8,15 @@ from urllib.parse import quote
 # from config.db import db, app, api
 
 from controls.branches import Branch, BranchesList, IndexPage
-
-
+from controls.categories import CategoriesList, Category
+from controls.measurement import Measurement, MeasurementList
+from controls.menus import Menu, MenusList
+from controls.products import Product, ProductsList
+from controls.rolemenu import RoleMenu, RoleMenuList
+from controls.roles import Role, RoleList
+from controls.status import Status, StatusList
+from controls.trans import Tran, TransList
+from controls.users import User, UsersList
 # from pagecontrollers.index import IndexPage, LoginPage, CitizenTableList, CitizentDataEntry, CitizentDataEdit, CitizentAddData, CitizentUpdateData, CitizenTableListPrint
 
 
@@ -56,7 +63,32 @@ api.add_resource(IndexPage, "/")
 api.add_resource(Branch, "/branch/<branchcode>")
 api.add_resource(BranchesList, "/brancheslist")
 
+api.add_resource(Category, "/category/<catid>")
+api.add_resource(CategoriesList, "/categorieslist")
 
+api.add_resource(Measurement, "/measurement/<mid>")
+api.add_resource(MeasurementList, "/measurementlist")
+
+api.add_resource(Menu, "/menu/<mid>")
+api.add_resource(MenusList, "/menuslist")
+
+api.add_resource(Product, "/product/<pid>")
+api.add_resource(ProductsList, "/productslist")
+
+api.add_resource(RoleMenu, "/rolemenu/<rid>")
+api.add_resource(RoleMenuList, "/rolemenulist")
+
+api.add_resource(Role, "/role/<roleid>")
+api.add_resource(RoleList, "/rolelist")
+
+api.add_resource(Status, "/status/<statusid>")
+api.add_resource(StatusList, "/statuslist")
+
+api.add_resource(Tran, "/tran/<tid>")
+api.add_resource(TransList, "/translist")
+
+api.add_resource(User, "/user/<userid>")
+api.add_resource(UsersList, "/userslist")
 
 if __name__ == "__main__":
     db.init_app(app)

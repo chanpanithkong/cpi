@@ -27,13 +27,9 @@ class BranchesList(Resource):
     # @jwt_required()
     def get(cls):
         try:
-            print(1)
             data = tbbranches.query.all()
-            print(2)
             schema = BranchesSchema(many=True)
-            print(3)
             _data = schema.dump(data)
-            print(4)
             return {"branches":_data}
         except Exception as err:
             return {"msg":err} 
