@@ -16,7 +16,7 @@ from controls.rolemenu import RoleMenu, RoleMenuList
 from controls.roles import Role, RoleList
 from controls.status import Status, StatusList
 from controls.trans import Tran, TransList
-from controls.users import User, UsersList
+from controls.users import User, UsersList, UserLogin
 # from pagecontrollers.index import IndexPage, LoginPage, CitizenTableList, CitizentDataEntry, CitizentDataEdit, CitizentAddData, CitizentUpdateData, CitizenTableListPrint
 
 from flask_cors import CORS
@@ -91,6 +91,7 @@ api.add_resource(TransList, "/translist")
 
 api.add_resource(User, "/user/<userid>")
 api.add_resource(UsersList, "/userslist")
+api.add_resource(UserLogin, "/userlogin")
 
 if __name__ == "__main__":
     db.init_app(app)

@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, request, json
 from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Api
 from urllib.parse import quote 
