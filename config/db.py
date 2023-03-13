@@ -3,9 +3,10 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Api
 from urllib.parse import quote 
-
+from flask_cors import CORS
 # app = Flask(__name__, template_folder='templates')
 app = Flask(__name__)
+CORS(app) 
 api = Api(app)
 
 

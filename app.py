@@ -19,9 +19,11 @@ from controls.trans import Tran, TransList
 from controls.users import User, UsersList
 # from pagecontrollers.index import IndexPage, LoginPage, CitizenTableList, CitizentDataEntry, CitizentDataEdit, CitizentAddData, CitizentUpdateData, CitizenTableListPrint
 
+from flask_cors import CORS
 
 # config file
 app = Flask(__name__,template_folder='pages')
+CORS(app) 
 api = Api(app)
 
 #cambodia
@@ -75,7 +77,7 @@ api.add_resource(MenusList, "/menuslist")
 api.add_resource(Product, "/product/<pid>")
 api.add_resource(ProductsList, "/productslist")
 
-api.add_resource(RoleMenu, "/rolemenu/<rid>")
+api.add_resource(RoleMenu, "/rolemenu/<roleid>")
 api.add_resource(RoleMenuList, "/rolemenulist")
 
 api.add_resource(Role, "/role/<roleid>")
