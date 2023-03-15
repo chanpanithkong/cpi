@@ -18,7 +18,7 @@ from controls.status import Status, StatusList
 from controls.trans import Tran, TransList
 from controls.users import User, UsersList, UserLogin
 # from pagecontrollers.index import IndexPage, LoginPage, CitizenTableList, CitizentDataEntry, CitizentDataEdit, CitizentAddData, CitizentUpdateData, CitizenTableListPrint
-
+from dbinfo import dbconfig
 from flask_cors import CORS
 
 # config file
@@ -30,14 +30,8 @@ api = Api(app)
 app.config['SECRET_KEY'] = 'eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJpc3MiOiJodHRwczovL2p3dC1pZHAuZXhhbXBsZS5jb20iLCJzdWIiOiJtYWlsdG86bWlrZUBleGFtcGxlLmNvbSIsIm5iZiI6MTY1NzI3NTA4MiwiZXhwIjoxNjU3Mjc4NjgyLCJpYXQiOjE2NTcyNzUwODIsImp0aSI6ImlkMTIzNDU2IiwidHlwIjoiaHR0cHM6Ly9leGFtcGxlLmNvbS9yZWdpc3RlciJ9.'
 #disable message error in internal system
 app.config['PROPAGATE_EXCEPTIONS'] = True
-#localdb
-url = quote('localhost')
-port =  quote('3306')
-username = quote('root')
-password =  quote('$Cambodia__089$')
-mysqldb = quote('dbcpi')
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + username + ':' + password + '@' + url + ':' + port + '/' + mysqldb
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + dbconfig.username + ':' + dbconfig.password + '@' + dbconfig.url + ':' + dbconfig.port + '/' + dbconfig.mysqldb
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 DEBUG = True
 

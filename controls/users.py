@@ -22,7 +22,7 @@ class UserLogin(Resource):
             _data = schema.dump(user_data)
             if user_data is not None:
                 if _data['password'] == password:
-                    return {"login":True}
+                    return {"login":_data}
             return {"login":False}
 
         except Exception as err:

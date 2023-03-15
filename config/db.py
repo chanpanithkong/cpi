@@ -2,7 +2,7 @@ import os
 from flask import Flask, request, json
 from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Api
-from urllib.parse import quote 
+from dbinfo import dbconfig
 from flask_cors import CORS
 # app = Flask(__name__, template_folder='templates')
 app = Flask(__name__)
@@ -15,13 +15,9 @@ app.config['SECRET_KEY'] = 'eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJpc3MiOiJodHRw
 #disable message error in internal system
 app.config['PROPAGATE_EXCEPTIONS'] = True
 #localdb
-url = quote('localhost')
-port =  quote('3306')
-username = quote('root')
-password =  quote('$Cambodia__089$')
-mysqldb = quote('dbcpi')
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + username + ':' + password + '@' + url + ':' + port + '/' + mysqldb
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + dbconfig.username + ':' + dbconfig.password + '@' + dbconfig.url + ':' + dbconfig.port + '/' + dbconfig.mysqldb
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 DEBUG = True
 
