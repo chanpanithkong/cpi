@@ -1,8 +1,8 @@
 from urllib.parse import quote 
 
 class dbconfig:
-    url = quote('10.20.11.66')
+    url = quote('localhost')
     port =  quote('3306')
-    username = quote('cpi')
-    password =  quote('cpi')
+    username = quote('root')
+    password =  quote('$Cambodia__089$')
     mysqldb = quote('dbcpi')

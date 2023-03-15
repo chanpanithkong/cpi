@@ -23,4 +23,4 @@ class TransSchema(SQLAlchemyAutoSchema):
     valuedate = auto_field()
     trandate = auto_field()
     countsubmitted  = auto_field()
-
+    batchid  = auto_field()
