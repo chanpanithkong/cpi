@@ -4,8 +4,13 @@ from config.db import db
 class tbtrans(db.Model):
 
     tid = db.Column("tid", db.Integer, primary_key=True)
-    branchcode = db.Column(db.String)
-    productid = db.Column(db.Integer)
+
+    branchcode = db.Column(db.String, db.ForeignKey('tbbranches.branchcode'))
+    tbbranches = db.relationship("tbbranches")
+
+    productid = db.Column(db.Integer, db.ForeignKey('tbproducts.prodid'))
+    tbproducts = db.relationship("tbproducts")
+
     weight = db.Column(db.Float)
     price = db.Column(db.Float)
     submitter = db.Column(db.String)
@@ -14,13 +19,18 @@ class tbtrans(db.Model):
     authorizer = db.Column(db.String)
     authorizedate = db.Column(db.DateTime)
     authorizernote = db.Column(db.String)
-    status = db.Column(db.Integer)
+
+    status = db.Column(db.Integer, db.ForeignKey('tbstatus.statusid'))
+    tbstatus = db.relationship("tbstatus")
+
     valuedate = db.Column(db.DateTime)
     trandate = db.Column(db.DateTime)
     countsubmitted = db.Column(db.Integer)
-    batchid = db.Column(db.Integer)
 
-    def __init__(self, tid=None, branchcode=None, productid=None, weight=None, price=None, submitter=None, submitdate=None, submitternote=None, authorizer=None, authorizedate=None, authorizernote=None, status=None, valuedate=None, trandate=None, countsubmitted=None, batchid=None):
+    batchid = db.Column(db.Integer, db.ForeignKey('tbbatches.batchid'))
+    # tbbatches = db.relationship("tbbatches")
+
+    def __init__(self, tid=None, branchcode=None, productid=None, weight=None, price=None, submitter=None, submitdate=None, submitternote=None, authorizer=None, authorizedate=None, authorizernote=None, status=None, valuedate=None, trandate=None, countsubmitted=None, batchid=None, tbproducts = None, tbstatus = None, tbbranches = None, tbbatches = None):
         self.tid = tid
         self.branchcode = branchcode
         self.productid = productid
@@ -37,6 +47,10 @@ class tbtrans(db.Model):
         self.trandate = trandate
         self.countsubmitted = countsubmitted
         self.batchid = batchid
+        self.tbproducts = tbproducts
+        self.tbstatus = tbstatus
+        self.tbbranches = tbbranches
+        # self.tbbatches = tbbatches
 
     @classmethod
     def find_by_tid(cls, tid) -> "tbtrans":

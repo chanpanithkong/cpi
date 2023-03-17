@@ -9,6 +9,8 @@ from schema.transschema import TransSchema
 from sqlalchemy import func
 from datetime import datetime
 
+from pprint import pprint
+
 jwt = JWTManager(app)
 
 
@@ -192,7 +194,19 @@ class TransList(Resource):
             return {"msg": err}
 
 
-class TranUtil:
-    def getMaxTID():
-        result = tbtrans.query.query(func.max(tbtrans.tid)).all()
-        return result
+# class TransListDetails(Resource):
+#     @classmethod
+#     # @jwt_required()
+#     def get(cls):
+#         try:
+#             # data = tbtrans.query.all()
+            
+#             data = db.session.query(tbtrans, tbbatches).join(tbbatches).all()
+#             schema = TransSchema(many=True)
+#             json_data = {}
+#             for dt in data:
+#                 _data = schema.dump(dt)
+#                 json_data.append(_data)
+#             return {"trans": json_data}
+#         except Exception as err:
+#             return {"msg": err}

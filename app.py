@@ -83,6 +83,7 @@ api.add_resource(StatusList, "/statuslist")
 
 api.add_resource(Tran, "/tran/<tid>")
 api.add_resource(TransList, "/translist")
+# api.add_resource(TransListDetails, "/translistdetails")
 api.add_resource(InputterInsertTran, "/inputterinserttran")
 api.add_resource(AuthorizerUpdateTran, "/authorizerupdatetran")
 api.add_resource(InputterUpdateTran, "/inputterupdatetran")

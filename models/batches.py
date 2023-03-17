@@ -8,7 +8,7 @@ class tbbatches(db.Model):
     createdate = db.Column(db.DateTime)
     createby = db.Column(db.String)
     
-    def __init__(self, batchid, batch, detail, createdate, createby):
+    def __init__(self, batchid=None, batch=None, detail=None, createdate=None, createby=None):
         self.batchid = batchid
         self.batch = batch
         self.detail = detail

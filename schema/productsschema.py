@@ -1,4 +1,4 @@
-from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field, fields
 from models.products import tbproducts
 from config.db import db
 
@@ -15,5 +15,6 @@ class ProductsSchema(SQLAlchemyAutoSchema):
     inputtype = auto_field()
     catid = auto_field()
     details = auto_field()
+    tbcategories = fields.Nested("CategoriesSchema")
     
 

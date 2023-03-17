@@ -7,11 +7,12 @@ class tbproducts(db.Model):
     nameen = db.Column(db.Integer)
     namekh = db.Column(db.String)
     inputtype = db.Column(db.String)
-    catid = db.Column(db.Integer)
     details = db.Column(db.String)
+    catid = db.Column(db.Integer, db.ForeignKey('tbcategories.catid'))
+    tbcategories = db.relationship("tbcategories")
     
     
-    def __init__(self, prodid, productcode, nameen, namekh, inputtype, catid, details):
+    def __init__(self, prodid = None, productcode = None, nameen = None, namekh = None, inputtype = None, catid = None, details = None, tbcategories = None):
         self.prodid = prodid
         self.productcode = productcode
         self.nameen = nameen
@@ -19,7 +20,7 @@ class tbproducts(db.Model):
         self.inputtype = inputtype
         self.catid = catid
         self.details = details
-        
+        self.tbcategories = tbcategories
         
     @classmethod
     def find_by_prodid(cls, prodid) -> "tbproducts":

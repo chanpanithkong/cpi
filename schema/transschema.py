@@ -1,4 +1,4 @@
-from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field, fields
 from models.trans import tbtrans
 from config.db import db
 
@@ -24,3 +24,7 @@ class TransSchema(SQLAlchemyAutoSchema):
     trandate = auto_field()
     countsubmitted  = auto_field()
     batchid  = auto_field()
+    tbproducts = fields.Nested("ProductsSchema")
+    tbstatus = fields.Nested("StatusSchema")
+    tbbranches = fields.Nested("BranchesSchema")
+    # tbbatches = fields.Nested("BatchSchema")
