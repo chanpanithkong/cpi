@@ -5,6 +5,7 @@ from flask_jwt_extended import (
 from flask_restful import Resource
 from config.db import app, db, request, json
 from models.trans import tbtrans
+from models.products import tbproducts
 from schema.transschema import TransSchema
 from sqlalchemy import func
 from datetime import datetime
@@ -13,6 +14,51 @@ from pprint import pprint
 
 jwt = JWTManager(app)
 
+class InsertAllProductToTrans(Resource):
+    @classmethod
+    # @jwt_required()
+    def post(cls):
+        try:
+            data = json.loads(request.data)
+            productlist = tbproducts.query.all()
+            for pl in productlist:
+
+                
+                maxtid = db.session.query(func.max(tbtrans.tid)).scalar()
+                if maxtid is None:
+                    maxtid = 1
+                else:
+                    maxtid = maxtid + 1
+                
+                get_trandata = tbtrans()
+                get_trandata.tid = maxtid
+                get_trandata.branchcode = data['data']['branchcode']
+                get_trandata.productid = pl.prodid
+                # get_trandata.weight = data['data']['weight']
+                # get_trandata.price = data['data']['price']
+                get_trandata.submitter = data['data']['submitter']
+                
+                # get_trandata.submitternote = data['data']['submitternote']
+                # get_trandata.authorizer
+                # get_trandata.authorizedate
+                # get_trandata.authorizernote
+                get_trandata.status = 1
+                
+                now = datetime.now()
+                currentdatetime = now.strftime("%y-%m-%dT%H:%M:%S")
+
+                get_trandata.submitdate = currentdatetime
+                get_trandata.valuedate = currentdatetime
+                get_trandata.trandate = currentdatetime
+                get_trandata.countsubmitted = 0
+                get_trandata.batchid = data['data']['batchid']
+
+                db.session.add(get_trandata)
+                db.session.commit()
+            result = "insert all products with batch : " + str(data['data']['batchid'])
+            return {"msg": result}
+        except Exception as err:
+            return {"msg": err}
 
 class InputterInsertTran(Resource):
     @classmethod

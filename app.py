@@ -15,7 +15,7 @@ from controls.products import Product, ProductsList
 from controls.rolemenu import RoleMenu, RoleMenuList
 from controls.roles import Role, RoleList
 from controls.status import Status, StatusList
-from controls.trans import Tran, TransList, InputterInsertTran, AuthorizerUpdateTran, InputterUpdateTran
+from controls.trans import Tran, TransList, InputterInsertTran, AuthorizerUpdateTran, InputterUpdateTran, InsertAllProductToTrans
 from controls.batches import Batch, BatchesList, CreateBatch
 from controls.users import User, UsersList, UserLogin
 # from pagecontrollers.index import IndexPage, LoginPage, CitizenTableList, CitizentDataEntry, CitizentDataEdit, CitizentAddData, CitizentUpdateData, CitizenTableListPrint
@@ -86,10 +86,10 @@ api.add_resource(StatusList, "/statuslist")
 
 api.add_resource(Tran, "/tran/<tid>")
 api.add_resource(TransList, "/translist")
-
 api.add_resource(InputterInsertTran, "/inputterinserttran")
 api.add_resource(AuthorizerUpdateTran, "/authorizerupdatetran")
 api.add_resource(InputterUpdateTran, "/inputterupdatetran")
+api.add_resource(InsertAllProductToTrans, "/insertallproducttotrans")
 
 api.add_resource(Batch, "/batch/<batchid>")
 api.add_resource(BatchesList, "/batcheslist")
