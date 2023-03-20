@@ -8,7 +8,7 @@ from urllib.parse import quote
 # from config.db import db, app, api
 
 from controls.branches import Branch, BranchesList, IndexPage
-from controls.categories import CategoriesList, Category
+from controls.categories import CategoriesList, Category, CategoriesParent, CategoriesChildFromParent
 from controls.measurement import Measurement, MeasurementList
 from controls.menus import Menu, MenusList
 from controls.products import Product, ProductsList
@@ -16,11 +16,12 @@ from controls.rolemenu import RoleMenu, RoleMenuList
 from controls.roles import Role, RoleList
 from controls.status import Status, StatusList
 from controls.trans import Tran, TransList, InputterInsertTran, AuthorizerUpdateTran, InputterUpdateTran
-from controls.batches import Batch, BatchesList
+from controls.batches import Batch, BatchesList, CreateBatch
 from controls.users import User, UsersList, UserLogin
 # from pagecontrollers.index import IndexPage, LoginPage, CitizenTableList, CitizentDataEntry, CitizentDataEdit, CitizentAddData, CitizentUpdateData, CitizenTableListPrint
 from dbinfo import dbconfig
 from flask_cors import CORS
+from flask_migrate import Migrate
 
 # config file
 app = Flask(__name__,template_folder='pages')
@@ -62,6 +63,8 @@ api.add_resource(BranchesList, "/brancheslist")
 
 api.add_resource(Category, "/category/<catid>")
 api.add_resource(CategoriesList, "/categorieslist")
+api.add_resource(CategoriesParent, "/categoriesparent")
+api.add_resource(CategoriesChildFromParent, "/categorieschildfromparent")
 
 api.add_resource(Measurement, "/measurement/<mid>")
 api.add_resource(MeasurementList, "/measurementlist")
@@ -83,18 +86,22 @@ api.add_resource(StatusList, "/statuslist")
 
 api.add_resource(Tran, "/tran/<tid>")
 api.add_resource(TransList, "/translist")
-# api.add_resource(TransListDetails, "/translistdetails")
+
 api.add_resource(InputterInsertTran, "/inputterinserttran")
 api.add_resource(AuthorizerUpdateTran, "/authorizerupdatetran")
 api.add_resource(InputterUpdateTran, "/inputterupdatetran")
 
 api.add_resource(Batch, "/batch/<batchid>")
 api.add_resource(BatchesList, "/batcheslist")
+api.add_resource(CreateBatch, "/createbatch")
+
 
 api.add_resource(User, "/user/<userid>")
 api.add_resource(UsersList, "/userslist")
 api.add_resource(UserLogin, "/userlogin")
 
-if __name__ == "__main__":
-    db.init_app(app)
+def create_app():
+    migrate = Migrate()
+    migrate.init_app(app, db)
+    # db.init_app(app)
     app.run(host='0.0.0.0',port=5000, debug=True)

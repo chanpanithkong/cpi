@@ -4,7 +4,7 @@ class tbbatches(db.Model):
     
     batchid = db.Column("batchid", db.Integer, primary_key = True)
     batch = db.Column(db.String)
-    detail = db.Column(db.Integer)
+    detail = db.Column(db.String)
     createdate = db.Column(db.DateTime)
     createby = db.Column(db.String)
     

@@ -3,10 +3,12 @@ from flask_jwt_extended import (
     JWTManager
 )
 from flask_restful import Resource
-from config.db import app, request, json
+from config.db import app, request, json, db
 from models.batches import tbbatches
 from schema.batchesschema import BatchSchema
-
+from sqlalchemy import func
+from datetime import datetime
+from pprint import pprint
 jwt = JWTManager(app)
 
 class Batch(Resource):
@@ -33,3 +35,35 @@ class BatchesList(Resource):
             return {"batches":_data}
         except Exception as err:
             return {"msg":err} 
+
+
+class CreateBatch(Resource):
+    @classmethod
+    # @jwt_required()
+    def post(cls):
+        try:
+            data = json.loads(request.data)
+            maxtid = db.session.query(func.max(tbbatches.batchid)).scalar()
+            if maxtid is None:
+                maxtid = 1
+            else:
+                maxtid = maxtid + 1
+            
+            now = datetime.now()
+            currentdatetime = now.strftime("%y-%m-%dT%H:%M:%S")
+            
+            batchobject = tbbatches()
+            batchobject.batchid = maxtid
+            batchobject.batch = data['data']['batch']
+            batchobject.detail = data['data']['detail']
+            batchobject.createdate = currentdatetime
+            batchobject.createby = data['data']['createby']
+            
+            db.session.add(batchobject)
+            db.session.commit()
+            result = "insert batchid : " + str(maxtid)
+            
+            return {"msg": result}
+        except Exception as err:
+            return {"msg":err} 
+

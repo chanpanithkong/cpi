@@ -8,9 +8,8 @@ class tbcategories(db.Model):
     namekh = db.Column(db.String)
     parentid = db.Column(db.Integer)
     details = db.Column(db.String)
-    
-    
-    def __init__(self, catid, catcode, nameen, namekh, parentid, details):
+        
+    def __init__(self, catid=None, catcode=None, nameen=None, namekh=None, parentid=None, details=None):
         self.catid = catid
         self.catcode = catcode
         self.nameen = nameen
@@ -18,7 +17,14 @@ class tbcategories(db.Model):
         self.parentid = parentid
         self.details = details
         
-        
     @classmethod
     def find_by_catid(cls, catid) -> "tbcategories":
         return cls.query.filter_by(catid=catid).first()
+    
+    @classmethod
+    def find_by_parentid(cls, parentid) -> "tbcategories":
+        return cls.query.filter_by(parentid=parentid).all()
+    
+    @classmethod
+    def find_by_countparentid(cls, parentid) -> "tbcategories":
+        return cls.query.filter_by(parentid=parentid).count()
