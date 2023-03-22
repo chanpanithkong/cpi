@@ -6,6 +6,7 @@ from flask_restful import Resource
 from config.db import app, db, request, json
 from models.trans import tbtrans
 from models.products import tbproducts
+from models.categories import tbcategories
 from schema.transschema import TransSchema
 from sqlalchemy import func
 from datetime import datetime
@@ -32,8 +33,10 @@ class InsertAllProductToTrans(Resource):
                 
                 get_trandata = tbtrans()
                 get_trandata.tid = maxtid
+
                 get_trandata.branchcode = data['data']['branchcode']
                 get_trandata.productid = pl.prodid
+                
                 # get_trandata.weight = data['data']['weight']
                 # get_trandata.price = data['data']['price']
                 get_trandata.submitter = data['data']['submitter']
@@ -101,7 +104,7 @@ class InputterInsertTran(Resource):
             return {"msg": result}
         except Exception as err:
             return {"msg": err}
-        
+
 class InputterUpdateTran(Resource):
     @classmethod
     # @jwt_required()
@@ -133,6 +136,42 @@ class InputterUpdateTran(Resource):
                 return {"msg": result}
             
             return {"msg": "there is no tid : " + data['data']['tid']}
+        except Exception as err:
+            return {"msg": err}
+
+class UpdateTranByCategories(Resource):
+    @classmethod
+    # @jwt_required()
+    def post(cls):
+        try:
+            data = json.loads(request.data)
+            if len(data['data']) > 0:
+                for dt in data['data']:
+                    tran_data = tbtrans.find_by_tid(dt['tid'])
+                    if (tran_data is not None):
+                        # tran_data = tbtrans().update()
+                        tran_data.productid = dt['productid']
+                        tran_data.weight = dt['weight']
+                        tran_data.price = dt['price']
+                        
+                        # tran_data.submitter = data['data']['submitter']
+                        # tran_data.branchcode = data['data']['branchcode']
+                        tran_data.submitternote = dt['submitternote']
+                        # get_trandata.authorizer
+                        # get_trandata.authorizedate
+                        # get_trandata.authorizernote
+                        tran_data.status = 1
+                        
+                        now = datetime.now()
+                        currentdatetime = now.strftime("%y-%m-%dT%H:%M:%S")
+                        tran_data.submitdate = currentdatetime
+                        tran_data.valuedate = currentdatetime
+                        tran_data.trandate = currentdatetime
+                        # tran_data.countsubmitted = tran_data.countsubmitted + 1
+                        db.session.commit()
+                return {"msg": "update list of data"}
+            else:    
+                return {"msg": "there is no data"}
         except Exception as err:
             return {"msg": err}        
 
@@ -239,6 +278,56 @@ class TransList(Resource):
         except Exception as err:
             return {"msg": err}
 
+
+class TransWithBatchWherePriceAndWeightIsEmpty(Resource):
+    @classmethod
+    # @jwt_required()
+    def get(cls, batchid=None):
+        try:
+            data = tbtrans.find_by_batchid(batchid)
+            schema = TransSchema(many=True)
+            _data = schema.dump(data)
+            return {"tran": _data}
+        except Exception as err:
+            return {"msg": err}       
+ 
+class TransWithBatchCategory(Resource):
+    @classmethod
+    # @jwt_required()
+    def get(cls, batchid=None, catid=None):
+        try:
+            filter = (tbtrans.batchid == batchid) & (tbcategories.catid == catid) 
+            data = db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).order_by(tbtrans.tid).all()
+            pprint(data)
+            
+            json_data = []
+            for dt in data:
+               schema = TransSchema(many=False)
+               _data = schema.dump(dt[0])
+               json_data.append(_data)
+               
+            return {"tran": json_data}
+        except Exception as err:
+            return {"msg": err}       
+ 
+class TransWithBatchCategoryWherePriceAndWeightIsEmpty(Resource):
+    @classmethod
+    # @jwt_required()
+    def get(cls, batchid=None, catid=None):
+        try:
+            filter = (tbtrans.batchid == batchid) & (tbcategories.catid == catid) & ((db.Column("price") == None) | (db.Column("weight") == None))
+            data = db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).order_by(tbtrans.tid).all()
+            pprint(data)
+            
+            json_data = []
+            for dt in data:
+               schema = TransSchema(many=False)
+               _data = schema.dump(dt[0])
+               json_data.append(_data)
+               
+            return {"tran": json_data}
+        except Exception as err:
+            return {"msg": err}       
 
 # class TransListDetails(Resource):
 #     @classmethod

@@ -15,7 +15,7 @@ from controls.products import Product, ProductsList
 from controls.rolemenu import RoleMenu, RoleMenuList
 from controls.roles import Role, RoleList
 from controls.status import Status, StatusList
-from controls.trans import Tran, TransList, InputterInsertTran, AuthorizerUpdateTran, InputterUpdateTran, InsertAllProductToTrans
+from controls.trans import Tran, TransList, InputterInsertTran, AuthorizerUpdateTran, InputterUpdateTran, InsertAllProductToTrans, UpdateTranByCategories, TransWithBatchWherePriceAndWeightIsEmpty, TransWithBatchCategoryWherePriceAndWeightIsEmpty, TransWithBatchCategory
 from controls.batches import Batch, BatchesList, CreateBatch
 from controls.users import User, UsersList, UserLogin
 # from pagecontrollers.index import IndexPage, LoginPage, CitizenTableList, CitizentDataEntry, CitizentDataEdit, CitizentAddData, CitizentUpdateData, CitizenTableListPrint
@@ -64,7 +64,7 @@ api.add_resource(BranchesList, "/brancheslist")
 api.add_resource(Category, "/category/<catid>")
 api.add_resource(CategoriesList, "/categorieslist")
 api.add_resource(CategoriesParent, "/categoriesparent")
-api.add_resource(CategoriesChildFromParent, "/categorieschildfromparent")
+api.add_resource(CategoriesChildFromParent, "/categorieschildfromparent/<parentid>")
 
 api.add_resource(Measurement, "/measurement/<mid>")
 api.add_resource(MeasurementList, "/measurementlist")
@@ -90,6 +90,10 @@ api.add_resource(InputterInsertTran, "/inputterinserttran")
 api.add_resource(AuthorizerUpdateTran, "/authorizerupdatetran")
 api.add_resource(InputterUpdateTran, "/inputterupdatetran")
 api.add_resource(InsertAllProductToTrans, "/insertallproducttotrans")
+api.add_resource(UpdateTranByCategories, "/updatetranbycategories")
+api.add_resource(TransWithBatchWherePriceAndWeightIsEmpty, "/transwithbatchwherepriceandweightisempty/<batchid>")
+api.add_resource(TransWithBatchCategory, "/transwithbatchcategory/<batchid>/<catid>")
+api.add_resource(TransWithBatchCategoryWherePriceAndWeightIsEmpty, "/transwithbatchcategorywherepriceandweightisempty/<batchid>/<catid>")
 
 api.add_resource(Batch, "/batch/<batchid>")
 api.add_resource(BatchesList, "/batcheslist")
@@ -100,8 +104,6 @@ api.add_resource(User, "/user/<userid>")
 api.add_resource(UsersList, "/userslist")
 api.add_resource(UserLogin, "/userlogin")
 
-def create_app():
-    migrate = Migrate()
-    migrate.init_app(app, db)
-    # db.init_app(app)
+if __name__ == "__main__":
+    db.init_app(app)
     app.run(host='0.0.0.0',port=5000, debug=True)

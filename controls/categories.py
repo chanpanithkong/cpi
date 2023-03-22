@@ -22,21 +22,21 @@ class Category(Resource):
         except Exception as err:
             return {"msg": err}
 
+
 class CategoriesChildFromParent(Resource):
     @classmethod
     # @jwt_required()
-    def post(cls):
+    def get(cls, parentid=None):
         try:
-            
-            data = json.loads(request.data)
-            if tbcategories.find_by_countparentid(data['data']['parentid']) > 0:
-                data = tbcategories.find_by_parentid(data['data']['parentid'])
-                schema = CategoriesSchema(many=True)
-                _data = schema.dump(data)
-                return {"categoris": _data}
-            return {"No records"}
+
+            data = tbcategories.find_by_parentid(parentid)
+            schema = CategoriesSchema(many=True)
+            _data = schema.dump(data)
+            return {"categoris": _data}
+        
         except Exception as err:
             return {"msg": err}
+
 
 class CategoriesParent(Resource):
     @classmethod

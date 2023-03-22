@@ -1,15 +1,15 @@
 from config.db import db
-
+from sqlalchemy import or_
 
 class tbtrans(db.Model):
 
     tid = db.Column("tid", db.Integer, primary_key=True)
 
     branchcode = db.Column(db.String, db.ForeignKey('tbbranches.branchcode'))
-    tbbranches = db.relationship("tbbranches")
+    # tbbranches = db.relationship("tbbranches")
 
     productid = db.Column(db.Integer, db.ForeignKey('tbproducts.prodid'))
-    tbproducts = db.relationship("tbproducts")
+    # tbproducts = db.relationship("tbproducts")
 
     weight = db.Column(db.Float)
     price = db.Column(db.Float)
@@ -21,7 +21,7 @@ class tbtrans(db.Model):
     authorizernote = db.Column(db.String)
 
     status = db.Column(db.Integer, db.ForeignKey('tbstatus.statusid'))
-    tbstatus = db.relationship("tbstatus")
+    # tbstatus = db.relationship("tbstatus")
 
     valuedate = db.Column(db.DateTime)
     trandate = db.Column(db.DateTime)
@@ -55,3 +55,8 @@ class tbtrans(db.Model):
     @classmethod
     def find_by_tid(cls, tid) -> "tbtrans":
         return cls.query.filter_by(tid=tid).first()
+
+    @classmethod
+    def find_by_batchid(cls, batchid) -> "tbtrans":
+        filters = ((db.Column("price") == None) | (db.Column("weight") == None)) & (db.Column("batchid") == batchid)
+        return cls.query.filter(filters).all()

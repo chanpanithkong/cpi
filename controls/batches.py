@@ -61,7 +61,7 @@ class CreateBatch(Resource):
             
             db.session.add(batchobject)
             db.session.commit()
-            result = "insert batchid : " + str(maxtid)
+            result = {"batchid:":str(maxtid)}
             
             return {"msg": result}
         except Exception as err:

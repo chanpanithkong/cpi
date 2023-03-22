@@ -15,6 +15,6 @@ class ProductsSchema(SQLAlchemyAutoSchema):
     inputtype = auto_field()
     catid = auto_field()
     details = auto_field()
-    tbcategories = fields.Nested("CategoriesSchema")
+    # tbcategories = fields.Nested("CategoriesSchema")
     
 
