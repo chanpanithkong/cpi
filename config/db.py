@@ -1,12 +1,12 @@
 import os
-from flask import Flask, request, json
+from flask import Flask, request, json, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Api
 from dbinfo import dbconfig
 from flask_cors import CORS
 # app = Flask(__name__, template_folder='templates')
 app = Flask(__name__)
-CORS(app) 
+
 api = Api(app)
 
 
@@ -19,6 +19,9 @@ app.config['PROPAGATE_EXCEPTIONS'] = True
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + dbconfig.username + ':' + dbconfig.password + '@' + dbconfig.url + ':' + dbconfig.port + '/' + dbconfig.mysqldb
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['CORS_HEADERS'] = 'Content-Type'
 DEBUG = True
 
 db = SQLAlchemy(app)
+
+CORS(app, resources={r"/*": {"origins": "*"}})

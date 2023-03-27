@@ -3,7 +3,7 @@ from config.db import db
 class tbrolemenu(db.Model):
     
     roleid = db.Column("roleid", db.Integer, primary_key = True)
-    menuid = db.Column(db.Integer)
+    menuid = db.Column("menuid", db.Integer, primary_key = True)
     details = db.Column(db.String)
     createby = db.Column(db.String)
     createdate = db.Column(db.DateTime)
@@ -21,4 +21,5 @@ class tbrolemenu(db.Model):
         
     @classmethod
     def find_by_roleid(cls, roleid) -> "tbrolemenu":
-        return cls.query.filter_by(roleid=roleid).first()
+        return cls.query.filter_by(roleid=roleid).order_by(tbrolemenu.menuid).all()
+

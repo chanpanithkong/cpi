@@ -317,7 +317,6 @@ class TransWithBatchCategoryWherePriceAndWeightIsEmpty(Resource):
         try:
             filter = (tbtrans.batchid == batchid) & (tbcategories.catid == catid) & ((db.Column("price") == None) | (db.Column("weight") == None))
             data = db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).order_by(tbtrans.tid).all()
-            pprint(data)
             
             json_data = []
             for dt in data:
