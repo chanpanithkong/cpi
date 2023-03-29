@@ -18,8 +18,9 @@ from controls.status import Status, StatusList
 from controls.trans import Tran, TransList, InputterInsertTran, AuthorizerUpdateTran, InputterUpdateTran, InsertAllProductToTrans, UpdateTranByCategories, TransWithBatchWherePriceAndWeightIsEmpty, TransWithBatchCategoryWherePriceAndWeightIsEmpty, TransWithBatchCategory
 from controls.batches import Batch, BatchesList, CreateBatch
 from controls.users import User, UsersList, UserLogin
-from pagecontrollers.pages import LoginPage, HomePage
+from pagecontrollers.pages import LoginPage, HomePage, SubmittedTrans, HistoryOfTrans, BeverageTobacco, Restaurant, ClothShoes, Shipping, Medicine, Housing 
 from pagecontrollers.usersetting import UserProfile, ChangePassword
+from pagecontrollers.food import Rice, Ingredient, Meat, FishSeaFood, Fruit, Vegetables
 
 from dbinfo import dbconfig
 from flask_cors import CORS
@@ -64,7 +65,7 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 def page_not_found(err):
     return render_template('404.html')
 
-# webpage
+######### webpage #########
 
 
 api.add_resource(HomePage, "/")
@@ -73,9 +74,30 @@ api.add_resource(UserProfile, "/userprofile")
 api.add_resource(ChangePassword, "/changepassword")
 api.add_resource(LoginPage, "/login/")
 # food
+api.add_resource(Rice, "/rice")
+api.add_resource(Ingredient, "/ingredients")
+api.add_resource(Meat, "/meat")
+api.add_resource(FishSeaFood, "/fishandseafood")
+api.add_resource(Fruit, "/fruit")
+api.add_resource(Vegetables, "/vegetables")
+# beverage and tobacco
+api.add_resource(BeverageTobacco, "/beveragetobacco")
+# restaurant
+api.add_resource(Restaurant, "/restaurant")
+# clothes and shoes
+api.add_resource(ClothShoes, "/clothesshoes")
+# shipping
+api.add_resource(Shipping, "/shipping")
+# medecine
+api.add_resource(Medicine, "/medicine")
+# housing
+api.add_resource(Housing, "/housing")
+# submitted trans
+api.add_resource(SubmittedTrans, "/submittedtrans")
+# historyoftrans
+api.add_resource(HistoryOfTrans, "/historyoftrans")
 
-
-# webservice
+######## webservice #########
 
 api.add_resource(IndexPage, "/api/")
 api.add_resource(Branch, "/api/branch/<branchcode>")

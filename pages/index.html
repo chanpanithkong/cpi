@@ -247,11 +247,45 @@
     {% include 'usersetting/userprofile.html' %}
     {% elif task == 'changepassword' %}
     {% include 'usersetting/changepassword.html' %}
-
-    {% elif task == 'citizenadd' %}
-    {% include 'content/citizenadd.html' %}
-    {% elif task == 'citizenedit' %}
-    {% include 'content/citizenedit.html' %}
+    <!-- food -->
+    {% elif task == 'rice' %}
+    {% include 'food/rice.html' %}
+    {% elif task == 'ingredient' %}
+    {% include 'food/ingredient.html' %}
+    {% elif task == 'meat' %}
+    {% include 'food/meat.html' %}
+    {% elif task == 'fishandseafood' %}
+    {% include 'food/fishandseafood.html' %}
+    {% elif task == 'fruit' %}
+    {% include 'food/fruit.html' %}
+    {% elif task == 'vegetable' %}
+    {% include 'food/vegetable.html' %}
+    <!-- # beveragetobacco -->
+    {% elif task == 'beveragetobacco' %}
+    {% include 'beverageandtobacco.html' %}
+    <!-- # restaurant -->
+    {% elif task == 'restaurant' %}
+    {% include 'restaurant.html' %}
+    <!-- # clothes and shoes -->
+    {% elif task == 'clothshoes' %}
+    {% include 'clothandshoe.html' %}
+    <!-- # shipping -->
+    {% elif task == 'shipping' %}
+    {% include 'shipping.html' %}
+    <!-- # medecine -->
+    {% elif task == 'medicine' %}
+    {% include 'medicine.html' %}
+    <!-- # housing -->
+    {% elif task == 'housing' %}
+    {% include 'housing.html' %}
+  
+    <!-- submitted trans -->
+    {% elif task == 'submittedtrans' %}
+    {% include 'submittedtrans.html' %}
+    <!-- history of trans -->
+    {% elif task == 'historyoftrans' %}
+    {% include 'historyoftrans.html' %}
+    <!-- end if -->
     {% endif%}
 
   </main><!-- End #main -->
