@@ -18,7 +18,9 @@ from controls.status import Status, StatusList
 from controls.trans import Tran, TransList, InputterInsertTran, AuthorizerUpdateTran, InputterUpdateTran, InsertAllProductToTrans, UpdateTranByCategories, TransWithBatchWherePriceAndWeightIsEmpty, TransWithBatchCategoryWherePriceAndWeightIsEmpty, TransWithBatchCategory
 from controls.batches import Batch, BatchesList, CreateBatch
 from controls.users import User, UsersList, UserLogin
-# from pagecontrollers.index import IndexPage, LoginPage, CitizenTableList, CitizentDataEntry, CitizentDataEdit, CitizentAddData, CitizentUpdateData, CitizenTableListPrint
+from pagecontrollers.pages import LoginPage, HomePage
+from pagecontrollers.usersetting import UserProfile, ChangePassword
+
 from dbinfo import dbconfig
 from flask_cors import CORS
 from flask_migrate import Migrate
@@ -62,6 +64,18 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 def page_not_found(err):
     return render_template('404.html')
 
+# webpage
+
+
+api.add_resource(HomePage, "/")
+# user settings
+api.add_resource(UserProfile, "/userprofile")
+api.add_resource(ChangePassword, "/changepassword")
+api.add_resource(LoginPage, "/login/")
+# food
+
+
+# webservice
 
 api.add_resource(IndexPage, "/api/")
 api.add_resource(Branch, "/api/branch/<branchcode>")
