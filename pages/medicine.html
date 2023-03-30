@@ -1,1 +1,58 @@
-<h1>medicine</h1>
+<div class="pagetitle">
+    <h1>Hello {{role.rolename}}</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+        <li class="breadcrumb-item active">Medicine</li>
+      </ol>
+    </nav>
+  </div>
+  <!-- End Page Title -->
+  
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <center>
+              <h5 class="card-title">Medicine Details</h5>
+            </center>
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Product Name</th>
+                  <th scope="col">Weight</th>
+                  <th scope="col">Price</th>
+                  <th scope="col">Details</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for prod in productlist %}  
+                <tr>
+                  <th scope="row">{{loop.index }}</th>
+                  <td>{{prod.namekh}}</td>
+                  <td><input type="text" class="form-control" name="weight{{prod.prodid}}"/></td>
+                  <td><input type="text" class="form-control" name="price{{prod.prodid}}"/></td>
+                  <td><input type="text" class="form-control" name="note{{prod.prodid}}"/></td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <div style="text-align: Center">
+              <button  type="button" class="btn btn-primary">
+                Submit
+              </button>
+              <button  type="button" class="btn btn-primary">
+                Clear
+              </button>
+            </div>
+            <br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  

@@ -18,18 +18,23 @@ from controls.status import Status, StatusList
 from controls.trans import Tran, TransList, InputterInsertTran, AuthorizerUpdateTran, InputterUpdateTran, InsertAllProductToTrans, UpdateTranByCategories, TransWithBatchWherePriceAndWeightIsEmpty, TransWithBatchCategoryWherePriceAndWeightIsEmpty, TransWithBatchCategory
 from controls.batches import Batch, BatchesList, CreateBatch
 from controls.users import User, UsersList, UserLogin
-from pagecontrollers.pages import LoginPage, HomePage, SubmittedTrans, HistoryOfTrans, BeverageTobacco, Restaurant, ClothShoes, Shipping, Medicine, Housing 
+from pagecontrollers.pages import Logout, UserLoginPage, LoginPage, HomePage, SubmittedTrans, HistoryOfTrans, BeverageTobacco, Restaurant, ClothShoes, Shipping, Medicine, Housing 
 from pagecontrollers.usersetting import UserProfile, ChangePassword
 from pagecontrollers.food import Rice, Ingredient, Meat, FishSeaFood, Fruit, Vegetables
 
 from dbinfo import dbconfig
 from flask_cors import CORS
 from flask_migrate import Migrate
+from flask_session import Session
 
 # config file
 app = Flask(__name__, template_folder='pages')
 api = Api(app)
 
+
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
 # cambodia
 app.config['SECRET_KEY'] = 'eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJpc3MiOiJodHRwczovL2p3dC1pZHAuZXhhbXBsZS5jb20iLCJzdWIiOiJtYWlsdG86bWlrZUBleGFtcGxlLmNvbSIsIm5iZiI6MTY1NzI3NTA4MiwiZXhwIjoxNjU3Mjc4NjgyLCJpYXQiOjE2NTcyNzUwODIsImp0aSI6ImlkMTIzNDU2IiwidHlwIjoiaHR0cHM6Ly9leGFtcGxlLmNvbS9yZWdpc3RlciJ9.'
@@ -73,6 +78,8 @@ api.add_resource(HomePage, "/")
 api.add_resource(UserProfile, "/userprofile")
 api.add_resource(ChangePassword, "/changepassword")
 api.add_resource(LoginPage, "/login/")
+api.add_resource(Logout, "/logout")
+api.add_resource(UserLoginPage, "/userloginpage")
 # food
 api.add_resource(Rice, "/rice")
 api.add_resource(Ingredient, "/ingredients")
@@ -81,7 +88,7 @@ api.add_resource(FishSeaFood, "/fishandseafood")
 api.add_resource(Fruit, "/fruit")
 api.add_resource(Vegetables, "/vegetables")
 # beverage and tobacco
-api.add_resource(BeverageTobacco, "/beveragetobacco")
+api.add_resource(BeverageTobacco, "/beveragestobacco")
 # restaurant
 api.add_resource(Restaurant, "/restaurant")
 # clothes and shoes
@@ -97,60 +104,73 @@ api.add_resource(SubmittedTrans, "/submittedtrans")
 # historyoftrans
 api.add_resource(HistoryOfTrans, "/historyoftrans")
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 ######## webservice #########
 
-api.add_resource(IndexPage, "/api/")
-api.add_resource(Branch, "/api/branch/<branchcode>")
-api.add_resource(BranchesList, "/api/brancheslist")
+# api.add_resource(IndexPage, "/api/")
+# api.add_resource(Branch, "/api/branch/<branchcode>")
+# api.add_resource(BranchesList, "/api/brancheslist")
 
-api.add_resource(Category, "/api/category/<catid>")
-api.add_resource(CategoriesList, "/api/categorieslist")
-api.add_resource(CategoriesParent, "/api/categoriesparent")
-api.add_resource(CategoriesChildFromParent,
-                 "/api/categorieschildfromparent/<parentid>")
+# api.add_resource(Category, "/api/category/<catid>")
+# api.add_resource(CategoriesList, "/api/categorieslist")
+# api.add_resource(CategoriesParent, "/api/categoriesparent")
+# api.add_resource(CategoriesChildFromParent,
+#                  "/api/categorieschildfromparent/<parentid>")
 
-api.add_resource(Measurement, "/api/measurement/<mid>")
-api.add_resource(MeasurementList, "/api/measurementlist")
+# api.add_resource(Measurement, "/api/measurement/<mid>")
+# api.add_resource(MeasurementList, "/api/measurementlist")
 
-api.add_resource(Menu, "/api/menu/<mid>")
-api.add_resource(MenusList, "/api/menuslist")
+# api.add_resource(Menu, "/api/menu/<mid>")
+# api.add_resource(MenusList, "/api/menuslist")
 
-api.add_resource(Product, "/api/product/<pid>")
-api.add_resource(ProductsList, "/api/productslist")
+# api.add_resource(Product, "/api/product/<pid>")
+# api.add_resource(ProductsList, "/api/productslist")
 
-api.add_resource(RoleMenu, "/api/rolemenu/<roleid>")
-api.add_resource(RoleMenuList, "/api/rolemenulist")
-api.add_resource(RoleMenuParents, "/api/rolemenuparents/<roleid>")
-api.add_resource(RoleMenuChilds, "/api/rolemenuchilds/<roleid>/<parentid>")
+# api.add_resource(RoleMenu, "/api/rolemenu/<roleid>")
+# api.add_resource(RoleMenuList, "/api/rolemenulist")
+# api.add_resource(RoleMenuParents, "/api/rolemenuparents/<roleid>")
+# api.add_resource(RoleMenuChilds, "/api/rolemenuchilds/<roleid>/<parentid>")
 
-api.add_resource(Role, "/api/role/<roleid>")
-api.add_resource(RoleList, "/api/rolelist")
+# api.add_resource(Role, "/api/role/<roleid>")
+# api.add_resource(RoleList, "/api/rolelist")
 
-api.add_resource(Status, "/api/status/<statusid>")
-api.add_resource(StatusList, "/api/statuslist")
+# api.add_resource(Status, "/api/status/<statusid>")
+# api.add_resource(StatusList, "/api/statuslist")
 
-api.add_resource(Tran, "/api/tran/<tid>")
-api.add_resource(TransList, "/api/translist")
-api.add_resource(InputterInsertTran, "/api/inputterinserttran")
-api.add_resource(AuthorizerUpdateTran, "/api/authorizerupdatetran")
-api.add_resource(InputterUpdateTran, "/api/inputterupdatetran")
-api.add_resource(InsertAllProductToTrans, "/api/insertallproducttotrans")
-api.add_resource(UpdateTranByCategories, "/api/updatetranbycategories")
-api.add_resource(TransWithBatchWherePriceAndWeightIsEmpty,
-                 "/api/transwithbatchwherepriceandweightisempty/<batchid>")
-api.add_resource(TransWithBatchCategory,
-                 "/api/transwithbatchcategory/<batchid>/<catid>")
-api.add_resource(TransWithBatchCategoryWherePriceAndWeightIsEmpty,
-                 "/api/transwithbatchcategorywherepriceandweightisempty/<batchid>/<catid>")
+# api.add_resource(Tran, "/api/tran/<tid>")
+# api.add_resource(TransList, "/api/translist")
+# api.add_resource(InputterInsertTran, "/api/inputterinserttran")
+# api.add_resource(AuthorizerUpdateTran, "/api/authorizerupdatetran")
+# api.add_resource(InputterUpdateTran, "/api/inputterupdatetran")
+# api.add_resource(InsertAllProductToTrans, "/api/insertallproducttotrans")
+# api.add_resource(UpdateTranByCategories, "/api/updatetranbycategories")
+# api.add_resource(TransWithBatchWherePriceAndWeightIsEmpty,
+#                  "/api/transwithbatchwherepriceandweightisempty/<batchid>")
+# api.add_resource(TransWithBatchCategory,
+#                  "/api/transwithbatchcategory/<batchid>/<catid>")
+# api.add_resource(TransWithBatchCategoryWherePriceAndWeightIsEmpty,
+#                  "/api/transwithbatchcategorywherepriceandweightisempty/<batchid>/<catid>")
 
-api.add_resource(Batch, "/api/batch/<batchid>")
-api.add_resource(BatchesList, "/api/batcheslist")
-api.add_resource(CreateBatch, "/api/createbatch")
+# api.add_resource(Batch, "/api/batch/<batchid>")
+# api.add_resource(BatchesList, "/api/batcheslist")
+# api.add_resource(CreateBatch, "/api/createbatch")
 
 
-api.add_resource(User, "/api/user/<userid>")
-api.add_resource(UsersList, "/api/userslist")
-api.add_resource(UserLogin, "/api/userlogin")
+# api.add_resource(User, "/api/user/<userid>")
+# api.add_resource(UsersList, "/api/userslist")
+# api.add_resource(UserLogin, "/api/userlogin")
 
 if __name__ == "__main__":
     db.init_app(app)

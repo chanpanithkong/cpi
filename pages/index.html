@@ -37,6 +37,7 @@
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
+  <script type="text/javascript" src="{{ url_for('static', filename='assets/js/jquery-3.6.4.min.js') }}"></script>
 </head>
 
 <body>
@@ -148,13 +149,13 @@
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             <img src="{{ url_for('static', filename='assets/img/profile-img.jpg') }}" alt="Profile"
               class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2">James</span>
+            <span class="d-none d-md-block dropdown-toggle ps-2">{{session.get('username')}}</span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6>James</h6>
-              <span>IT Officer</span>
+              <h6>BranchCode : {{session.get('branchcode')}}</h6>
+              <span>Department : {{session.get('details')}}</span>
             </li>
             <li>
               <hr class="dropdown-divider">
@@ -180,7 +181,7 @@
               <hr class="dropdown-divider">
             </li>
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="/login">
+              <a class="dropdown-item d-flex align-items-center" href="/logout">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Log Out</span>
               </a>
@@ -320,14 +321,13 @@
   <!-- Template Main JS File -->
 
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
   <!-- Template Main JS File -->
 
   <script type="text/javascript" src="{{ url_for('static', filename='assets/js/print.min.js') }}"></script>
 
-  <script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
 
-
+  
 
 
 </body>
