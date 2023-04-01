@@ -4,9 +4,13 @@ from flask_jwt_extended import (
 )
 from flask_restful import Resource
 from config.db import app, db, request, json
+from flask import session
 from models.trans import tbtrans
 from models.products import tbproducts
 from models.categories import tbcategories
+from models.batches import tbbatches
+from models.users import tbusers
+
 from schema.transschema import TransSchema
 from sqlalchemy import func
 from datetime import datetime
@@ -21,45 +25,53 @@ class InsertAllProductToTrans(Resource):
     def post(cls):
         try:
             data = json.loads(request.data)
-            productlist = tbproducts.query.all()
-            for pl in productlist:
+            print(1)
+            if data['data'] == "inserttranns" :
+                print(2)
+                productlist = tbproducts.query.all()
+                print(3)
+                for pl in productlist:
+                    print(4)    
+                    userid = session.get('userid')
+                    batches = tbbatches.find_by_createbyopen(userid)
+                    users = tbusers.find_by_userid(userid)
+                    print(5)    
+                    maxtid = db.session.query(func.max(tbtrans.tid)).scalar()
+                    if maxtid is None:
+                        maxtid = 1
+                    else:
+                        maxtid = maxtid + 1
+                    print(6)    
+                    get_trandata = tbtrans()
+                    get_trandata.tid = maxtid
 
-                
-                maxtid = db.session.query(func.max(tbtrans.tid)).scalar()
-                if maxtid is None:
-                    maxtid = 1
-                else:
-                    maxtid = maxtid + 1
-                
-                get_trandata = tbtrans()
-                get_trandata.tid = maxtid
+                    get_trandata.branchcode = users.branchcode
+                    get_trandata.productid = pl.prodid
+                    
+                    # get_trandata.weight = data['data']['weight']
+                    # get_trandata.price = data['data']['price']
+                    get_trandata.submitter = userid
+                    
+                    # get_trandata.submitternote = data['data']['submitternote']
+                    # get_trandata.authorizer
+                    # get_trandata.authorizedate
+                    # get_trandata.authorizernote
+                    get_trandata.status = 7
+                    
+                    now = datetime.now()
+                    currentdatetime = now.strftime("%y-%m-%dT%H:%M:%S")
 
-                get_trandata.branchcode = data['data']['branchcode']
-                get_trandata.productid = pl.prodid
-                
-                # get_trandata.weight = data['data']['weight']
-                # get_trandata.price = data['data']['price']
-                get_trandata.submitter = data['data']['submitter']
-                
-                # get_trandata.submitternote = data['data']['submitternote']
-                # get_trandata.authorizer
-                # get_trandata.authorizedate
-                # get_trandata.authorizernote
-                get_trandata.status = 1
-                
-                now = datetime.now()
-                currentdatetime = now.strftime("%y-%m-%dT%H:%M:%S")
-
-                get_trandata.submitdate = currentdatetime
-                get_trandata.valuedate = currentdatetime
-                get_trandata.trandate = currentdatetime
-                get_trandata.countsubmitted = 0
-                get_trandata.batchid = data['data']['batchid']
-
-                db.session.add(get_trandata)
-                db.session.commit()
-            result = "insert all products with batch : " + str(data['data']['batchid'])
-            return {"msg": result}
+                    get_trandata.submitdate = currentdatetime
+                    get_trandata.valuedate = currentdatetime
+                    get_trandata.trandate = currentdatetime
+                    get_trandata.countsubmitted = 0
+                    get_trandata.batchid = batches.batchid
+                    print(7)    
+                    db.session.add(get_trandata)
+                    db.session.commit()
+                result = "insert all products with batch : " + str(batches.batchid)
+                return {"msg": result}
+            return {"msg": "cannot insert products"}
         except Exception as err:
             return {"msg": err}
 
@@ -147,27 +159,32 @@ class UpdateTranByCategories(Resource):
             data = json.loads(request.data)
             if len(data['data']) > 0:
                 for dt in data['data']:
-                    tran_data = tbtrans.find_by_tid(dt['tid'])
+                    batch = tbbatches.find_by_createbyopen(data['userid'])
+                    tran_data = tbtrans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,dt['prodid'])
                     if (tran_data is not None):
                         # tran_data = tbtrans().update()
-                        tran_data.productid = dt['productid']
                         tran_data.weight = dt['weight']
                         tran_data.price = dt['price']
                         
                         # tran_data.submitter = data['data']['submitter']
                         # tran_data.branchcode = data['data']['branchcode']
-                        tran_data.submitternote = dt['submitternote']
+                        tran_data.submitternote = dt['note']
                         # get_trandata.authorizer
                         # get_trandata.authorizedate
                         # get_trandata.authorizernote
-                        tran_data.status = 1
-                        
+
+                        if data['userrequest'] == 'save':
+                            tran_data.status = 12
+                        else:
+                            tran_data.status = 1
+                            
                         now = datetime.now()
                         currentdatetime = now.strftime("%y-%m-%dT%H:%M:%S")
                         tran_data.submitdate = currentdatetime
                         tran_data.valuedate = currentdatetime
                         tran_data.trandate = currentdatetime
                         # tran_data.countsubmitted = tran_data.countsubmitted + 1
+
                         db.session.commit()
                 return {"msg": "update list of data"}
             else:    

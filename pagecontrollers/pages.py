@@ -3,7 +3,6 @@ from flask_jwt_extended import (
     JWTManager
 )
 from flask_restful import Resource, request
-from flask_session import Session
 from config.db import db, app, api
 from flask import make_response, render_template, redirect, send_file, session
 
@@ -12,6 +11,9 @@ from models.menus import tbmenus
 from models.roles import tbroles
 from models.users import tbusers
 from models.products import tbproducts
+from models.batches import tbbatches
+from models.trans import tbtrans
+from models.categories import tbcategories
 from schema.usersschema import UserSchema
 
 import datetime
@@ -71,8 +73,13 @@ class HomePage(Resource):
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
+        batch = tbbatches.find_by_createbyopen(session.get("userid"))
+        batchtrans = tbtrans.find_by_batchid(batch.batchid)
+        batchdisabled = ""
+        if len(batchtrans) <= 0:
+            batchdisabled = "disabled"
 
-        return make_response(render_template('index.html', menus=menus, menuchilds=menuchilds, role=role, task="dashboard"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, menuchilds=menuchilds, role=role, batchdisabled=batchdisabled, task="dashboard"), 200, headers)
 
 
 class SubmittedTrans(Resource):
@@ -130,7 +137,17 @@ class BeverageTobacco(Resource):
         category = 8
         productlist = tbproducts.find_by_catid(category)
 
-        return make_response(render_template('index.html', menus=menus, menuchilds=menuchilds,role=role, productlist=productlist, task="beveragetobacco"), 200, headers)
+        batch = tbbatches.find_by_createbyopen(session.get("userid"))
+        trans = tbtrans
+
+        disabled = ""
+        filter = (tbtrans.status == 1) & (tbcategories.catid == category) 
+        submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
+            
+        if len(submitdata) > 0:
+            disabled = "disabled "
+
+        return make_response(render_template('index.html', menus=menus, menuchilds=menuchilds,role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled, task="beveragetobacco"), 200, headers)
 
 
 class Restaurant(Resource):

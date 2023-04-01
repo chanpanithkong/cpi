@@ -150,6 +150,7 @@
             <img src="{{ url_for('static', filename='assets/img/profile-img.jpg') }}" alt="Profile"
               class="rounded-circle">
             <span class="d-none d-md-block dropdown-toggle ps-2">{{session.get('username')}}</span>
+            <input type="hidden" value="{{session.get('userid')}}" id="userid">
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">

@@ -16,7 +16,7 @@ from controls.rolemenu import RoleMenu, RoleMenuList, RoleMenuParents, RoleMenuC
 from controls.roles import Role, RoleList
 from controls.status import Status, StatusList
 from controls.trans import Tran, TransList, InputterInsertTran, AuthorizerUpdateTran, InputterUpdateTran, InsertAllProductToTrans, UpdateTranByCategories, TransWithBatchWherePriceAndWeightIsEmpty, TransWithBatchCategoryWherePriceAndWeightIsEmpty, TransWithBatchCategory
-from controls.batches import Batch, BatchesList, CreateBatch
+from controls.batches import Batch, BatchesList, CreateBatch, CloseBatch
 from controls.users import User, UsersList, UserLogin
 from pagecontrollers.pages import Logout, UserLoginPage, LoginPage, HomePage, SubmittedTrans, HistoryOfTrans, BeverageTobacco, Restaurant, ClothShoes, Shipping, Medicine, Housing 
 from pagecontrollers.usersetting import UserProfile, ChangePassword
@@ -154,8 +154,10 @@ api.add_resource(HistoryOfTrans, "/historyoftrans")
 # api.add_resource(InputterInsertTran, "/api/inputterinserttran")
 # api.add_resource(AuthorizerUpdateTran, "/api/authorizerupdatetran")
 # api.add_resource(InputterUpdateTran, "/api/inputterupdatetran")
-# api.add_resource(InsertAllProductToTrans, "/api/insertallproducttotrans")
-# api.add_resource(UpdateTranByCategories, "/api/updatetranbycategories")
+
+api.add_resource(InsertAllProductToTrans, "/api/insertallproducttotrans")
+api.add_resource(UpdateTranByCategories, "/api/updatetranbycategories")
+
 # api.add_resource(TransWithBatchWherePriceAndWeightIsEmpty,
 #                  "/api/transwithbatchwherepriceandweightisempty/<batchid>")
 # api.add_resource(TransWithBatchCategory,
@@ -165,8 +167,8 @@ api.add_resource(HistoryOfTrans, "/historyoftrans")
 
 # api.add_resource(Batch, "/api/batch/<batchid>")
 # api.add_resource(BatchesList, "/api/batcheslist")
-# api.add_resource(CreateBatch, "/api/createbatch")
-
+api.add_resource(CreateBatch, "/api/createbatch")
+api.add_resource(CloseBatch, "/api/closebatch")
 
 # api.add_resource(User, "/api/user/<userid>")
 # api.add_resource(UsersList, "/api/userslist")

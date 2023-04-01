@@ -30,28 +30,19 @@
             <tbody>
               {% for prod in productlist %}
               <tr>
-                <th scope="row">{{loop.index }}</th>
+                <td>{{loop.index }} <input type="hidden" name="prodid{{prod.prodid}}" value="{{prod.prodid}}" /> </td>
                 <td>{{prod.namekh}}</td>
                 <td>
-                  <input
-                    type="text"
-                    class="form-control"
-                    name="weight{{prod.prodid}}"
-                  />
+                  <input type="text" class="form-control" name="weight{{prod.prodid}}"
+                    value="{{trans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,prod.prodid).weight}}" />
                 </td>
                 <td>
-                  <input
-                    type="text"
-                    class="form-control"
-                    name="price{{prod.prodid}}"
-                  />
+                  <input type="text" class="form-control" name="price{{prod.prodid}}"
+                    value="{{trans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,prod.prodid).price}}" />
                 </td>
                 <td>
-                  <input
-                    type="text"
-                    class="form-control"
-                    name="note{{prod.prodid}}"
-                  />
+                  <input type="text" class="form-control" name="note{{prod.prodid}}"
+                    value="{{trans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,prod.prodid).submitternote}}" />
                 </td>
               </tr>
               {% endfor %}
@@ -60,10 +51,13 @@
         </div>
         <div>
           <div style="text-align: Center">
-            <button type="button" class="btn btn-primary" id="submit">
+            <button type="button" class="btn btn-primary" id="save" {{disabled}}>
+              Save
+            </button>
+            <button type="button" class="btn btn-success" id="submit" {{disabled}}>
               Submit
             </button>
-            <button type="button" class="btn btn-primary" id="clear">
+            <button type="button" class="btn btn-danger" id="clear" {{disabled}}>
               Clear
             </button>
           </div>
@@ -76,18 +70,151 @@
 <script>
   $(document).ready(function () {
     $("#submit").click(function () {
-      jsonObj = [];
-      $("input").each(function(){
-        item = {}
-        item ["price"] = $(this).filter("[name^='price']").val();
-        // item ["email"] = email;
+      result = [];
 
-        jsonObj.push(item);
+      prodid = []
+      $("input[name^='prodid']").each(function () {
+        prodid.push($(this).val());
       });
-      console.log(jsonObj)
+
+      weight = []
+      weight_condition = true;
+      $("input[name^='weight']").each(function () {
+        if ($(this).val() == '') {
+          alert("Weight value cannot empty!");
+          weight_condition = false;
+          return false;
+        }
+        weight.push($(this).val());
+      });
+
+      if (weight_condition == false) {
+        return 0;
+      }
+
+      price = []
+      price_condition = true;
+      $("input[name^='price']").each(function () {
+        if ($(this).val() == '') {
+          alert("Price value cannot empty!");
+          price_condition = false;
+          return false;
+        }
+        price.push($(this).val());
+      });
+      if (price_condition == false) {
+        return 0;
+      }
+
+
+      note = []
+      $("input[name^='note']").each(function () {
+        note.push($(this).val());
+      });
+
+      for (i = 0; i < price.length; i++) {
+        item = {};
+        item['prodid'] = prodid[i];
+        item['weight'] = weight[i];
+        item['price'] = price[i];
+        item['note'] = note[i];
+        result.push(item);
+
+      }
+
+      userid = $("#userid").val();
+
+      $.ajax({
+        type: "POST",
+        url: "/api/updatetranbycategories",
+        data: JSON.stringify({ data: result, userid: userid,userrequest: 'submit' }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+          alert(data.msg);
+          location.reload();
+        },
+        error: function (errMsg) {
+          console.log(errMsg);
+        }
+      });
     });
+
+
     $("#clear").click(function () {
       alert("I am clear");
     });
+
+    $("#save").click(function () {
+      result = [];
+
+      prodid = []
+      $("input[name^='prodid']").each(function () {
+        prodid.push($(this).val());
+      });
+
+      weight = []
+      weight_condition = true;
+      $("input[name^='weight']").each(function () {
+        if ($(this).val() == '') {
+          alert("Weight value cannot empty!");
+          weight_condition = false;
+          return false;
+        }
+        weight.push($(this).val());
+      });
+
+      if (weight_condition == false) {
+        return 0;
+      }
+
+      price = []
+      price_condition = true;
+      $("input[name^='price']").each(function () {
+        if ($(this).val() == '') {
+          alert("Price value cannot empty!");
+          price_condition = false;
+          return false;
+        }
+        price.push($(this).val());
+      });
+      if (price_condition == false) {
+        return 0;
+      }
+
+
+      note = []
+      $("input[name^='note']").each(function () {
+        note.push($(this).val());
+      });
+
+      for (i = 0; i < price.length; i++) {
+        item = {};
+        item['prodid'] = prodid[i];
+        item['weight'] = weight[i];
+        item['price'] = price[i];
+        item['note'] = note[i];
+        result.push(item);
+
+      }
+
+      userid = $("#userid").val();
+
+      $.ajax({
+        type: "POST",
+        url: "/api/updatetranbycategories",
+        data: JSON.stringify({ data: result, userid: userid,userrequest: 'save' }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+          alert(data.msg);
+          location.reload();
+        },
+        error: function (errMsg) {
+          console.log(errMsg);
+        }
+      });
+    });
+
   });
 </script>

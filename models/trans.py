@@ -1,5 +1,8 @@
 from config.db import db
 from sqlalchemy import or_
+from models.products import tbproducts
+from models.categories import tbcategories
+
 
 class tbtrans(db.Model):
 
@@ -30,7 +33,7 @@ class tbtrans(db.Model):
     batchid = db.Column(db.Integer, db.ForeignKey('tbbatches.batchid'))
     # tbbatches = db.relationship("tbbatches")
 
-    def __init__(self, tid=None, branchcode=None, productid=None, weight=None, price=None, submitter=None, submitdate=None, submitternote=None, authorizer=None, authorizedate=None, authorizernote=None, status=None, valuedate=None, trandate=None, countsubmitted=None, batchid=None, tbproducts = None, tbstatus = None, tbbranches = None, tbbatches = None):
+    def __init__(self, tid=None, branchcode=None, productid=None, weight=None, price=None, submitter=None, submitdate=None, submitternote=None, authorizer=None, authorizedate=None, authorizernote=None, status=None, valuedate=None, trandate=None, countsubmitted=None, batchid=None, tbproducts=None, tbstatus=None, tbbranches=None, tbbatches=None):
         self.tid = tid
         self.branchcode = branchcode
         self.productid = productid
@@ -57,6 +60,13 @@ class tbtrans(db.Model):
         return cls.query.filter_by(tid=tid).first()
 
     @classmethod
+    def find_by_submitterbatchidprodid(cls, submitter, batchid, productid) -> "tbtrans":
+        filters = (db.Column("submitter") == submitter) & (
+            db.Column("batchid") == batchid) & (db.Column("productid") == productid)
+        return cls.query.filter(filters).first()
+
+    @classmethod
     def find_by_batchid(cls, batchid) -> "tbtrans":
-        filters = ((db.Column("price") == None) | (db.Column("weight") == None)) & (db.Column("batchid") == batchid)
+        filters = (db.Column("status") == 1)  & (
+            db.Column("batchid") == batchid)
         return cls.query.filter(filters).all()

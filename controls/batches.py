@@ -6,22 +6,25 @@ from flask_restful import Resource
 from config.db import app, request, json, db
 from models.batches import tbbatches
 from schema.batchesschema import BatchSchema
+
+from flask import session
 from sqlalchemy import func
 from datetime import datetime
 from pprint import pprint
 jwt = JWTManager(app)
 
+
 class Batch(Resource):
     @classmethod
     # @jwt_required()
-    def get(cls,batchid=None):
-        try:  
+    def get(cls, batchid=None):
+        try:
             data = tbbatches.find_by_batchid(batchid)
             schema = BatchSchema(many=False)
             _data = schema.dump(data)
-            return {"batch":_data}
+            return {"batch": _data}
         except Exception as err:
-            return {"msg":err} 
+            return {"msg": err}
 
 
 class BatchesList(Resource):
@@ -32,9 +35,28 @@ class BatchesList(Resource):
             data = tbbatches.query.all()
             schema = BatchSchema(many=True)
             _data = schema.dump(data)
-            return {"batches":_data}
+            return {"batches": _data}
         except Exception as err:
-            return {"msg":err} 
+            return {"msg": err}
+
+
+class CloseBatch(Resource):
+    @classmethod
+    # @jwt_required()
+    def post(cls):
+        try:
+            data = json.loads(request.data)
+            if data['data'] == "closebatch":
+                batch = tbbatches.find_by_createbyopen(session.get('userid'))
+                batch.statusid = 8
+
+                db.session.commit()
+                result = "close batch"
+
+                return {"msg": result}
+            return {"msg": "cannot create batch"}
+        except Exception as err:
+            return {"msg": err}
 
 
 class CreateBatch(Resource):
@@ -43,27 +65,30 @@ class CreateBatch(Resource):
     def post(cls):
         try:
             data = json.loads(request.data)
-            maxtid = db.session.query(func.max(tbbatches.batchid)).scalar()
-            if maxtid is None:
-                maxtid = 1
-            else:
-                maxtid = maxtid + 1
-            
-            now = datetime.now()
-            currentdatetime = now.strftime("%y-%m-%dT%H:%M:%S")
-            
-            batchobject = tbbatches()
-            batchobject.batchid = maxtid
-            batchobject.batch = data['data']['batch']
-            batchobject.detail = data['data']['detail']
-            batchobject.createdate = currentdatetime
-            batchobject.createby = data['data']['createby']
-            
-            db.session.add(batchobject)
-            db.session.commit()
-            result = {"batchid:":str(maxtid)}
-            
-            return {"msg": result}
-        except Exception as err:
-            return {"msg":err} 
+            if data['data'] == "createbatch":
+                maxtid = db.session.query(func.max(tbbatches.batchid)).scalar()
 
+                if maxtid is None:
+                    maxtid = 1
+                else:
+                    maxtid = maxtid + 1
+
+                now = datetime.now()
+                currentdatetime = now.strftime("%y-%m-%dT%H:%M:%S")
+
+                batchobject = tbbatches()
+                batchobject.batchid = maxtid
+                batchobject.batch = ""  # data['data']['batch']
+                batchobject.detail = ""  # data['data']['detail']
+                batchobject.createdate = currentdatetime
+                batchobject.createby = session.get('userid')
+                batchobject.statusid = 9
+
+                db.session.add(batchobject)
+                db.session.commit()
+                result = {"batchid:": str(maxtid)}
+
+                return {"msg": result}
+            return {"msg": "cannot create batch"}
+        except Exception as err:
+            return {"msg": err}

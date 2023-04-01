@@ -17,15 +17,9 @@
         <div class="card-body"></div>
         <div>
           <div style="text-align: Center">
-            <a href="#">
-              <button
-                id="download_report"
-                type="button"
-                class="btn btn-primary"
-              >
-                Create Batch Transactions
-              </button>
-            </a>
+            <button id="submit" type="button" class="btn btn-primary" {{batchdisabled}}>
+              Create Batch Transactions
+            </button>
           </div>
           <br />
         </div>
@@ -33,3 +27,56 @@
     </div>
   </div>
 </section>
+<script>
+  $(document).ready(function () {
+
+    $("#submit").click(function () {
+
+      // close batch
+      $.ajax({
+        type: "POST",
+        url: "/api/closebatch",
+        data: JSON.stringify({ data: 'closebatch' }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+          console.log(data.msg);
+        },
+        error: function (errMsg) {
+          console.log(errMsg);
+        }
+      });
+      // create batch
+      $.ajax({
+        type: "POST",
+        url: "/api/createbatch",
+        data: JSON.stringify({ data: 'createbatch' }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+          confirm(data.msg);
+        },
+        error: function (errMsg) {
+          console.log(errMsg);
+        }
+      });
+      // insert all products to trans
+      $.ajax({
+        type: "POST",
+        url: "/api/insertallproducttotrans",
+        data: JSON.stringify({ data: 'inserttranns' }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+          console.log(data.msg);
+        },
+        error: function (errMsg) {
+          console.log(errMsg);
+        }
+      });
+      
+    });
+
+
+  });
+</script>
