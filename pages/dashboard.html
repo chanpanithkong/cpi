@@ -1,5 +1,5 @@
 <div class="pagetitle">
-  <h1>Hello {{role.rolename}}</h1>
+  <h1>Hello {{role.rolename}} role and your user id is {{user.userid}}</h1>
   <nav>
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
@@ -17,7 +17,12 @@
         <div class="card-body"></div>
         <div>
           <div style="text-align: Center">
-            <button id="submit" type="button" class="btn btn-primary" {{batchdisabled}}>
+            <button
+              id="submit"
+              type="button"
+              class="btn btn-primary"
+              {{batchdisabled}}
+            >
               Create Batch Transactions
             </button>
           </div>
@@ -29,54 +34,50 @@
 </section>
 <script>
   $(document).ready(function () {
-
     $("#submit").click(function () {
-
       // close batch
       $.ajax({
         type: "POST",
         url: "/api/closebatch",
-        data: JSON.stringify({ data: 'closebatch' }),
+        data: JSON.stringify({ data: "closebatch" }),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (data) {
           console.log(data.msg);
+          // create batch
+          $.ajax({
+            type: "POST",
+            url: "/api/createbatch",
+            data: JSON.stringify({ data: "createbatch" }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+              console.log(data.msg);
+              // insert all products to trans
+              $.ajax({
+                type: "POST",
+                url: "/api/insertallproducttotrans",
+                data: JSON.stringify({ data: "inserttranns" }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                  console.log(data.msg);
+                  location.reload();
+                },
+                error: function (errMsg) {
+                  console.log(errMsg);
+                },
+              });
+            },
+            error: function (errMsg) {
+              console.log(errMsg);
+            },
+          });
         },
         error: function (errMsg) {
           console.log(errMsg);
-        }
-      });
-      // create batch
-      $.ajax({
-        type: "POST",
-        url: "/api/createbatch",
-        data: JSON.stringify({ data: 'createbatch' }),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (data) {
-          confirm(data.msg);
         },
-        error: function (errMsg) {
-          console.log(errMsg);
-        }
       });
-      // insert all products to trans
-      $.ajax({
-        type: "POST",
-        url: "/api/insertallproducttotrans",
-        data: JSON.stringify({ data: 'inserttranns' }),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (data) {
-          console.log(data.msg);
-        },
-        error: function (errMsg) {
-          console.log(errMsg);
-        }
-      });
-      
     });
-
-
   });
 </script>

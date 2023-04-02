@@ -23,5 +23,5 @@ class tbbatches(db.Model):
     
     @classmethod
     def find_by_createbyopen(cls, createby) -> "tbbatches":
-        filters = (db.Column("createby") == "1") & (db.Column("statusid") == 9)
+        filters = (db.Column("createby") == createby) & (db.Column("statusid") == 9)
         return cls.query.filter(filters).first()

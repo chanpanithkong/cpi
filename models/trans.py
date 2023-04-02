@@ -67,6 +67,6 @@ class tbtrans(db.Model):
 
     @classmethod
     def find_by_batchid(cls, batchid) -> "tbtrans":
-        filters = (db.Column("status") == 1)  & (
+        filters = (db.Column("status") == 7)  & (
             db.Column("batchid") == batchid)
         return cls.query.filter(filters).all()

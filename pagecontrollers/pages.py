@@ -72,14 +72,17 @@ class HomePage(Resource):
         menuchilds = tbrolemenu
 
         role = tbroles.find_by_roleid(session.get('roleid'))
-
         batch = tbbatches.find_by_createbyopen(session.get("userid"))
-        batchtrans = tbtrans.find_by_batchid(batch.batchid)
-        batchdisabled = ""
-        if len(batchtrans) <= 0:
-            batchdisabled = "disabled"
+        
+        user = tbusers.find_by_userid(session.get('userid'))
 
-        return make_response(render_template('index.html', menus=menus, menuchilds=menuchilds, role=role, batchdisabled=batchdisabled, task="dashboard"), 200, headers)
+        batchdisabled = ""
+        if batch.batchid is not None :
+            batchtrans = tbtrans.find_by_batchid(batch.batchid)
+            if len(batchtrans) > 0:
+                batchdisabled = "disabled"
+        
+        return make_response(render_template('index.html', menus=menus, menuchilds=menuchilds, role=role, batchdisabled=batchdisabled,user=user, task="dashboard"), 200, headers)
 
 
 class SubmittedTrans(Resource):
@@ -141,7 +144,7 @@ class BeverageTobacco(Resource):
         trans = tbtrans
 
         disabled = ""
-        filter = (tbtrans.status == 1) & (tbcategories.catid == category) 
+        filter = (tbtrans.status == 1) & (tbcategories.catid == category) & (tbtrans.batchid == batch.batchid)
         submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
             
         if len(submitdata) > 0:
@@ -168,7 +171,17 @@ class Restaurant(Resource):
         category = 9
         productlist = tbproducts.find_by_catid(category)
 
-        return make_response(render_template('index.html', menus=menus, menuchilds=menuchilds,role=role, productlist=productlist, task="restaurant"), 200, headers)
+        batch = tbbatches.find_by_createbyopen(session.get("userid"))
+        trans = tbtrans
+
+        disabled = ""
+        filter = (tbtrans.status == 1) & (tbcategories.catid == category) & (tbtrans.batchid == batch.batchid)
+        submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
+            
+        if len(submitdata) > 0:
+            disabled = "disabled "
+
+        return make_response(render_template('index.html', menus=menus, menuchilds=menuchilds,role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled, task="restaurant"), 200, headers)
 
 
 class ClothShoes(Resource):
@@ -189,7 +202,17 @@ class ClothShoes(Resource):
         category = 10
         productlist = tbproducts.find_by_catid(category)
 
-        return make_response(render_template('index.html', menus=menus, menuchilds=menuchilds,role=role, productlist=productlist, task="clothshoes"), 200, headers)
+        batch = tbbatches.find_by_createbyopen(session.get("userid"))
+        trans = tbtrans
+
+        disabled = ""
+        filter = (tbtrans.status == 1) & (tbcategories.catid == category) & (tbtrans.batchid == batch.batchid)
+        submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
+            
+        if len(submitdata) > 0:
+            disabled = "disabled "
+
+        return make_response(render_template('index.html', menus=menus, menuchilds=menuchilds,role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled, task="clothshoes"), 200, headers)
 
 class Shipping(Resource):
     @classmethod
@@ -209,7 +232,17 @@ class Shipping(Resource):
         category = 11
         productlist = tbproducts.find_by_catid(category)
 
-        return make_response(render_template('index.html', menus=menus, menuchilds=menuchilds,role=role, productlist=productlist, task="shipping"), 200, headers)
+        batch = tbbatches.find_by_createbyopen(session.get("userid"))
+        trans = tbtrans
+
+        disabled = ""
+        filter = (tbtrans.status == 1) & (tbcategories.catid == category) & (tbtrans.batchid == batch.batchid)
+        submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
+            
+        if len(submitdata) > 0:
+            disabled = "disabled "
+
+        return make_response(render_template('index.html', menus=menus, menuchilds=menuchilds,role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled, task="shipping"), 200, headers)
 
 
 class Medicine(Resource):
@@ -230,7 +263,17 @@ class Medicine(Resource):
         category = 12
         productlist = tbproducts.find_by_catid(category)
 
-        return make_response(render_template('index.html', menus=menus, menuchilds=menuchilds,role=role, productlist=productlist, task="medicine"), 200, headers)
+        batch = tbbatches.find_by_createbyopen(session.get("userid"))
+        trans = tbtrans
+
+        disabled = ""
+        filter = (tbtrans.status == 1) & (tbcategories.catid == category) & (tbtrans.batchid == batch.batchid)
+        submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
+            
+        if len(submitdata) > 0:
+            disabled = "disabled "
+
+        return make_response(render_template('index.html', menus=menus, menuchilds=menuchilds,role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled, task="medicine"), 200, headers)
 
 
 class Housing(Resource):
@@ -251,4 +294,14 @@ class Housing(Resource):
         category = 13
         productlist = tbproducts.find_by_catid(category)
 
-        return make_response(render_template('index.html', menus=menus, menuchilds=menuchilds,role=role, productlist=productlist, task="housing"), 200, headers)
+        batch = tbbatches.find_by_createbyopen(session.get("userid"))
+        trans = tbtrans
+
+        disabled = ""
+        filter = (tbtrans.status == 1) & (tbcategories.catid == category) & (tbtrans.batchid == batch.batchid)
+        submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
+            
+        if len(submitdata) > 0:
+            disabled = "disabled "
+
+        return make_response(render_template('index.html', menus=menus, menuchilds=menuchilds,role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled, task="housing"), 200, headers)

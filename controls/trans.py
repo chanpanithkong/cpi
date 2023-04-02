@@ -25,37 +25,33 @@ class InsertAllProductToTrans(Resource):
     def post(cls):
         try:
             data = json.loads(request.data)
-            print(1)
             if data['data'] == "inserttranns" :
-                print(2)
                 productlist = tbproducts.query.all()
-                print(3)
                 for pl in productlist:
-                    print(4)    
                     userid = session.get('userid')
                     batches = tbbatches.find_by_createbyopen(userid)
                     users = tbusers.find_by_userid(userid)
-                    print(5)    
+            
                     maxtid = db.session.query(func.max(tbtrans.tid)).scalar()
                     if maxtid is None:
                         maxtid = 1
                     else:
                         maxtid = maxtid + 1
-                    print(6)    
+            
                     get_trandata = tbtrans()
                     get_trandata.tid = maxtid
 
                     get_trandata.branchcode = users.branchcode
                     get_trandata.productid = pl.prodid
                     
-                    # get_trandata.weight = data['data']['weight']
-                    # get_trandata.price = data['data']['price']
+                    get_trandata.weight = 0 #data['data']['weight']
+                    get_trandata.price = 0 #data['data']['price']
                     get_trandata.submitter = userid
                     
-                    # get_trandata.submitternote = data['data']['submitternote']
+                    get_trandata.submitternote = "" #data['data']['submitternote']
                     # get_trandata.authorizer
                     # get_trandata.authorizedate
-                    # get_trandata.authorizernote
+                    get_trandata.authorizernote = ""
                     get_trandata.status = 7
                     
                     now = datetime.now()
@@ -66,7 +62,7 @@ class InsertAllProductToTrans(Resource):
                     get_trandata.trandate = currentdatetime
                     get_trandata.countsubmitted = 0
                     get_trandata.batchid = batches.batchid
-                    print(7)    
+                
                     db.session.add(get_trandata)
                     db.session.commit()
                 result = "insert all products with batch : " + str(batches.batchid)
