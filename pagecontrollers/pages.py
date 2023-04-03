@@ -17,6 +17,7 @@ from models.categories import tbcategories
 from schema.usersschema import UserSchema
 
 import datetime
+from pprint import pprint
 
 
 class LoginPage(Resource):
@@ -83,25 +84,6 @@ class HomePage(Resource):
                 batchdisabled = "disabled"
         
         return make_response(render_template('index.html', menus=menus, menuchilds=menuchilds, role=role, batchdisabled=batchdisabled,user=user, task="dashboard"), 200, headers)
-
-
-class SubmittedTrans(Resource):
-    @classmethod
-    def get(cls):
-
-        if not session.get("userid"):
-            return redirect("/login")
-
-        headers = {'Content-Type': 'text/html'}
-        filter = (tbrolemenu.roleid == session.get('roleid')) & (tbmenus.parentid == 0)
-        menus = db.session.query(tbrolemenu, tbmenus).filter(
-            tbrolemenu.menuid == tbmenus.menuid).filter(filter).order_by(tbrolemenu.menuid).all()
-
-        menuchilds = tbrolemenu
-
-        role = tbroles.find_by_roleid(session.get('roleid'))
-
-        return make_response(render_template('index.html', menus=menus, menuchilds=menuchilds, role=role, task="submittedtrans"), 200, headers)
 
 
 class HistoryOfTrans(Resource):
@@ -305,3 +287,77 @@ class Housing(Resource):
             disabled = "disabled "
 
         return make_response(render_template('index.html', menus=menus, menuchilds=menuchilds,role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled, task="housing"), 200, headers)
+
+
+class SubmittedTrans(Resource):
+    @classmethod
+    def get(cls):
+
+        if not session.get("userid"):
+            return redirect("/login")
+
+        headers = {'Content-Type': 'text/html'}
+        filter = (tbrolemenu.roleid == session.get('roleid')) & (tbmenus.parentid == 0)
+        menus = db.session.query(tbrolemenu, tbmenus).filter(
+            tbrolemenu.menuid == tbmenus.menuid).filter(filter).order_by(tbrolemenu.menuid).all()
+
+        menuchilds = tbrolemenu
+
+        role = tbroles.find_by_roleid(session.get('roleid'))
+
+        catlist = tbcategories.query.filter(tbcategories.catid != 1).all()
+        
+        products = tbproducts
+        
+        batch = tbbatches.find_by_createbyopen(session.get("userid"))
+        trans = tbtrans
+
+        # disabled = ""
+        # filter = (tbtrans.status == 1) & (tbcategories.catid == category) & (tbtrans.batchid == batch.batchid)
+        # submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
+            
+        # if len(submitdata) > 0:
+        #     disabled = "disabled "
+
+        return make_response(render_template('index.html', menus=menus, menuchilds=menuchilds, role=role, catlist=catlist, products=products, batch=batch, trans=trans, task="submittedtrans"), 200, headers)
+
+
+class AuthorizedTrans(Resource):
+    @classmethod
+    def get(cls):
+
+        if not session.get("userid"):
+            return redirect("/login")
+
+        headers = {'Content-Type': 'text/html'}
+        filter = (tbrolemenu.roleid == session.get('roleid')) & (tbmenus.parentid == 0)
+        menus = db.session.query(tbrolemenu, tbmenus).filter(
+            tbrolemenu.menuid == tbmenus.menuid).filter(filter).order_by(tbrolemenu.menuid).all()
+
+        menuchilds = tbrolemenu
+
+        role = tbroles.find_by_roleid(session.get('roleid'))
+        
+
+        return make_response(render_template('index.html', menus=menus, menuchilds=menuchilds, role=role, task="authorizedtrans"), 200, headers)
+    
+class CheckedTrans(Resource):
+    @classmethod
+    def get(cls):
+
+        if not session.get("userid"):
+            return redirect("/login")
+
+        headers = {'Content-Type': 'text/html'}
+        filter = (tbrolemenu.roleid == session.get('roleid')) & (tbmenus.parentid == 0)
+        menus = db.session.query(tbrolemenu, tbmenus).filter(
+            tbrolemenu.menuid == tbmenus.menuid).filter(filter).order_by(tbrolemenu.menuid).all()
+
+        menuchilds = tbrolemenu
+
+        role = tbroles.find_by_roleid(session.get('roleid'))
+
+        return make_response(render_template('index.html', menus=menus, menuchilds=menuchilds, role=role, task="checkedtrans"), 200, headers)
+
+
+

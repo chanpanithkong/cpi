@@ -15,7 +15,7 @@ class UserProfile(Resource):
     def get(cls):
         headers = {'Content-Type': 'text/html'}
 
-        filter = (tbrolemenu.roleid == 3) & (tbmenus.parentid == 0)
+        filter = (tbrolemenu.roleid == session.get('roleid')) & (tbmenus.parentid == 0)
         menus = db.session.query(tbrolemenu, tbmenus).filter(
             tbrolemenu.menuid == tbmenus.menuid).filter(filter).order_by(tbrolemenu.menuid).all()
         menuchilds = tbrolemenu
@@ -30,7 +30,7 @@ class ChangePassword(Resource):
     def get(cls):
         headers = {'Content-Type': 'text/html'}
 
-        filter = (tbrolemenu.roleid == 3) & (tbmenus.parentid == 0)
+        filter = (tbrolemenu.roleid == session.get('roleid')) & (tbmenus.parentid == 0)
         menus = db.session.query(tbrolemenu, tbmenus).filter(
             tbrolemenu.menuid == tbmenus.menuid).filter(filter).order_by(tbrolemenu.menuid).all()
         menuchilds = tbrolemenu

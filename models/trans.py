@@ -70,3 +70,8 @@ class tbtrans(db.Model):
         filters = (db.Column("status") == 7)  & (
             db.Column("batchid") == batchid)
         return cls.query.filter(filters).all()
+    
+    @classmethod
+    def find_by_catbatchid(cls,catid, batchid) -> "tbtrans":
+        filters = (tbtrans.status == 1)  & (tbtrans.batchid == batchid) & (tbcategories.catid == catid)
+        return db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filters).all()

@@ -17,6 +17,7 @@
         <div class="card-body"></div>
         <div>
           <div style="text-align: Center">
+            {% if role.roleid == 3 %}
             <button
               id="submit"
               type="button"
@@ -25,6 +26,7 @@
             >
               Create Batch Transactions
             </button>
+            {% endif %}
           </div>
           <br />
         </div>
