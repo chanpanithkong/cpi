@@ -77,7 +77,7 @@ class HomePage(Resource):
         user = tbusers.find_by_userid(session.get('userid'))
 
         batchdisabled = ""
-        if batch.batchid is not None :
+        if batch is not None :
             batchtrans = tbtrans.find_by_batchid(batch.batchid)
             if len(batchtrans) > 0:
                 batchdisabled = "disabled"
