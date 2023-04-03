@@ -203,7 +203,7 @@
       $.ajax({
         type: "POST",
         url: "/api/updatetranbycategories",
-        data: JSON.stringify({ data: result, userid: userid,userrequest: 'save' }),
+        data: JSON.stringify({ data: result, userrequest: 'save' }),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (data) {

@@ -4,5 +4,5 @@ class dbconfig:
     url = quote('localhost')
     port =  quote('3306')
     username = quote('root')
-    password =  quote('$Cambodia__089$')
+    password =  quote('root')
     mysqldb = quote('dbcpi')

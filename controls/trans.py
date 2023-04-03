@@ -52,12 +52,15 @@ class InsertAllProductToTrans(Resource):
                     # get_trandata.authorizer
                     # get_trandata.authorizedate
                     get_trandata.authorizernote = ""
+                    get_trandata.checkernote = ""
                     get_trandata.status = 7
                     
                     now = datetime.now()
                     currentdatetime = now.strftime("%y-%m-%dT%H:%M:%S")
 
                     get_trandata.submitdate = currentdatetime
+                    get_trandata.authorizedate = currentdatetime
+                    get_trandata.checkerdate = currentdatetime
                     get_trandata.valuedate = currentdatetime
                     get_trandata.trandate = currentdatetime
                     get_trandata.countsubmitted = 0
@@ -153,10 +156,15 @@ class UpdateTranByCategories(Resource):
     def post(cls):
         try:
             data = json.loads(request.data)
+            branchcode = session.get("branchcode")
+
+            pprint(data)
             if len(data['data']) > 0:
                 for dt in data['data']:
-                    batch = tbbatches.find_by_branchbatchopen(data['branchcode'])
-                    tran_data = tbtrans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,dt['prodid'])
+                    batch = tbbatches.find_by_branchbatchopen(branchcode)
+                    print(1)
+                    tran_data = tbtrans.find_by_prodbatchidnotsubmit(dt['prodid'], batch.batchid)[0]
+                    pprint(tran_data)
                     if (tran_data is not None):
                         # tran_data = tbtrans().update()
                         tran_data.weight = dt['weight']
@@ -188,6 +196,38 @@ class UpdateTranByCategories(Resource):
         except Exception as err:
             return {"msg": err}        
 
+class AuthorizerUpdateTransaction(Resource):
+    @classmethod
+    # @jwt_required()
+    def post(cls):
+        try:
+            data = json.loads(request.data)
+            userid = session.get("userid")
+            
+            batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
+                
+            for dt in data['data']:
+                
+                tran_data = tbtrans.find_by_prodbatchid(dt['prodid'],batch.batchid)[0]
+                if (tran_data is not None):
+                    tran_data.authorizer = userid
+                    now = datetime.now()
+                    currentdatetime = now.strftime("%y-%m-%dT%H:%M:%S")
+                        
+                    tran_data.authorizedate = currentdatetime
+                    tran_data.authorizernote = dt['authorizernote']
+                    if data['userrequest'] == 'reject':
+                        tran_data.status = 10
+                    elif(data['userrequest'] == 'authorize'):
+                        tran_data.status = 3
+
+                    db.session.commit()
+
+            return {"msg": "reject"}
+            
+        except Exception as err:
+            return {"msg": err}
+
 class AuthorizerUpdateTran(Resource):
     @classmethod
     # @jwt_required()
@@ -209,10 +249,6 @@ class AuthorizerUpdateTran(Resource):
                 result = "autherize tid : " + str(tran_data.tid)
                 return {"msg": result}
             return {"msg": "there is no tid : " + data['data']['tid']}
-
-            
-
-            
         except Exception as err:
             return {"msg": err}
 

@@ -1,5 +1,4 @@
 <div class="pagetitle">
-    <h1>Hello {{role.rolename}}</h1>
     <nav>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
@@ -44,17 +43,19 @@
                                             <th scope="col">Weight</th>
                                             <th scope="col">Price</th>
                                             <th scope="col">Details</th>
+                                            <th scope="col">Authorizer Noted</th>
                                           </tr>
                                         </thead>
                                         <tbody>
 
                                             {% for prod in products.find_by_catid(cl.catid) %}
-                                            <tr>
+                                            <tr data-toggle="tooltip" title="{{trans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,prod.prodid).authorizernote}}">
                                               <td scope="row">{{loop.index}}</td>
                                               <td>{{prod.namekh}}</td>
                                               <td>{{trans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,prod.prodid).weight}}</td>
                                               <td>{{trans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,prod.prodid).price}}</td>
                                               <td>{{trans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,prod.prodid).submitternote}}</td>
+                                              <td>{{trans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,prod.prodid).authorizernote}}</td>
                                             </tr>
                                             {% endfor %}
   
@@ -82,6 +83,7 @@
 
     $(document).ready(function () {
         $('.collapse1').collapse();
+        $('[data-toggle="tooltip"]').tooltip();
     });
 
 

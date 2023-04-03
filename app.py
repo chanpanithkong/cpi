@@ -15,7 +15,7 @@ from controls.products import Product, ProductsList
 from controls.rolemenu import RoleMenu, RoleMenuList, RoleMenuParents, RoleMenuChilds
 from controls.roles import Role, RoleList
 from controls.status import Status, StatusList
-from controls.trans import Tran, TransList, InputterInsertTran, AuthorizerUpdateTran, InputterUpdateTran, InsertAllProductToTrans, UpdateTranByCategories, TransWithBatchWherePriceAndWeightIsEmpty, TransWithBatchCategoryWherePriceAndWeightIsEmpty, TransWithBatchCategory
+from controls.trans import Tran, TransList, InputterInsertTran, AuthorizerUpdateTran, InputterUpdateTran,AuthorizerUpdateTransaction, InsertAllProductToTrans, UpdateTranByCategories, TransWithBatchWherePriceAndWeightIsEmpty, TransWithBatchCategoryWherePriceAndWeightIsEmpty, TransWithBatchCategory
 from controls.batches import Batch, BatchesList, CreateBatch, CloseBatch
 from controls.users import User, UsersList, UserLogin
 from pagecontrollers.pages import Logout, UserLoginPage, LoginPage, HomePage, SubmittedTrans, AuthorizedTrans, CheckedTrans, HistoryOfTrans, BeverageTobacco, Restaurant, ClothShoes, Shipping, Medicine, Housing 
@@ -159,6 +159,7 @@ api.add_resource(HistoryOfTrans, "/historyoftrans")
 
 api.add_resource(InsertAllProductToTrans, "/api/insertallproducttotrans")
 api.add_resource(UpdateTranByCategories, "/api/updatetranbycategories")
+api.add_resource(AuthorizerUpdateTransaction, "/api/authorizetransactions")
 
 # api.add_resource(TransWithBatchWherePriceAndWeightIsEmpty,
 #                  "/api/transwithbatchwherepriceandweightisempty/<batchid>")

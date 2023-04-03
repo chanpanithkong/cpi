@@ -22,10 +22,17 @@
                         
                         {% for cl in catlist %}
                         
-                           {% set textcolor = "color: red;" %}
-                           {% if trans.find_by_catbatchid(cl.catid,batch.batchid)|length > 0 %}
-                           {% set textcolor = "color: green;" %}
-                           {% endif %}
+                        {% set textcolor = "color: red;" %}
+                        {% if trans.find_by_catbatchid(cl.catid,batch.batchid)|length > 0 %}
+                        {% set textcolor = "color: green;" %}
+                        {% endif %}
+
+                        {% set disabled = "" %}
+                        {% if trans.find_by_catbatchidrejectauthorize(cl.catid,batch.batchid)|length > 0 %}
+                        {% set disabled = "disabled" %}
+                        {% endif %}
+
+                        
                         <div class="card">
                             <div class="card-header" id="heading{{loop.index}}" style="text-align: left; cursor: pointer; {{textcolor}} font-weight:bold;">
                                 <div class="collapsed" data-toggle="collapse" data-target="#collapse{{loop.index}}" aria-expanded="false" aria-controls="collapse{{loop.index}}">
@@ -44,21 +51,47 @@
                                             <th scope="col">Weight</th>
                                             <th scope="col">Price</th>
                                             <th scope="col">Details</th>
+                                            <th scope="col">Authorizer Note</th>
+                                            <th scope="col">Checker Note</th>
                                           </tr>
                                         </thead>
                                         <tbody>
-
+                                            
                                             {% for prod in products.find_by_catid(cl.catid) %}
-                                            <tr>
+                                            <tr  data-toggle="tooltip" title="{{trans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,prod.prodid).checkernote}}">
                                               <td scope="row">{{loop.index}}</td>
-                                              <td>{{prod.namekh}}</td>
+                                              <td>{{prod.namekh}}<input type="hidden" name="prodid{{prod.prodid}}" value="{{prod.prodid}}"/> </td>
                                               <td>{{trans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,prod.prodid).weight}}</td>
                                               <td>{{trans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,prod.prodid).price}}</td>
-                                              <td><input type="text" class="form-control" name="price{{prod.prodid}}"
-                                                value="{{trans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,prod.prodid).submitternote}}" /></td>
+                                              <td>{{trans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,prod.prodid).submitternote}}</td>
+                                              <td>
+                                                {% if textcolor == "color: green;" %}
+                                                <input type="text" class="form-control" name="authorizernote{{prod.prodid}}"
+                                                value="{{trans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,prod.prodid).authorizernote}}" />
+                                                {% else %}
+                                                {{trans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,prod.prodid).authorizernote}}
+                                                {% endif %}
+                                            </td>
+                                            <td>{{trans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,prod.prodid).checkernote}}</th>
                                             </tr>
                                             {% endfor %}
-  
+                                            {% if textcolor == "color: green;" %}
+                                            <tr>
+                                                <td colspan="6">
+                                                    <div style="text-align: Center">
+                                                      <button type="button" class="btn btn-danger aureject" {{disabled}}>
+                                                        Rejected
+                                                      </button>&nbsp;&nbsp;&nbsp;
+                                                      <button type="button" class="btn btn-success auauthorizer" {{disabled}}>
+                                                        Authorized
+                                                      </button>&nbsp;&nbsp;&nbsp;
+                                                      <button type="button" class="btn btn-primary auclear" {{disabled}}>
+                                                        Clear
+                                                      </button>
+                                                    </div>
+                                                   </td>
+                                            </tr>
+                                            {% endif %}
                                         </tbody>
                                       </table>
 
@@ -78,11 +111,105 @@
     .card {
         margin-bottom: 10px;
     }
+
+    
+
 </style>
 <script>
 
     $(document).ready(function () {
         $('.collapse1').collapse();
+        
+        $('[data-toggle="tooltip"]').tooltip();
+
+        $(".aureject").click(function(){
+            
+            result = [];
+
+            prodid = []
+
+            $(this).parent().parent().parent().parent().parent().find("input[name^='prodid']").each(function () {
+
+                prodid.push($(this).val());
+            });
+            
+            authorizernote = []
+             $(this).parent().parent().parent().parent().parent().find("input[name^='authorizernote']").each(function () {
+
+                authorizernote.push($(this).val());
+            });
+
+            for (i = 0; i < prodid.length; i++) {
+                item = {};
+                item['prodid'] = prodid[i];
+                item['authorizernote'] = authorizernote[i];
+                result.push(item);
+
+            }
+
+
+            $.ajax({
+                type: "POST",
+                url: "/api/authorizetransactions",
+                data: JSON.stringify({ data: result, userrequest: 'reject' }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    alert(data.msg);
+                    location.reload();
+                },
+                error: function (errMsg) {
+                console.log(errMsg);
+                }
+            });
+
+        });
+
+
+
+        $(".auauthorizer").click(function(){
+            
+            result = [];
+
+            prodid = []
+
+            $(this).parent().parent().parent().parent().parent().find("input[name^='prodid']").each(function () {
+
+                prodid.push($(this).val());
+            });
+            
+            authorizernote = []
+             $(this).parent().parent().parent().parent().parent().find("input[name^='authorizernote']").each(function () {
+
+                authorizernote.push($(this).val());
+            });
+
+            for (i = 0; i < prodid.length; i++) {
+                item = {};
+                item['prodid'] = prodid[i];
+                item['authorizernote'] = authorizernote[i];
+                result.push(item);
+
+            }
+
+
+            $.ajax({
+                type: "POST",
+                url: "/api/authorizetransactions",
+                data: JSON.stringify({ data: result, userrequest: 'authorize' }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    alert(data.msg);
+                    location.reload();
+                },
+                error: function (errMsg) {
+                console.log(errMsg);
+                }
+            });
+
+        });
+
     });
 
 
