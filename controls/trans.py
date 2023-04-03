@@ -29,7 +29,7 @@ class InsertAllProductToTrans(Resource):
                 productlist = tbproducts.query.all()
                 for pl in productlist:
                     userid = session.get('userid')
-                    batches = tbbatches.find_by_createbyopen(userid)
+                    batches = tbbatches.find_by_branchbatchopen(session.get('branchcode'))
                     users = tbusers.find_by_userid(userid)
             
                     maxtid = db.session.query(func.max(tbtrans.tid)).scalar()
@@ -155,7 +155,7 @@ class UpdateTranByCategories(Resource):
             data = json.loads(request.data)
             if len(data['data']) > 0:
                 for dt in data['data']:
-                    batch = tbbatches.find_by_createbyopen(data['userid'])
+                    batch = tbbatches.find_by_branchbatchopen(data['branchcode'])
                     tran_data = tbtrans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,dt['prodid'])
                     if (tran_data is not None):
                         # tran_data = tbtrans().update()

@@ -32,7 +32,7 @@ class Rice(Resource):
         category = 2
         productlist = tbproducts.find_by_catid(category)
 
-        batch = tbbatches.find_by_createbyopen(session.get("userid"))
+        batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
         trans = tbtrans
 
         disabled = ""
@@ -62,7 +62,7 @@ class Ingredient(Resource):
         category = 3
         productlist = tbproducts.find_by_catid(category)
 
-        batch = tbbatches.find_by_createbyopen(session.get("userid"))
+        batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
         trans = tbtrans
 
         disabled = ""
@@ -92,7 +92,7 @@ class Meat(Resource):
         category = 4
         productlist = tbproducts.find_by_catid(category)
 
-        batch = tbbatches.find_by_createbyopen(session.get("userid"))
+        batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
         trans = tbtrans
 
         disabled = ""
@@ -122,7 +122,7 @@ class FishSeaFood(Resource):
         category = 5
         productlist = tbproducts.find_by_catid(category)
 
-        batch = tbbatches.find_by_createbyopen(session.get("userid"))
+        batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
         trans = tbtrans
 
         disabled = ""
@@ -152,7 +152,7 @@ class Fruit(Resource):
         category = 6
         productlist = tbproducts.find_by_catid(category)
 
-        batch = tbbatches.find_by_createbyopen(session.get("userid"))
+        batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
         trans = tbtrans
 
         disabled = ""
@@ -182,7 +182,7 @@ class Vegetables(Resource):
         category = 7
         productlist = tbproducts.find_by_catid(category)
 
-        batch = tbbatches.find_by_createbyopen(session.get("userid"))
+        batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
         trans = tbtrans
 
         disabled = ""

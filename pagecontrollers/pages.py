@@ -73,7 +73,7 @@ class HomePage(Resource):
         menuchilds = tbrolemenu
 
         role = tbroles.find_by_roleid(session.get('roleid'))
-        batch = tbbatches.find_by_createbyopen(session.get("userid"))
+        batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
         
         user = tbusers.find_by_userid(session.get('userid'))
 
@@ -122,7 +122,7 @@ class BeverageTobacco(Resource):
         category = 8
         productlist = tbproducts.find_by_catid(category)
 
-        batch = tbbatches.find_by_createbyopen(session.get("userid"))
+        batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
         trans = tbtrans
 
         disabled = ""
@@ -153,7 +153,7 @@ class Restaurant(Resource):
         category = 9
         productlist = tbproducts.find_by_catid(category)
 
-        batch = tbbatches.find_by_createbyopen(session.get("userid"))
+        batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
         trans = tbtrans
 
         disabled = ""
@@ -184,7 +184,7 @@ class ClothShoes(Resource):
         category = 10
         productlist = tbproducts.find_by_catid(category)
 
-        batch = tbbatches.find_by_createbyopen(session.get("userid"))
+        batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
         trans = tbtrans
 
         disabled = ""
@@ -214,7 +214,7 @@ class Shipping(Resource):
         category = 11
         productlist = tbproducts.find_by_catid(category)
 
-        batch = tbbatches.find_by_createbyopen(session.get("userid"))
+        batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
         trans = tbtrans
 
         disabled = ""
@@ -245,7 +245,7 @@ class Medicine(Resource):
         category = 12
         productlist = tbproducts.find_by_catid(category)
 
-        batch = tbbatches.find_by_createbyopen(session.get("userid"))
+        batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
         trans = tbtrans
 
         disabled = ""
@@ -276,7 +276,7 @@ class Housing(Resource):
         category = 13
         productlist = tbproducts.find_by_catid(category)
 
-        batch = tbbatches.find_by_createbyopen(session.get("userid"))
+        batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
         trans = tbtrans
 
         disabled = ""
@@ -309,7 +309,7 @@ class SubmittedTrans(Resource):
         
         products = tbproducts
         
-        batch = tbbatches.find_by_createbyopen(session.get("userid"))
+        batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
         trans = tbtrans
 
         # disabled = ""
@@ -338,8 +338,15 @@ class AuthorizedTrans(Resource):
 
         role = tbroles.find_by_roleid(session.get('roleid'))
         
+        catlist = tbcategories.query.filter(tbcategories.catid != 1).all()
+        
+        products = tbproducts
+        
+        batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
+        pprint(batch)
+        trans = tbtrans
 
-        return make_response(render_template('index.html', menus=menus, menuchilds=menuchilds, role=role, task="authorizedtrans"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, menuchilds=menuchilds, role=role, catlist=catlist, products=products, batch=batch, trans=trans, task="authorizedtrans"), 200, headers)
     
 class CheckedTrans(Resource):
     @classmethod

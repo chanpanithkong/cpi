@@ -1,1 +1,89 @@
-<h1>authorizedtrans</h1>
+<div class="pagetitle">
+    <h1>Hello {{role.rolename}}</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+            <li class="breadcrumb-item active">Authorized Transactions</li>
+        </ol>
+    </nav>
+</div>
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <center>
+                        <h5 class="card-title">Authorized Transactions Management</h5>
+                    </center>
+                    <br />
+
+                    <div id="accordion">
+                        
+                        {% for cl in catlist %}
+                        
+                           {% set textcolor = "color: red;" %}
+                           {% if trans.find_by_catbatchid(cl.catid,batch.batchid)|length > 0 %}
+                           {% set textcolor = "color: green;" %}
+                           {% endif %}
+                        <div class="card">
+                            <div class="card-header" id="heading{{loop.index}}" style="text-align: left; cursor: pointer; {{textcolor}} font-weight:bold;">
+                                <div class="collapsed" data-toggle="collapse" data-target="#collapse{{loop.index}}" aria-expanded="false" aria-controls="collapse{{loop.index}}">
+                                    {{loop.index}}.&nbsp;{{cl.nameen}}
+                                </div>
+                            </div>
+
+                            <div id="collapse{{loop.index}}" class="collapse1 show" aria-labelledby="heading{{loop.index}}" data-parent="#accordion">
+                                <div class="card-body">
+                                    
+                                    <table class="table">
+                                        <thead>
+                                          <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Product Name</th>
+                                            <th scope="col">Weight</th>
+                                            <th scope="col">Price</th>
+                                            <th scope="col">Details</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            {% for prod in products.find_by_catid(cl.catid) %}
+                                            <tr>
+                                              <td scope="row">{{loop.index}}</td>
+                                              <td>{{prod.namekh}}</td>
+                                              <td>{{trans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,prod.prodid).weight}}</td>
+                                              <td>{{trans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,prod.prodid).price}}</td>
+                                              <td><input type="text" class="form-control" name="price{{prod.prodid}}"
+                                                value="{{trans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,prod.prodid).submitternote}}" /></td>
+                                            </tr>
+                                            {% endfor %}
+  
+                                        </tbody>
+                                      </table>
+
+                                </div>
+                            </div>
+                        </div>
+                        
+                        {% endfor %}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<style>
+    .card {
+        margin-bottom: 10px;
+    }
+</style>
+<script>
+
+    $(document).ready(function () {
+        $('.collapse1').collapse();
+    });
+
+
+</script>

@@ -47,7 +47,7 @@ class CloseBatch(Resource):
         try:
             data = json.loads(request.data)
             if data['data'] == "closebatch":
-                batch = tbbatches.find_by_createbyopen(session.get('userid'))
+                batch = tbbatches.find_by_branchbatchopen(session.get('branchcode'))
                 batch.statusid = 8
 
                 db.session.commit()
@@ -82,6 +82,7 @@ class CreateBatch(Resource):
                 batchobject.detail = ""  # data['data']['detail']
                 batchobject.createdate = currentdatetime
                 batchobject.createby = session.get('userid')
+                batchobject.branch = session.get('branchcode')
                 batchobject.statusid = 9
 
                 db.session.add(batchobject)

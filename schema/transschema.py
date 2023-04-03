@@ -19,6 +19,11 @@ class TransSchema(SQLAlchemyAutoSchema):
     authorizer  = auto_field()
     authorizedate = auto_field()
     authorizernote = auto_field()
+
+    checker = auto_field()
+    checkerdate = auto_field()
+    checkernote = auto_field()
+
     status  = auto_field()
     valuedate = auto_field()
     trandate = auto_field()

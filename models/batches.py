@@ -7,14 +7,16 @@ class tbbatches(db.Model):
     detail = db.Column(db.String)
     createdate = db.Column(db.DateTime)
     createby = db.Column(db.String)
+    branch = db.Column(db.String)
     statusid = db.Column(db.Integer)
     
-    def __init__(self, batchid=None, batch=None, detail=None, createdate=None, createby=None, statusid=None):
+    def __init__(self, batchid=None, batch=None, detail=None, createdate=None, createby=None, branch=None, statusid=None):
         self.batchid = batchid
         self.batch = batch
         self.detail = detail
         self.createdate = createdate
         self.createby = createby
+        self.branch = branch
         self.statusid = statusid
         
     @classmethod
@@ -24,4 +26,9 @@ class tbbatches(db.Model):
     @classmethod
     def find_by_createbyopen(cls, createby) -> "tbbatches":
         filters = (db.Column("createby") == createby) & (db.Column("statusid") == 9)
+        return cls.query.filter(filters).first()
+
+    @classmethod
+    def find_by_branchbatchopen(cls, branch) -> "tbbatches":
+        filters = (db.Column("branch") == branch) & (db.Column("statusid") == 9)
         return cls.query.filter(filters).first()

@@ -16,12 +16,18 @@ class tbtrans(db.Model):
 
     weight = db.Column(db.Float)
     price = db.Column(db.Float)
+
     submitter = db.Column(db.String)
     submitdate = db.Column(db.DateTime)
     submitternote = db.Column(db.String)
+
     authorizer = db.Column(db.String)
     authorizedate = db.Column(db.DateTime)
     authorizernote = db.Column(db.String)
+
+    checker = db.Column(db.String)
+    checkerdate = db.Column(db.DateTime)
+    checkernote = db.Column(db.String)
 
     status = db.Column(db.Integer, db.ForeignKey('tbstatus.statusid'))
     # tbstatus = db.relationship("tbstatus")
@@ -33,7 +39,7 @@ class tbtrans(db.Model):
     batchid = db.Column(db.Integer, db.ForeignKey('tbbatches.batchid'))
     # tbbatches = db.relationship("tbbatches")
 
-    def __init__(self, tid=None, branchcode=None, productid=None, weight=None, price=None, submitter=None, submitdate=None, submitternote=None, authorizer=None, authorizedate=None, authorizernote=None, status=None, valuedate=None, trandate=None, countsubmitted=None, batchid=None, tbproducts=None, tbstatus=None, tbbranches=None, tbbatches=None):
+    def __init__(self, tid=None, branchcode=None, productid=None, weight=None, price=None, submitter=None, submitdate=None, submitternote=None, authorizer=None, authorizedate=None, authorizernote=None, checker=None, checkerdate=None, checkernote=None, status=None, valuedate=None, trandate=None, countsubmitted=None, batchid=None):
         self.tid = tid
         self.branchcode = branchcode
         self.productid = productid
@@ -45,14 +51,19 @@ class tbtrans(db.Model):
         self.authorizer = authorizer
         self.authorizedate = authorizedate
         self.authorizernote = authorizernote
+        
+        self.checker = checker
+        self.checkerdate = checkerdate
+        self.checkernote = checkernote
+
         self.status = status
         self.valuedate = valuedate
         self.trandate = trandate
         self.countsubmitted = countsubmitted
         self.batchid = batchid
-        self.tbproducts = tbproducts
-        self.tbstatus = tbstatus
-        self.tbbranches = tbbranches
+        # self.tbproducts = tbproducts
+        # self.tbstatus = tbstatus
+        # self.tbbranches = tbbranches
         # self.tbbatches = tbbatches
 
     @classmethod

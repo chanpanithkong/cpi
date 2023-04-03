@@ -14,4 +14,5 @@ class BatchSchema(SQLAlchemyAutoSchema):
     detail = auto_field()
     createdate = auto_field()
     createby = auto_field()
+    branch = auto_field()
     statusid = auto_field()
