@@ -14,6 +14,8 @@ from models.products import tbproducts
 from models.batches import tbbatches
 from models.trans import tbtrans
 from models.categories import tbcategories
+from models.branches import tbbranches
+
 from schema.usersschema import UserSchema
 
 import datetime
@@ -338,12 +340,17 @@ class AuthorizedTrans(Resource):
 
         role = tbroles.find_by_roleid(session.get('roleid'))
         
-        catlist = tbcategories.query.filter(tbcategories.catid != 1).all()
         
         products = tbproducts
-        
+        print(1)
         batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
-        pprint(batch)
+        print(2)
+        
+        catlist = tbtrans.find_by_authorizecatbatchid(batch.batchid)
+        print(3)
+        
+        pprint(catlist)
+        
         trans = tbtrans
 
         return make_response(render_template('index.html', menus=menus, menuchilds=menuchilds, role=role, catlist=catlist, products=products, batch=batch, trans=trans, task="authorizedtrans"), 200, headers)
@@ -364,7 +371,9 @@ class CheckedTrans(Resource):
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
-        return make_response(render_template('index.html', menus=menus, menuchilds=menuchilds, role=role, task="checkedtrans"), 200, headers)
+        branches = tbbranches.getallbranches()
+
+        return make_response(render_template('index.html', menus=menus, menuchilds=menuchilds, role=role, branches=branches, task="checkedtrans"), 200, headers)
 
 
 

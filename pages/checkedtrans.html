@@ -1,1 +1,29 @@
-<h1>checkedtrans</h1>
+<div class="pagetitle">
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+      <li class="breadcrumb-item active">Checked Transactions</li>
+    </ol>
+  </nav>
+</div>
+
+<div>
+    <table>
+        <tr>
+            {% for br in branches %}
+            <td style="padding-right: 10px;vertical-align: top;">
+                <div class="card bg-light mb-3" style="max-width: 18rem;">
+                <a href="#" ><div class="card-header"​ style="text-align: center;">Branch Code : {{br.branchcode}}</div></a>
+                <div class="card-body">
+                  <h5 class="card-title">{{br.nameen}}</h5>
+                  <p class="card-text">{{br.address}}</p>
+                </div>
+              </div>
+            </td>
+            {% if loop.index % 5 == 0 %}
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </tr>
+    </table>                                                      
+</div>

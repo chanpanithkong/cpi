@@ -20,3 +20,7 @@ class tbbranches(db.Model):
     @classmethod
     def find_by_branchcode(cls, branchcode) -> "tbbranches":
         return cls.query.filter_by(branchcode=branchcode).first()
+
+    @classmethod
+    def getallbranches(cls, ) -> "tbbranches":
+        return cls.query.all()

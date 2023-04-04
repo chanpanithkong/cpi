@@ -1,5 +1,4 @@
 <div class="pagetitle">
-    <h1>Hello {{role.rolename}}</h1>
     <nav>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
@@ -23,8 +22,10 @@
                         {% for cl in catlist %}
                         
                         {% set textcolor = "color: red;" %}
-                        {% if trans.find_by_catbatchid(cl.catid,batch.batchid)|length > 0 %}
+                        {% if trans.find_by_catbatchidsubmit(cl.catid,batch.batchid)|length > 0 %}
                         {% set textcolor = "color: green;" %}
+                        {% elif trans.find_by_catbatchidauthorize(cl.catid,batch.batchid)|length > 0 %}
+                        {% set textcolor = "color: blue;" %}
                         {% endif %}
 
                         {% set disabled = "" %}
@@ -75,7 +76,7 @@
                                             <td>{{trans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,prod.prodid).checkernote}}</th>
                                             </tr>
                                             {% endfor %}
-                                            {% if textcolor == "color: green;" %}
+                                            {% if textcolor == "color: green;" or textcolor == "color: blue;" %}
                                             <tr>
                                                 <td colspan="6">
                                                     <div style="text-align: Center">
