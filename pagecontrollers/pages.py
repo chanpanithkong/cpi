@@ -377,3 +377,35 @@ class CheckedTrans(Resource):
 
 
 
+class CheckedTransDetails(Resource):
+    @classmethod
+    def get(cls, branchcode):
+
+        if not session.get("userid"):
+            return redirect("/login")
+
+        headers = {'Content-Type': 'text/html'}
+        filter = (tbrolemenu.roleid == session.get('roleid')) & (tbmenus.parentid == 0)
+        menus = db.session.query(tbrolemenu, tbmenus).filter(
+            tbrolemenu.menuid == tbmenus.menuid).filter(filter).order_by(tbrolemenu.menuid).all()
+
+        menuchilds = tbrolemenu
+
+        role = tbroles.find_by_roleid(session.get('roleid'))
+        
+        
+        products = tbproducts
+        print(1)
+        batch = tbbatches.find_by_branchbatchopen(branchcode)
+        print(2)
+        catlist = []
+        if batch is  not None :
+            catlist = tbtrans.find_by_checkebatchid(batch.batchid)
+        print(3)
+        
+        pprint(catlist)
+        print("Hello world")
+        
+        trans = tbtrans
+
+        return make_response(render_template('index.html', menus=menus, menuchilds=menuchilds, role=role, catlist=catlist, products=products, batch=batch, trans=trans, task="checkedtransdetail"), 200, headers)

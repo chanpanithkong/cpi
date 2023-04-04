@@ -81,18 +81,29 @@ class tbtrans(db.Model):
         filters = ((tbtrans.status == 1) | (tbtrans.status == 3) | (tbtrans.status == 10) | (tbtrans.status == 11))  & (tbtrans.batchid == batchid)
         return db.session.query( tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filters).all()
     
-
+    @classmethod
+    def find_by_checkebatchid(cls, batchid) -> "tbtrans":
+        filters = ((tbtrans.status == 3) | (tbtrans.status == 11) | (tbtrans.status == 13))  & (tbtrans.batchid == batchid)
+        return db.session.query( tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filters).all()
+    
     @classmethod
     def find_by_batchid(cls, batchid) -> "tbtrans":
         filters = (db.Column("status") == 7)  & (
             db.Column("batchid") == batchid)
         return cls.query.filter(filters).all()
     
+    
     @classmethod
     def find_by_catbatchidsubmit(cls,catid, batchid) -> "tbtrans":
         filters = ((tbtrans.status == 1) | (tbtrans.status == 11))  & (tbtrans.batchid == batchid) & (tbcategories.catid == catid)
         return db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filters).all()
     
+    @classmethod
+    def find_by_catbatchidachecked(cls,catid, batchid) -> "tbtrans":
+        filters = (tbtrans.status == 13)  & (tbtrans.batchid == batchid) & (tbcategories.catid == catid)
+        return db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filters).all()
+    
+
     @classmethod
     def find_by_catbatchidauthorize(cls,catid, batchid) -> "tbtrans":
         filters = (tbtrans.status == 3)  & (tbtrans.batchid == batchid) & (tbcategories.catid == catid)
@@ -118,5 +129,10 @@ class tbtrans(db.Model):
     @classmethod
     def find_by_catbatchidrejectauthorize(cls,catid, batchid) -> "tbtrans":
         filters = ((tbtrans.status == 3) | (tbtrans.status == 10))  & (tbtrans.batchid == batchid) & (tbcategories.catid == catid)
+        return db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filters).all()
+    
+    @classmethod
+    def find_by_catbatchidrejectchecker(cls,catid, batchid) -> "tbtrans":
+        filters = ((tbtrans.status == 11) | (tbtrans.status == 13))  & (tbtrans.batchid == batchid) & (tbcategories.catid == catid)
         return db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filters).all()
     

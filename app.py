@@ -18,7 +18,7 @@ from controls.status import Status, StatusList
 from controls.trans import Tran, TransList, InputterInsertTran, AuthorizerUpdateTran, InputterUpdateTran,AuthorizerUpdateTransaction, InsertAllProductToTrans, UpdateTranByCategories, TransWithBatchWherePriceAndWeightIsEmpty, TransWithBatchCategoryWherePriceAndWeightIsEmpty, TransWithBatchCategory
 from controls.batches import Batch, BatchesList, CreateBatch, CloseBatch
 from controls.users import User, UsersList, UserLogin
-from pagecontrollers.pages import Logout, UserLoginPage, LoginPage, HomePage, SubmittedTrans, AuthorizedTrans, CheckedTrans, HistoryOfTrans, BeverageTobacco, Restaurant, ClothShoes, Shipping, Medicine, Housing 
+from pagecontrollers.pages import Logout, UserLoginPage, LoginPage, HomePage, SubmittedTrans, AuthorizedTrans, CheckedTrans, CheckedTransDetails, HistoryOfTrans, BeverageTobacco, Restaurant, ClothShoes, Shipping, Medicine, Housing 
 from pagecontrollers.usersetting import UserProfile, ChangePassword
 from pagecontrollers.food import Rice, Ingredient, Meat, FishSeaFood, Fruit, Vegetables
 
@@ -103,6 +103,8 @@ api.add_resource(Housing, "/housing")
 api.add_resource(SubmittedTrans, "/submittedtrans")
 api.add_resource(AuthorizedTrans, "/authorizedtrans")
 api.add_resource(CheckedTrans, "/checkedtrans")
+api.add_resource(CheckedTransDetails, "/checkedtransdetail/<branchcode>")
+
 # historyoftrans
 api.add_resource(HistoryOfTrans, "/historyoftrans")
 

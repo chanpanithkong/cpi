@@ -13,7 +13,7 @@
             {% for br in branches %}
             <td style="padding-right: 10px;vertical-align: top;">
                 <div class="card bg-light mb-3" style="max-width: 18rem;">
-                <a href="#" ><div class="card-header"​ style="text-align: center;">Branch Code : {{br.branchcode}}</div></a>
+                <a href="/checkedtransdetail/{{br.branchcode}}" ><div class="card-header"​ style="text-align: center;">Branch Code : {{br.branchcode}}</div></a>
                 <div class="card-body">
                   <h5 class="card-title">{{br.nameen}}</h5>
                   <p class="card-text">{{br.address}}</p>
