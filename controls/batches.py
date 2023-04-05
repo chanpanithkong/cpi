@@ -48,9 +48,11 @@ class CloseBatch(Resource):
             data = json.loads(request.data)
             if data['data'] == "closebatch":
                 batch = tbbatches.find_by_branchbatchopen(session.get('branchcode'))
-                batch.statusid = 8
+                if batch is not None:
+                    batch.statusid = 8
 
-                db.session.commit()
+                    db.session.commit()
+                    result = "no batch"
                 result = "close batch"
 
                 return {"msg": result}
@@ -66,16 +68,17 @@ class CreateBatch(Resource):
         try:
             data = json.loads(request.data)
             if data['data'] == "createbatch":
+                print(1)
                 maxtid = db.session.query(func.max(tbbatches.batchid)).scalar()
-
+                print(1)
                 if maxtid is None:
                     maxtid = 1
                 else:
                     maxtid = maxtid + 1
-
+                print(1)
                 now = datetime.now()
                 currentdatetime = now.strftime("%y-%m-%dT%H:%M:%S")
-
+                print(1)
                 batchobject = tbbatches()
                 batchobject.batchid = maxtid
                 batchobject.batch = ""  # data['data']['batch']
@@ -84,7 +87,7 @@ class CreateBatch(Resource):
                 batchobject.createby = session.get('userid')
                 batchobject.branch = session.get('branchcode')
                 batchobject.statusid = 9
-
+                print(1)
                 db.session.add(batchobject)
                 db.session.commit()
                 result = {"batchid:": str(maxtid)}

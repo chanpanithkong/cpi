@@ -22,27 +22,28 @@ class Rice(Resource):
             return redirect("/login")
 
         headers = {'Content-Type': 'text/html'}
-        filter = (tbrolemenu.roleid == session.get('roleid')) & (tbmenus.parentid == 0)
-        menus = db.session.query(tbrolemenu, tbmenus).filter(
-            tbrolemenu.menuid == tbmenus.menuid).filter(filter).order_by(tbrolemenu.menuid).all()
-
-        menuchilds = tbrolemenu
+        menus = tbrolemenu
         role = tbroles.find_by_roleid(session.get('roleid'))
 
         category = 2
-        productlist = tbproducts.find_by_catid(category)
+        productlist = []
 
         batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
-        trans = tbtrans
 
+        submitdata = []
+        trans = []
         disabled = ""
-        filter = (tbtrans.status == 1) & (tbcategories.catid == category) & (tbtrans.batchid == batch.batchid)
-        submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
-            
-        if len(submitdata) > 0:
-            disabled = "disabled "
+        isbutton = False
+        if batch is not None:
+            trans = tbtrans
+            productlist = tbproducts.find_by_catid(category)
+            filter = (tbtrans.status == 1) & (tbcategories.catid == category) & (tbtrans.batchid == batch.batchid)
+            submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
+            isbutton = True    
+            if len(submitdata) > 0:
+                disabled = "disabled "
 
-        return make_response(render_template('index.html', menus=menus, menuchilds=menuchilds,role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled, submitdata=submitdata, task="rice"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled, submitdata=submitdata,isbutton=isbutton, task="rice"), 200, headers)
 
 
 class Ingredient(Resource):
@@ -52,27 +53,28 @@ class Ingredient(Resource):
             return redirect("/login")
 
         headers = {'Content-Type': 'text/html'}
-        filter = (tbrolemenu.roleid == session.get('roleid')) & (tbmenus.parentid == 0)
-        menus = db.session.query(tbrolemenu, tbmenus).filter(
-            tbrolemenu.menuid == tbmenus.menuid).filter(filter).order_by(tbrolemenu.menuid).all()
-
-        menuchilds = tbrolemenu
+        menus = tbrolemenu
         role = tbroles.find_by_roleid(session.get('roleid'))
 
         category = 3
-        productlist = tbproducts.find_by_catid(category)
+        productlist = []
 
         batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
-        trans = tbtrans
 
+        submitdata = []
+        trans = []
         disabled = ""
-        filter = (tbtrans.status == 1) & (tbcategories.catid == category) & (tbtrans.batchid == batch.batchid)
-        submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
-            
-        if len(submitdata) > 0:
-            disabled = "disabled "
+        isbutton = False
+        if batch is not None:
+            trans = tbtrans
+            productlist = tbproducts.find_by_catid(category)
+            filter = (tbtrans.status == 1) & (tbcategories.catid == category) & (tbtrans.batchid == batch.batchid)
+            submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
+            isbutton = True    
+            if len(submitdata) > 0:
+                disabled = "disabled "
 
-        return make_response(render_template('index.html', menus=menus, menuchilds=menuchilds,role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled, task="ingredient"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled,isbutton=isbutton, task="ingredient"), 200, headers)
 
 
 class Meat(Resource):
@@ -82,27 +84,28 @@ class Meat(Resource):
             return redirect("/login")
 
         headers = {'Content-Type': 'text/html'}
-        filter = (tbrolemenu.roleid == session.get('roleid')) & (tbmenus.parentid == 0)
-        menus = db.session.query(tbrolemenu, tbmenus).filter(
-            tbrolemenu.menuid == tbmenus.menuid).filter(filter).order_by(tbrolemenu.menuid).all()
-
-        menuchilds = tbrolemenu
+        menus = tbrolemenu
         role = tbroles.find_by_roleid(session.get('roleid'))
 
         category = 4
-        productlist = tbproducts.find_by_catid(category)
+        productlist = []
 
         batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
-        trans = tbtrans
 
+        submitdata = []
+        trans = []
         disabled = ""
-        filter = (tbtrans.status == 1) & (tbcategories.catid == category) & (tbtrans.batchid == batch.batchid)
-        submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
-            
-        if len(submitdata) > 0:
-            disabled = "disabled "
+        isbutton = False
+        if batch is not None:
+            trans = tbtrans
+            productlist = tbproducts.find_by_catid(category)
+            filter = (tbtrans.status == 1) & (tbcategories.catid == category) & (tbtrans.batchid == batch.batchid)
+            submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
+            isbutton = True    
+            if len(submitdata) > 0:
+                disabled = "disabled "
 
-        return make_response(render_template('index.html', menus=menus, menuchilds=menuchilds,role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled, task="meat"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled, task="meat"), 200, headers)
 
 
 class FishSeaFood(Resource):
@@ -112,27 +115,28 @@ class FishSeaFood(Resource):
             return redirect("/login")
 
         headers = {'Content-Type': 'text/html'}
-        filter = (tbrolemenu.roleid == session.get('roleid')) & (tbmenus.parentid == 0)
-        menus = db.session.query(tbrolemenu, tbmenus).filter(
-            tbrolemenu.menuid == tbmenus.menuid).filter(filter).order_by(tbrolemenu.menuid).all()
-
-        menuchilds = tbrolemenu
+        menus = tbrolemenu
         role = tbroles.find_by_roleid(session.get('roleid'))
 
         category = 5
-        productlist = tbproducts.find_by_catid(category)
+        productlist = []
 
         batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
-        trans = tbtrans
 
+        submitdata = []
+        trans = []
         disabled = ""
-        filter = (tbtrans.status == 1) & (tbcategories.catid == category) & (tbtrans.batchid == batch.batchid)
-        submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
-            
-        if len(submitdata) > 0:
-            disabled = "disabled "
+        isbutton = False
+        if batch is not None:
+            trans = tbtrans
+            productlist = tbproducts.find_by_catid(category)
+            filter = (tbtrans.status == 1) & (tbcategories.catid == category) & (tbtrans.batchid == batch.batchid)
+            submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
+            isbutton = True    
+            if len(submitdata) > 0:
+                disabled = "disabled "
 
-        return make_response(render_template('index.html', menus=menus, menuchilds=menuchilds,role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled, task="fishandseafood"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled, task="fishandseafood"), 200, headers)
 
 
 class Fruit(Resource):
@@ -142,27 +146,28 @@ class Fruit(Resource):
             return redirect("/login")
 
         headers = {'Content-Type': 'text/html'}
-        filter = (tbrolemenu.roleid == session.get('roleid')) & (tbmenus.parentid == 0)
-        menus = db.session.query(tbrolemenu, tbmenus).filter(
-            tbrolemenu.menuid == tbmenus.menuid).filter(filter).order_by(tbrolemenu.menuid).all()
-
-        menuchilds = tbrolemenu
+        menus = tbrolemenu
         role = tbroles.find_by_roleid(session.get('roleid'))
 
         category = 6
-        productlist = tbproducts.find_by_catid(category)
+        productlist = []
 
         batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
-        trans = tbtrans
 
+        submitdata = []
+        trans = []
         disabled = ""
-        filter = (tbtrans.status == 1) & (tbcategories.catid == category) & (tbtrans.batchid == batch.batchid)
-        submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
-            
-        if len(submitdata) > 0:
-            disabled = "disabled "
+        isbutton = False
+        if batch is not None:
+            trans = tbtrans
+            productlist = tbproducts.find_by_catid(category)
+            filter = (tbtrans.status == 1) & (tbcategories.catid == category) & (tbtrans.batchid == batch.batchid)
+            submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
+            isbutton = True    
+            if len(submitdata) > 0:
+                disabled = "disabled "
 
-        return make_response(render_template('index.html', menus=menus, menuchilds=menuchilds,role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled, task="fruit"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled, task="fruit"), 200, headers)
 
 
 class Vegetables(Resource):
@@ -172,24 +177,25 @@ class Vegetables(Resource):
             return redirect("/login")
 
         headers = {'Content-Type': 'text/html'}
-        filter = (tbrolemenu.roleid == session.get('roleid')) & (tbmenus.parentid == 0)
-        menus = db.session.query(tbrolemenu, tbmenus).filter(
-            tbrolemenu.menuid == tbmenus.menuid).filter(filter).order_by(tbrolemenu.menuid).all()
-
-        menuchilds = tbrolemenu
+        menus = tbrolemenu
         role = tbroles.find_by_roleid(session.get('roleid'))
 
         category = 7
-        productlist = tbproducts.find_by_catid(category)
+        productlist = []
 
         batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
-        trans = tbtrans
 
+        submitdata = []
+        trans = []
         disabled = ""
-        filter = (tbtrans.status == 1) & (tbcategories.catid == category) & (tbtrans.batchid == batch.batchid)
-        submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
-            
-        if len(submitdata) > 0:
-            disabled = "disabled "
+        isbutton = False
+        if batch is not None:
+            trans = tbtrans
+            productlist = tbproducts.find_by_catid(category)
+            filter = (tbtrans.status == 1) & (tbcategories.catid == category) & (tbtrans.batchid == batch.batchid)
+            submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
+            isbutton = True    
+            if len(submitdata) > 0:
+                disabled = "disabled "
 
-        return make_response(render_template('index.html', menus=menus, menuchilds=menuchilds,role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled, task="vegetable"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled, task="vegetable"), 200, headers)

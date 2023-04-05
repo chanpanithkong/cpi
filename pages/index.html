@@ -220,20 +220,20 @@
 
       <!-- parent without children  -->
 
-      {% for menu in menus %}
+      {% for menu in menus.find_by_menuparent(role.roleid) %}
       <li class="nav-item">
 
-        {% if menuchilds.find_by_menuchild(menu[0].roleid,menu[1].menuid)|length > 0 %}
+        {% if menus.find_by_menuchild(menu[0].roleid,menu[1].menuid)|length > 0 %}
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#{{menu[1].details}}" data-bs-toggle="collapse" href="#">
-          <i class="bx {{ menu[1].menukh }}"></i><span>{{ menu[1].menu }}</span><i
+          <i class="bx {{ menu[1].icon }}"></i><span>{{ menu[1].nameen }}</span><i
             class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="{{menu[1].details}}" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          {% for child in menuchilds.find_by_menuchild(menu[0].roleid,menu[1].menuid) %}
+          {% for child in menus.find_by_menuchild(menu[0].roleid,menu[1].menuid) %}
           <li>
             <a href="{{child[1].functions}}">
-              </i><span>{{ child[1].menu }}</span>
+              </i><span>{{ child[1].nameen }}</span>
             </a>
           </li>
           {% endfor %}
@@ -242,8 +242,8 @@
       {% else %}
       <li class="nav-item">
         <a class="nav-link collapsed" href="{{menu[1].functions}}">
-          <i class="bx {{menu[1].menukh}}"></i>
-          <span>{{ menu[1].menu }}</span>
+          <i class="bx {{menu[1].icon}}"></i>
+          <span>{{ menu[1].nameen }}</span>
         </a>
       </li>
       {% endif %}

@@ -15,14 +15,11 @@ class UserProfile(Resource):
     def get(cls):
         headers = {'Content-Type': 'text/html'}
 
-        filter = (tbrolemenu.roleid == session.get('roleid')) & (tbmenus.parentid == 0)
-        menus = db.session.query(tbrolemenu, tbmenus).filter(
-            tbrolemenu.menuid == tbmenus.menuid).filter(filter).order_by(tbrolemenu.menuid).all()
-        menuchilds = tbrolemenu
+        menus = tbrolemenu
 
         role = tbroles.find_by_roleid(session.get('roleid'))
         
-        return make_response(render_template('index.html', menus=menus, menuchilds=menuchilds, role=role, task="userprofile"), 200, headers)
+        return make_response(render_template('index.html', menus=menus,  role=role, task="userprofile"), 200, headers)
 
 
 class ChangePassword(Resource):
@@ -30,11 +27,8 @@ class ChangePassword(Resource):
     def get(cls):
         headers = {'Content-Type': 'text/html'}
 
-        filter = (tbrolemenu.roleid == session.get('roleid')) & (tbmenus.parentid == 0)
-        menus = db.session.query(tbrolemenu, tbmenus).filter(
-            tbrolemenu.menuid == tbmenus.menuid).filter(filter).order_by(tbrolemenu.menuid).all()
-        menuchilds = tbrolemenu
+        menus = tbrolemenu
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
-        return make_response(render_template('index.html', menus=menus, menuchilds=menuchilds, role=role, task="changepassword"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, task="changepassword"), 200, headers)

@@ -10,7 +10,7 @@ class tbrolemenu(db.Model):
     createdate = db.Column(db.DateTime)
     statusid = db.Column(db.Integer)
 
-    def __init__(self, roleid, menuid, details, createby, createdate, statusid):
+    def __init__(self, roleid=None, menuid=None, details=None, createby=None, createdate=None, statusid=None):
         self.roleid = roleid
         self.menuid = menuid
         self.details = details
@@ -25,6 +25,13 @@ class tbrolemenu(db.Model):
     @classmethod
     def find_by_menuchild(cls, roleid, parentid) -> "tbrolemenu":
         filter = (tbrolemenu.roleid == roleid) & (tbmenus.parentid == parentid)
+        data = db.session.query(tbrolemenu, tbmenus).filter(
+            tbrolemenu.menuid == tbmenus.menuid).filter(filter).order_by(tbrolemenu.menuid).all()
+        return data
+    
+    @classmethod
+    def find_by_menuparent(cls, roleid) -> "tbrolemenu":
+        filter = (tbrolemenu.roleid == roleid) & (tbmenus.parentid == 0)
         data = db.session.query(tbrolemenu, tbmenus).filter(
             tbrolemenu.menuid == tbmenus.menuid).filter(filter).order_by(tbrolemenu.menuid).all()
         return data

@@ -124,93 +124,93 @@
         
         $('[data-toggle="tooltip"]').tooltip();
 
-        $(".aureject").click(function(){
+        // $(".aureject").click(function(){
             
-            result = [];
+        //     result = [];
 
-            prodid = []
+        //     prodid = []
 
-            $(this).parent().parent().parent().parent().parent().find("input[name^='prodid']").each(function () {
+        //     $(this).parent().parent().parent().parent().parent().find("input[name^='prodid']").each(function () {
 
-                prodid.push($(this).val());
-            });
+        //         prodid.push($(this).val());
+        //     });
             
-            authorizernote = []
-             $(this).parent().parent().parent().parent().parent().find("input[name^='authorizernote']").each(function () {
+        //     authorizernote = []
+        //      $(this).parent().parent().parent().parent().parent().find("input[name^='authorizernote']").each(function () {
 
-                authorizernote.push($(this).val());
-            });
+        //         authorizernote.push($(this).val());
+        //     });
 
-            for (i = 0; i < prodid.length; i++) {
-                item = {};
-                item['prodid'] = prodid[i];
-                item['authorizernote'] = authorizernote[i];
-                result.push(item);
+        //     for (i = 0; i < prodid.length; i++) {
+        //         item = {};
+        //         item['prodid'] = prodid[i];
+        //         item['authorizernote'] = authorizernote[i];
+        //         result.push(item);
 
-            }
-
-
-            $.ajax({
-                type: "POST",
-                url: "/api/authorizetransactions",
-                data: JSON.stringify({ data: result, userrequest: 'reject' }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (data) {
-                    alert(data.msg);
-                    location.reload();
-                },
-                error: function (errMsg) {
-                console.log(errMsg);
-                }
-            });
-
-        });
+        //     }
 
 
+        //     $.ajax({
+        //         type: "POST",
+        //         url: "/api/authorizetransactions",
+        //         data: JSON.stringify({ data: result, userrequest: 'reject' }),
+        //         contentType: "application/json; charset=utf-8",
+        //         dataType: "json",
+        //         success: function (data) {
+        //             alert(data.msg);
+        //             location.reload();
+        //         },
+        //         error: function (errMsg) {
+        //         console.log(errMsg);
+        //         }
+        //     });
 
-        $(".auauthorizer").click(function(){
+        // });
+
+
+
+        // $(".auauthorizer").click(function(){
             
-            result = [];
+        //     result = [];
 
-            prodid = []
+        //     prodid = []
 
-            $(this).parent().parent().parent().parent().parent().find("input[name^='prodid']").each(function () {
+        //     $(this).parent().parent().parent().parent().parent().find("input[name^='prodid']").each(function () {
 
-                prodid.push($(this).val());
-            });
+        //         prodid.push($(this).val());
+        //     });
             
-            authorizernote = []
-             $(this).parent().parent().parent().parent().parent().find("input[name^='authorizernote']").each(function () {
+        //     authorizernote = []
+        //      $(this).parent().parent().parent().parent().parent().find("input[name^='authorizernote']").each(function () {
 
-                authorizernote.push($(this).val());
-            });
+        //         authorizernote.push($(this).val());
+        //     });
 
-            for (i = 0; i < prodid.length; i++) {
-                item = {};
-                item['prodid'] = prodid[i];
-                item['authorizernote'] = authorizernote[i];
-                result.push(item);
+        //     for (i = 0; i < prodid.length; i++) {
+        //         item = {};
+        //         item['prodid'] = prodid[i];
+        //         item['authorizernote'] = authorizernote[i];
+        //         result.push(item);
 
-            }
+        //     }
 
 
-            $.ajax({
-                type: "POST",
-                url: "/api/authorizetransactions",
-                data: JSON.stringify({ data: result, userrequest: 'authorize' }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (data) {
-                    alert(data.msg);
-                    location.reload();
-                },
-                error: function (errMsg) {
-                console.log(errMsg);
-                }
-            });
+        //     $.ajax({
+        //         type: "POST",
+        //         url: "/api/authorizetransactions",
+        //         data: JSON.stringify({ data: result, userrequest: 'authorize' }),
+        //         contentType: "application/json; charset=utf-8",
+        //         dataType: "json",
+        //         success: function (data) {
+        //             alert(data.msg);
+        //             location.reload();
+        //         },
+        //         error: function (errMsg) {
+        //         console.log(errMsg);
+        //         }
+        //     });
 
-        });
+        // });
 
     });
 

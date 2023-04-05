@@ -9,9 +9,11 @@ class MenusSchema(SQLAlchemyAutoSchema):
         load_instance = True
 
     menuid = auto_field()
-    menu = auto_field()
+    nameen = auto_field()
+    namekh = auto_field()
     parentid = auto_field()
     functions = auto_field()
     details = auto_field()
-    
+    icon = auto_field()
+    iscat = auto_field()
 
