@@ -17,7 +17,7 @@ from controls.roles import Role, RoleList
 from controls.status import Status, StatusList
 from controls.trans import Tran, TransList, InputterInsertTran, AuthorizerUpdateTran, InputterUpdateTran,AuthorizerUpdateTransaction, InsertAllProductToTrans, UpdateTranByCategories, TransWithBatchWherePriceAndWeightIsEmpty, TransWithBatchCategoryWherePriceAndWeightIsEmpty, TransWithBatchCategory
 from controls.batches import Batch, BatchesList, CreateBatch, CloseBatch
-from controls.users import User, UsersList, UserLogin
+from controls.users import User, UsersList, UserLogin, ChangePasswordForUser
 from pagecontrollers.pages import Logout, UserLoginPage, LoginPage, HomePage, SubmittedTrans, AuthorizedTrans, CheckedTrans, CheckedTransDetails, HistoryOfTrans, BeverageTobacco, Restaurant, ClothShoes, Shipping, Medicine, Housing 
 from pagecontrollers.usersetting import UserProfile, ChangePassword
 from pagecontrollers.food import Rice, Ingredient, Meat, FishSeaFood, Fruit, Vegetables
@@ -178,6 +178,7 @@ api.add_resource(CloseBatch, "/api/closebatch")
 # api.add_resource(User, "/api/user/<userid>")
 # api.add_resource(UsersList, "/api/userslist")
 # api.add_resource(UserLogin, "/api/userlogin")
+api.add_resource(ChangePasswordForUser, "/api/changepasswordforuser")
 
 if __name__ == "__main__":
     db.init_app(app)
