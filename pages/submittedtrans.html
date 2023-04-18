@@ -26,10 +26,14 @@
                            {% set textcolor = "color: green;" %}
                            {% endif %}
                         <div class="card">
-                            <div class="card-header" id="heading{{loop.index}}" style="text-align: left; cursor: pointer; {{textcolor}} font-weight:bold;">
-                                <div class="collapsed" data-toggle="collapse" data-target="#collapse{{loop.index}}" aria-expanded="false" aria-controls="collapse{{loop.index}}">
-                                    {{loop.index}}.&nbsp;{{cl.nameen}}
+                            <div class="row">
+                                <div class="card-header" id="heading{{loop.index}}" style="text-align: left; cursor: pointer; {{textcolor}} font-weight:bold;">
+                                    <div class="collapsed" data-toggle="collapse" data-target="#collapse{{loop.index}}" aria-expanded="false" aria-controls="collapse{{loop.index}}">
+                                        {{loop.index}}.&nbsp;{{cl.nameen}}
+                                    </div>
+                                    <div style="text-align: right;"><span class="badge bg-primary">Primary</span></div>
                                 </div>
+                                
                             </div>
 
                             <div id="collapse{{loop.index}}" class="collapse1 show" aria-labelledby="heading{{loop.index}}" data-parent="#accordion">
