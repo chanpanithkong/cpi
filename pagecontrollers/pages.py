@@ -332,9 +332,11 @@ class AuthorizedTrans(Resource):
         products = tbproducts
         batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
         
-        catlist = tbtrans.find_by_authorizecatbatchid(batch.batchid)
-        
-        trans = tbtrans
+        catlist = []
+        trans = []
+        if batch is not None :
+            catlist = tbtrans.find_by_authorizecatbatchid(batch.batchid)
+            trans = tbtrans
 
         return make_response(render_template('index.html', menus=menus, role=role, catlist=catlist, products=products, batch=batch, trans=trans, task="authorizedtrans"), 200, headers)
     

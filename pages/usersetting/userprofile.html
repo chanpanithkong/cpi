@@ -151,13 +151,20 @@
                     >Branch Code</label
                   >
                   <div class="col-md-8 col-lg-9">
-                    <input
-                      name="job"
-                      type="text"
-                      class="form-control"
-                      id="branchcode"
-                      value="{{branch.find_by_branchcode(user.branchcode).nameen}}"
-                    />
+
+                    <select class="form-select" aria-label="Default select example" id="branchcode">
+
+                      {% for br in branch.getallbranches() %}
+                      {% if user.branchcode == br.branchcode %}
+                      <option value="{{br.branchcode}}" selected>{{br.nameen}}</option>
+                      {% else %}
+                      <option value="{{br.branchcode}}">{{br.nameen}}</option>
+                      {% endif %}
+                      
+                      {% endfor %}
+                    
+                    </select>
+
                   </div>
                 </div>
 
@@ -192,7 +199,7 @@
                 </div>
 
                 <div class="text-center">
-                  <button type="submit" class="btn btn-primary" id="saveprofile">
+                  <button class="btn btn-primary" id="saveprofile">
                     Save Changes
                   </button>
                 </div>
@@ -206,7 +213,7 @@
               role="tabpanel"
             >
               <!-- Settings Form -->
-              <form>
+              
                 <div class="row mb-3">
                   <label for="fullName" class="col-md-4 col-lg-3 col-form-label"
                     >Changes Languages</label
@@ -239,11 +246,11 @@
                 </div>
 
                 <div class="text-center">
-                  <button type="submit" class="btn btn-primary" id="savelanguage">
+                  <button class="btn btn-primary" id="savelanguage">
                     Save Changes
                   </button>
                 </div>
-              </form>
+              
               <!-- End settings Form -->
             </div>
 
@@ -262,6 +269,37 @@
 <script>
   $(document).ready(function() {
 
-    
+    $("#saveprofile").click(function() {
+      fullname = $("#fullname").val();
+      gender = $("#gender").val();
+      branchcode = $("#branchcode").val();
+      department = $("#department").val();
+      email = $("#email").val();
+
+          item = {};
+          item['fullname'] = fullname;
+          item['gender'] = gender;
+          item['branchcode'] = branchcode
+          item['department'] = department;
+          item['email'] = email;
+      
+      $.ajax({
+          type: "POST",
+          url: "/api/updateuserprofile",
+          data: JSON.stringify({ data: item, userrequest: 'updateuserprofile' }),
+          contentType: "application/json; charset=utf-8",
+          dataType: "json",
+          success: function (data) {
+            alert(data.msg);
+            location.reload();
+          },
+          error: function (errMsg) {
+            console.log(errMsg);
+          }
+        });
+
+
+    });
+
   });
 </script>

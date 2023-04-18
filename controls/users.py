@@ -12,6 +12,42 @@ from pprint import pprint
 jwt = JWTManager(app)
 
 
+
+class UpdateUserProfile(Resource):
+    @classmethod
+    # @jwt_required()
+    @cross_origin()
+    def post(cls):
+
+        try:
+            
+            data = json.loads(request.data)
+            
+            if data['userrequest'] == 'updateuserprofile' :
+            
+                fullname = data['data']['fullname']
+                gender = data['data']['gender']
+                branchcode = data['data']['branchcode']
+                department = data['data']['department']
+                email = data['data']['email']
+            
+                userid = session.get("userid")
+                user_data = tbusers.find_by_userid(userid)
+            
+                user_data.username = fullname
+                user_data.gender = gender
+                user_data.branchcode = branchcode
+                user_data.details = department
+                user_data.email = email
+            
+                db.session.commit()
+                return {"msg":"User updated successfully"}
+            
+            return {"msg": "Cannot update user profile"}
+
+        except Exception as err:
+            return {"msg": err}
+
 class ChangePasswordForUser(Resource):
     @classmethod
     # @jwt_required()
