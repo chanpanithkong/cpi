@@ -72,15 +72,26 @@ class HomePage(Resource):
         role = tbroles.find_by_roleid(session.get('roleid'))
         batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
         
+        pprint(batch)
+
         user = tbusers.find_by_userid(session.get('userid'))
 
         batchdisabled = ""
         if batch is not None :
-            batchtrans = tbtrans.find_by_batchid(batch.batchid)
+            batchtrans = tbtrans.find_by_batchidnotaccept(batch.batchid)
             if len(batchtrans) > 0:
                 batchdisabled = "disabled"
+
+        sql = "select trn.branchcode, trn.status, trn.batchid, count(trn.productid) as cnt from tbtrans trn inner join tbbatches bat on bat.batchid = trn.batchid where bat.statusid = 9 and trn.branchcode = '" + session.get("branchcode") + "' group by trn.branchcode, trn.status, trn.batchid"
+        result = db.engine.execute(sql)
+
+        transtatus = []
+        for record in result:
+            transtatus.append(record)
+
+        pprint(transtatus)
         
-        return make_response(render_template('index.html', menus=menus, role=role, batchdisabled=batchdisabled,user=user, task="dashboard"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, batchdisabled=batchdisabled,user=user,transtatus=transtatus, task="dashboard"), 200, headers)
 
 
 class HistoryOfTrans(Resource):
@@ -354,7 +365,14 @@ class CheckedTrans(Resource):
 
         branches = tbbranches.getallbranches()
 
-        return make_response(render_template('index.html', menus=menus, role=role, branches=branches, task="checkedtrans"), 200, headers)
+        sql = 'select t1.branchcode, t1.status, count(t1.status) as cnt from( select trn.branchcode,trn.status,  pro.catid, count(pro.catid) as cnt from tbtrans trn inner join tbproducts pro on trn.productid = pro.prodid group by trn.branchcode,trn.status,  pro.catid ) as t1 group by t1.branchcode, t1.status;'
+        result = db.engine.execute(sql)
+
+        transtatus = []
+        for record in result:
+            transtatus.append(record)
+
+        return make_response(render_template('index.html', menus=menus, role=role, branches=branches, transtatus=transtatus, task="checkedtrans"), 200, headers)
 
 
 
@@ -379,4 +397,53 @@ class CheckedTransDetails(Resource):
         
         trans = tbtrans
 
-        return make_response(render_template('index.html', menus=menus, role=role, catlist=catlist, products=products, batch=batch, trans=trans, task="checkedtransdetail"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, catlist=catlist, products=products, batch=batch, trans=trans,branchcode=branchcode, task="checkedtransdetail"), 200, headers)
+
+
+class CreateBatches(Resource):
+    @classmethod
+    def get(cls):
+
+        if not session.get("userid"):
+            return redirect("/login")
+
+        headers = {'Content-Type': 'text/html'}
+        
+        menus = tbrolemenu
+
+        role = tbroles.find_by_roleid(session.get('roleid'))
+
+        return make_response(render_template('index.html', menus=menus, role=role, task="createbatch"), 200, headers)
+
+
+
+class UpdateBatches(Resource):
+    @classmethod
+    def get(cls):
+
+        if not session.get("userid"):
+            return redirect("/login")
+
+        headers = {'Content-Type': 'text/html'}
+        
+        menus = tbrolemenu
+
+        role = tbroles.find_by_roleid(session.get('roleid'))
+
+        return make_response(render_template('index.html', menus=menus, role=role, task="updatebatch"), 200, headers)
+
+
+class ViewBatches(Resource):
+    @classmethod
+    def get(cls):
+
+        if not session.get("userid"):
+            return redirect("/login")
+
+        headers = {'Content-Type': 'text/html'}
+        
+        menus = tbrolemenu
+
+        role = tbroles.find_by_roleid(session.get('roleid'))
+
+        return make_response(render_template('index.html', menus=menus, role=role, task="viewbatch"), 200, headers)

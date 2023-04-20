@@ -13,10 +13,24 @@
             {% for br in branches %}
             <td style="padding-right: 10px;vertical-align: top;">
                 <div class="card bg-light mb-3" style="max-width: 18rem;">
-                <a href="/checkedtransdetail/{{br.branchcode}}" ><div class="card-header"​ style="text-align: center;"><h4 style="padding: 0;margin: 0;"><span class="badge bg-primary">Branch Code : {{br.branchcode}}</span></h4></div></a>
+                <a href="/checkedtransdetail/{{br.branchcode}}" ><div class="card-header"​ style="text-align: center; color:black;font-weight: bold;">Branch Code : {{br.branchcode}}</div></a>
                 <div class="card-body">
                   <h5 class="card-title">{{br.nameen}}</h5>
-                  <p class="card-text">{{br.address}}</p>
+
+                  <p>{{br.address}}</p>
+                  {% for ts in transtatus %}
+                  {% if br.branchcode == ts[0] %}
+                    
+                    {% if ts[1] == 13 %}
+                    <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i> Accepted : {{ ts[2] }}</span>
+                    {% elif ts[1] == 11 %}
+                    <span class="badge bg-danger"><i class="bi bi-exclamation-octagon me-1"></i> Rejected : {{ ts[2] }}</span>
+                    {% elif ts[1] == 3 %}
+                    <span class="badge bg-primary"><i class="bi bi-star me-1"></i> Authorized : {{ ts[2] }}</span>
+                    {% endif %}
+                  {% endif %}
+                  {% endfor %}
+
                 </div>
               </div>
             </td>

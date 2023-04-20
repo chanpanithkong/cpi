@@ -1,4 +1,5 @@
 <div class="pagetitle">
+  <input type="hidden" value="{{ branchcode }}" id="branchcode" name="branchcode" />
     <nav>
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
@@ -52,9 +53,9 @@
                                             <th scope="col">Product Name</th>
                                             <th scope="col">Weight</th>
                                             <th scope="col">Price</th>
-                                            <th scope="col">Details</th>
-                                            <th scope="col">Authorizer Note</th>
-                                            <th scope="col">Checker Note</th>
+                                            <th scope="col">Inputter Noted</th>
+                                            <th scope="col">Authorizer Noted</th>
+                                            <th scope="col">Checker Noted</th>
                                           </tr>
                                         </thead>
                                         <tbody>
@@ -74,12 +75,12 @@
                                                 {{trans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,prod.prodid).authorizernote}}
                                                 {% endif %}
                                             </td>
-                                            <td>{{trans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,prod.prodid).checkernote}}</th>
+                                            <td><input type="text" class="form-control" value="{{trans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,prod.prodid).checkernote}}" id="checkernoted" name="checkernoted" /></th>
                                             </tr>
                                             {% endfor %}
                                             {% if textcolor == "color: green;" or textcolor == "color: blue;" %}
                                             <tr>
-                                                <td colspan="6">
+                                                <td colspan="7">
                                                     <div style="text-align: Center">
                                                       <button type="button" class="btn btn-danger aureject" {{disabled}}>
                                                         Rejected
@@ -124,93 +125,97 @@
         
         $('[data-toggle="tooltip"]').tooltip();
 
-        // $(".aureject").click(function(){
+        $(".aureject").click(function(){
             
-        //     result = [];
+            result = [];
 
-        //     prodid = []
+            prodid = []
 
-        //     $(this).parent().parent().parent().parent().parent().find("input[name^='prodid']").each(function () {
+            $(this).parent().parent().parent().parent().parent().find("input[name^='prodid']").each(function () {
 
-        //         prodid.push($(this).val());
-        //     });
+                prodid.push($(this).val());
+            });
             
-        //     authorizernote = []
-        //      $(this).parent().parent().parent().parent().parent().find("input[name^='authorizernote']").each(function () {
+            checkernoted = []
+             $(this).parent().parent().parent().parent().parent().find("input[name^='checkernoted']").each(function () {
 
-        //         authorizernote.push($(this).val());
-        //     });
+                checkernoted.push($(this).val());
+            });
 
-        //     for (i = 0; i < prodid.length; i++) {
-        //         item = {};
-        //         item['prodid'] = prodid[i];
-        //         item['authorizernote'] = authorizernote[i];
-        //         result.push(item);
+            for (i = 0; i < prodid.length; i++) {
+                item = {};
+                item['prodid'] = prodid[i];
+                item['checkernoted'] = checkernoted[i];
+                result.push(item);
 
-        //     }
-
-
-        //     $.ajax({
-        //         type: "POST",
-        //         url: "/api/authorizetransactions",
-        //         data: JSON.stringify({ data: result, userrequest: 'reject' }),
-        //         contentType: "application/json; charset=utf-8",
-        //         dataType: "json",
-        //         success: function (data) {
-        //             alert(data.msg);
-        //             location.reload();
-        //         },
-        //         error: function (errMsg) {
-        //         console.log(errMsg);
-        //         }
-        //     });
-
-        // });
-
-
-
-        // $(".auauthorizer").click(function(){
+            }
             
-        //     result = [];
+            branchcode = $("#branchcode").val();
 
-        //     prodid = []
+            $.ajax({
+                type: "POST",
+                url: "/api/checkerupdatetransactions",
+                data: JSON.stringify({ data: result, userrequest: 'reject',branchcode:branchcode }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    alert(data.msg);
+                    location.reload();
+                },
+                error: function (errMsg) {
+                console.log(errMsg);
+                }
+            });
 
-        //     $(this).parent().parent().parent().parent().parent().find("input[name^='prodid']").each(function () {
+        });
 
-        //         prodid.push($(this).val());
-        //     });
+
+
+        $(".auauthorizer").click(function(){
             
-        //     authorizernote = []
-        //      $(this).parent().parent().parent().parent().parent().find("input[name^='authorizernote']").each(function () {
+            result = [];
 
-        //         authorizernote.push($(this).val());
-        //     });
+            prodid = []
 
-        //     for (i = 0; i < prodid.length; i++) {
-        //         item = {};
-        //         item['prodid'] = prodid[i];
-        //         item['authorizernote'] = authorizernote[i];
-        //         result.push(item);
+            $(this).parent().parent().parent().parent().parent().find("input[name^='prodid']").each(function () {
 
-        //     }
+                prodid.push($(this).val());
+            });
+            
+            checkernoted = []
+             $(this).parent().parent().parent().parent().parent().find("input[name^='checkernoted']").each(function () {
 
+                checkernoted.push($(this).val());
+            });
 
-        //     $.ajax({
-        //         type: "POST",
-        //         url: "/api/authorizetransactions",
-        //         data: JSON.stringify({ data: result, userrequest: 'authorize' }),
-        //         contentType: "application/json; charset=utf-8",
-        //         dataType: "json",
-        //         success: function (data) {
-        //             alert(data.msg);
-        //             location.reload();
-        //         },
-        //         error: function (errMsg) {
-        //         console.log(errMsg);
-        //         }
-        //     });
+            for (i = 0; i < prodid.length; i++) {
+                item = {};
+                item['prodid'] = prodid[i];
+                item['checkernoted'] = checkernoted[i];
+                result.push(item);
 
-        // });
+            }
+            
+            console.log(result);
+
+            branchcode = $("#branchcode").val();
+
+            $.ajax({
+                type: "POST",
+                url: "/api/checkerupdatetransactions",
+                data: JSON.stringify({ data: result, userrequest: 'accept', branchcode:branchcode }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    alert(data.msg);
+                    location.reload();
+                },
+                error: function (errMsg) {
+                console.log(errMsg);
+                }
+            });
+
+        });
 
     });
 

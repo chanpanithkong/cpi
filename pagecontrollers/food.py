@@ -105,7 +105,7 @@ class Meat(Resource):
             if len(submitdata) > 0:
                 disabled = "disabled "
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled, task="meat"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled,isbutton=isbutton, task="meat"), 200, headers)
 
 
 class FishSeaFood(Resource):
@@ -136,7 +136,7 @@ class FishSeaFood(Resource):
             if len(submitdata) > 0:
                 disabled = "disabled "
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled, task="fishandseafood"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled,isbutton=isbutton, task="fishandseafood"), 200, headers)
 
 
 class Fruit(Resource):
@@ -167,7 +167,7 @@ class Fruit(Resource):
             if len(submitdata) > 0:
                 disabled = "disabled "
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled, task="fruit"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled,isbutton=isbutton, task="fruit"), 200, headers)
 
 
 class Vegetables(Resource):
@@ -198,4 +198,4 @@ class Vegetables(Resource):
             if len(submitdata) > 0:
                 disabled = "disabled "
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled, task="vegetable"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled,isbutton=isbutton, task="vegetable"), 200, headers)

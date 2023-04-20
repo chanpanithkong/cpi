@@ -196,7 +196,8 @@ class UpdateTranByCategories(Resource):
         except Exception as err:
             return {"msg": err}        
 
-class AuthorizerUpdateTransaction(Resource):
+
+class CheckerUpdateTransaction(Resource):
     @classmethod
     # @jwt_required()
     def post(cls):
@@ -204,26 +205,75 @@ class AuthorizerUpdateTransaction(Resource):
             data = json.loads(request.data)
             userid = session.get("userid")
             
-            batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
-                
+            batch = tbbatches.find_by_branchbatchopen(data["branchcode"])
+            msg = "reject"    
+            
             for dt in data['data']:
-                
-                tran_data = tbtrans.find_by_prodbatchid(dt['prodid'],batch.batchid)[0]
+            
+                tran_data = tbtrans.find_by_prodbatchidforchecker(dt['prodid'],batch.batchid)
+            
                 if (tran_data is not None):
+            
+                    tran_data.checker = userid
+                    now = datetime.now()
+                    currentdatetime = now.strftime("%y-%m-%dT%H:%M:%S")
+            
+                    tran_data.checkerdate = currentdatetime
+                    tran_data.checkernote = dt['checkernoted']
+            
+                    if data['userrequest'] == 'reject':
+                        tran_data.status = 11
+                    elif(data['userrequest'] == 'accept'):
+                        tran_data.status = 13
+                        msg = "accept"
+
+                    db.session.commit()
+
+            return {"msg": msg}
+            
+        except Exception as err:
+            return {"msg": err}
+
+
+class AuthorizerUpdateTransaction(Resource):
+    @classmethod
+    # @jwt_required()
+    def post(cls):
+        try:
+            
+            data = json.loads(request.data)
+            userid = session.get("userid")
+            
+            batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
+            msg = "reject"    
+            
+            for dt in data['data']:
+                print(dt['prodid'],batch.batchid)
+                tran_data = tbtrans.find_by_prodbatchid(dt['prodid'],batch.batchid)
+                print(tran_data)
+                print(1)
+                if (tran_data is not None):
+                    print(1)
                     tran_data.authorizer = userid
                     now = datetime.now()
                     currentdatetime = now.strftime("%y-%m-%dT%H:%M:%S")
+                    print(1)
                         
                     tran_data.authorizedate = currentdatetime
                     tran_data.authorizernote = dt['authorizernote']
+
+                    print(1)
+                    
                     if data['userrequest'] == 'reject':
                         tran_data.status = 10
                     elif(data['userrequest'] == 'authorize'):
                         tran_data.status = 3
-
+                        msg = "authorize"
+                        print(1)
+                    
                     db.session.commit()
 
-            return {"msg": "reject"}
+            return {"msg": msg}
             
         except Exception as err:
             return {"msg": err}

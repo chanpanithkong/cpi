@@ -92,10 +92,16 @@ class tbtrans(db.Model):
             db.Column("batchid") == batchid)
         return cls.query.filter(filters).all()
     
+    @classmethod
+    def find_by_batchidnotaccept(cls, batchid) -> "tbtrans":
+        filters = (db.Column("status") != 13)  & (
+            db.Column("batchid") == batchid)
+        return cls.query.filter(filters).all()
+
     
     @classmethod
     def find_by_catbatchidsubmit(cls,catid, batchid) -> "tbtrans":
-        filters = ((tbtrans.status == 1) | (tbtrans.status == 11))  & (tbtrans.batchid == batchid) & (tbcategories.catid == catid)
+        filters = ((tbtrans.status == 1) | (tbtrans.status == 11))   & (tbtrans.batchid == batchid) & (tbcategories.catid == catid)
         return db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filters).all()
     
     @classmethod
@@ -118,8 +124,13 @@ class tbtrans(db.Model):
     
     @classmethod
     def find_by_prodbatchid(cls,productid, batchid,) -> "tbtrans":
-        filters = (tbtrans.status == 1)  & (tbtrans.batchid == batchid) & (tbproducts.prodid == productid)
-        return db.session.query(tbtrans, tbproducts).filter(tbtrans.productid == tbproducts.prodid).filter(filters).first()
+        filters = ((tbtrans.status == 1) | (tbtrans.status == 11))  & (tbtrans.batchid == batchid) & (tbproducts.prodid == productid)
+        return db.session.query(tbtrans).filter(tbtrans.productid == tbproducts.prodid).filter(filters).first()
+    
+    @classmethod
+    def find_by_prodbatchidforchecker(cls,productid, batchid,) -> "tbtrans":
+        filters = ((tbtrans.status == 3) | (tbtrans.status == 13) | (tbtrans.status == 11))  & (tbtrans.batchid == batchid) & (tbproducts.prodid == productid)
+        return db.session.query(tbtrans).filter(tbtrans.productid == tbproducts.prodid).filter(filters).first()
     
     @classmethod
     def find_by_prodbatchidnotsubmit(cls,productid, batchid,) -> "tbtrans":

@@ -51,9 +51,9 @@
                                             <th scope="col">Product Name</th>
                                             <th scope="col">Weight</th>
                                             <th scope="col">Price</th>
-                                            <th scope="col">Details</th>
-                                            <th scope="col">Authorizer Note</th>
-                                            <th scope="col">Checker Note</th>
+                                            <th scope="col">Inputter Noted</th>
+                                            <th scope="col">Authorizer Noted</th>
+                                            <th scope="col">Checker Noted</th>
                                           </tr>
                                         </thead>
                                         <tbody>
@@ -78,7 +78,7 @@
                                             {% endfor %}
                                             {% if textcolor == "color: green;" or textcolor == "color: blue;" %}
                                             <tr>
-                                                <td colspan="6">
+                                                <td colspan="7">
                                                     <div style="text-align: Center">
                                                       <button type="button" class="btn btn-danger aureject" {{disabled}}>
                                                         Rejected
@@ -193,6 +193,7 @@
 
             }
 
+            console.log(result);
 
             $.ajax({
                 type: "POST",

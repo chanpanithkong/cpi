@@ -309,6 +309,13 @@
     <!-- history of trans -->
     {% elif task == 'historyoftrans' %}
     {% include 'historyoftrans.html' %}
+    <!-- batches management -->
+    {% elif task == 'createbatch' %}
+    {% include 'batch/createbatches.html' %}
+    {% elif task == 'viewbatch' %}
+    {% include 'batch/viewbatches.html' %}
+    {% elif task == 'updatebatch' %}
+    {% include 'batch/updatebatches.html' %}
     <!-- end if -->
     {% endif %}
 

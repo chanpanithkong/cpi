@@ -17,8 +17,33 @@
     <!-- Left side columns -->
     <div class="col-lg-8">
       <div class="row">
+      {% for ts in transtatus %}  
+        <!-- Pending Card -->
+        {% if ts[1] == 7 %}
+        <div class="col-xxl-4 col-md-6">
+          <div class="card info-card revenue-card">
 
-        <!-- Revenue Card -->
+            <div class="card-body">
+              <h5 class="card-title">Pending <span>| Week</span></h5>
+
+              <div class="d-flex align-items-center">
+                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center" style="color:darkkhaki;
+                background-color: lemonchiffon;">
+                  <i class="bx bx-grid-alt"></i>
+                </div>
+                <div class="ps-3">
+                  <h6>{{ ts[3] }}</h6>
+                  <span class="text-muted small pt-2 ps-1">Products</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <!-- End Pending Card -->
+        {% endif %}
+        {% if ts[1] == 1 %}
+        <!-- Submitted Card -->
         <div class="col-xxl-4 col-md-6">
           <div class="card info-card revenue-card">
 
@@ -30,7 +55,7 @@
                   <i class="bx bxs-coin-stack"></i>
                 </div>
                 <div class="ps-3">
-                  <h6>64</h6>
+                  <h6>{{ ts[3] }}</h6>
                   <span class="text-muted small pt-2 ps-1">Products</span>
 
                 </div>
@@ -38,8 +63,12 @@
             </div>
 
           </div>
-        </div><!-- End Revenue Card -->
-        <!-- Sales Card -->
+        </div>
+        {% endif %}
+        <!-- End Submitted Card -->
+
+        <!-- Authorized Card -->
+        {% if ts[1] == 3 %}
         <div class="col-xxl-4 col-md-6">
           <div class="card info-card sales-card">
 
@@ -51,7 +80,7 @@
                   <i class="bx bxs-dashboard"></i>
                 </div>
                 <div class="ps-3">
-                  <h6>45</h6>
+                  <h6>{{ ts[3] }}</h6>
                   <span class="text-muted small pt-2 ps-1">Products</span>
 
                 </div>
@@ -59,24 +88,28 @@
             </div>
 
           </div>
-        </div><!-- End Sales Card -->
+        </div>
+        {% endif %}
+        <!-- End Authorized Card -->
 
         
 
-        <!-- Customers Card -->
+        <!-- Reject Card -->
+        <!-- reject by authorizer -->
+        {% if ts[1] == 10 %}
         <div class="col-xxl-4 col-xl-12">
 
           <div class="card info-card customers-card">
 
             <div class="card-body">
-              <h5 class="card-title">Rejected <span>| Week</span></h5>
+              <h5 class="card-title">Authorizer Rejected <span>| Week</span></h5>
 
               <div class="d-flex align-items-center">
                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                   <i class="bx bxs-grid-alt"></i>
                 </div>
                 <div class="ps-3">
-                  <h6>44</h6>
+                  <h6>{{ ts[3] }}</h6>
                   <span class="text-muted small pt-2 ps-1">Products</span>
 
                 </div>
@@ -86,11 +119,67 @@
           </div>
 
         </div>
-        <!-- End Customers Card -->
+        {% endif %}
 
+        <!-- reject by checker -->
+        {% if role.roleid == 4 %}
+        {% if ts[1] == 11 %}
+        <div class="col-xxl-4 col-xl-12">
+
+          <div class="card info-card customers-card">
+
+            <div class="card-body">
+              <h5 class="card-title">Checker Rejected <span>| Week</span></h5>
+
+              <div class="d-flex align-items-center">
+                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                  <i class="bx bxs-grid-alt"></i>
+                </div>
+                <div class="ps-3">
+                  <h6>{{ ts[3] }}</h6>
+                  <span class="text-muted small pt-2 ps-1">Products</span>
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+        {% endif %}
+        {% endif %}
+        <!-- End Reject Card -->
+
+        <!-- Accept Card -->
+        {% if ts[1] == 13 %}
+        <div class="col-xxl-4 col-xl-12">
+
+          <div class="card info-card customers-card">
+
+            <div class="card-body">
+              <h5 class="card-title">Accepted <span>| Week</span></h5>
+
+              <div class="d-flex align-items-center">
+                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center" style="color:grey;
+                background-color: azure;">
+                  <i class="bx bx-list-check"></i>
+                </div>
+                <div class="ps-3">
+                  <h6>{{ ts[3] }}</h6>
+                  <span class="text-muted small pt-2 ps-1">Products</span>
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+        {% endif %}
+        <!-- End Accept Card -->
 
         
-
+      {% endfor %}  
         
 
       </div>
@@ -125,7 +214,7 @@
 
       <!-- Recent Activity -->
       <div class="card">
-        <div class="filter">
+        <!-- <div class="filter">
           <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
             <li class="dropdown-header text-start">
@@ -136,7 +225,7 @@
             <li><a class="dropdown-item" href="#">This Month</a></li>
             <li><a class="dropdown-item" href="#">This Year</a></li>
           </ul>
-        </div>
+        </div> -->
 
         <div class="card-body">
           <h5 class="card-title">Recent Activity <span>| Today</span></h5>
