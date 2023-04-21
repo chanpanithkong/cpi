@@ -447,3 +447,141 @@ class ViewBatches(Resource):
         role = tbroles.find_by_roleid(session.get('roleid'))
 
         return make_response(render_template('index.html', menus=menus, role=role, task="viewbatch"), 200, headers)
+    
+class CreateRoles(Resource):
+    @classmethod
+    def get(cls):
+
+        if not session.get("userid"):
+            return redirect("/login")
+
+        headers = {'Content-Type': 'text/html'}
+        
+        menus = tbrolemenu
+
+        role = tbroles.find_by_roleid(session.get('roleid'))
+
+        return make_response(render_template('index.html', menus=menus, role=role, task="createrole"), 200, headers)
+
+class CreatePermission(Resource):
+    @classmethod
+    def get(cls):
+
+        if not session.get("userid"):
+            return redirect("/login")
+
+        headers = {'Content-Type': 'text/html'}
+        
+        menus = tbrolemenu
+
+        role = tbroles.find_by_roleid(session.get('roleid'))
+
+        return make_response(render_template('index.html', menus=menus, role=role, task="createpermission"), 200, headers)
+    
+class AttachedRolePermission(Resource):
+    @classmethod
+    def get(cls):
+
+        if not session.get("userid"):
+            return redirect("/login")
+
+        headers = {'Content-Type': 'text/html'}
+        
+        menus = tbrolemenu
+
+        role = tbroles.find_by_roleid(session.get('roleid'))
+
+        return make_response(render_template('index.html', menus=menus, role=role, task="attachedrolepermission"), 200, headers)
+    
+
+class CreateStatus(Resource):
+    @classmethod
+    def get(cls):
+
+        if not session.get("userid"):
+            return redirect("/login")
+
+        headers = {'Content-Type': 'text/html'}
+        
+        menus = tbrolemenu
+
+        role = tbroles.find_by_roleid(session.get('roleid'))
+
+        return make_response(render_template('index.html', menus=menus, role=role, task="createstatus"), 200, headers)
+
+class UpdateStatus(Resource):
+    @classmethod
+    def get(cls):
+
+        if not session.get("userid"):
+            return redirect("/login")
+
+        headers = {'Content-Type': 'text/html'}
+        
+        menus = tbrolemenu
+
+        role = tbroles.find_by_roleid(session.get('roleid'))
+
+        return make_response(render_template('index.html', menus=menus, role=role, task="updatestatus"), 200, headers)
+    
+class ViewStatus(Resource):
+    @classmethod
+    def get(cls):
+
+        if not session.get("userid"):
+            return redirect("/login")
+
+        headers = {'Content-Type': 'text/html'}
+        
+        menus = tbrolemenu
+
+        role = tbroles.find_by_roleid(session.get('roleid'))
+
+        return make_response(render_template('index.html', menus=menus, role=role, task="viewstatus"), 200, headers)
+    
+
+class CreateUsers(Resource):
+    @classmethod
+    def get(cls):
+
+        if not session.get("userid"):
+            return redirect("/login")
+
+        headers = {'Content-Type': 'text/html'}
+        
+        menus = tbrolemenu
+
+        role = tbroles.find_by_roleid(session.get('roleid'))
+
+        return make_response(render_template('index.html', menus=menus, role=role, task="createusers"), 200, headers)
+
+class UpdateUsers(Resource):
+    @classmethod
+    def get(cls):
+
+        if not session.get("userid"):
+            return redirect("/login")
+
+        headers = {'Content-Type': 'text/html'}
+        
+        menus = tbrolemenu
+
+        role = tbroles.find_by_roleid(session.get('roleid'))
+
+        return make_response(render_template('index.html', menus=menus, role=role, task="updateusers"), 200, headers)
+    
+class ViewUsers(Resource):
+    @classmethod
+    def get(cls):
+
+        if not session.get("userid"):
+            return redirect("/login")
+
+        headers = {'Content-Type': 'text/html'}
+        
+        menus = tbrolemenu
+
+        role = tbroles.find_by_roleid(session.get('roleid'))
+
+        return make_response(render_template('index.html', menus=menus, role=role, task="viewusers"), 200, headers)
+    

@@ -309,6 +309,33 @@
     <!-- history of trans -->
     {% elif task == 'historyoftrans' %}
     {% include 'historyoftrans.html' %}
+    <!-- products management -->
+    {% elif task == 'createproducts' %}
+    {% include 'product/createproduct.html' %}
+    {% elif task == 'createcategories' %}
+    {% include 'product/createcategory.html' %}
+    {% elif task == 'updateproducts' %}
+    {% include 'product/updateproduct.html' %}
+    {% elif task == 'updatecategories' %}
+    {% include 'product/updatecategory.html' %}
+    {% elif task == 'viewproducts' %}
+    {% include 'product/viewproduct.html' %}
+    {% elif task == 'viewcategories' %}
+    {% include 'product/viewcategory.html' %}
+    <!-- roles management -->
+    {% elif task == 'createrole' %}
+    {% include 'role/createrole.html' %}
+    {% elif task == 'createpermission' %}
+    {% include 'role/createpermission.html' %}
+    {% elif task == 'attachedrolepermission' %}
+    {% include 'role/attachedrolepermission.html' %}
+    <!-- status management -->
+    {% elif task == 'createstatus' %}
+    {% include 'status/createstatus.html' %}
+    {% elif task == 'updatestatus' %}
+    {% include 'status/updatestatus.html' %}
+    {% elif task == 'viewstatus' %}
+    {% include 'status/viewstatus.html' %}    
     <!-- batches management -->
     {% elif task == 'createbatch' %}
     {% include 'batch/createbatches.html' %}
@@ -316,6 +343,13 @@
     {% include 'batch/viewbatches.html' %}
     {% elif task == 'updatebatch' %}
     {% include 'batch/updatebatches.html' %}
+    <!-- user management -->
+    {% elif task == 'createusers' %}
+    {% include 'user/createuser.html' %}
+    {% elif task == 'updateusers' %}
+    {% include 'user/updateuser.html' %}
+    {% elif task == 'viewusers' %}
+    {% include 'user/viewuser.html' %}    
     <!-- end if -->
     {% endif %}
 

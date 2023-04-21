@@ -12,7 +12,7 @@ class ProductsSchema(SQLAlchemyAutoSchema):
     productcode = auto_field()
     nameen = auto_field()
     namekh = auto_field()
-    inputtype = auto_field()
+    weight = auto_field()
     catid = auto_field()
     details = auto_field()
     # tbcategories = fields.Nested("CategoriesSchema")
