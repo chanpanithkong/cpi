@@ -83,7 +83,9 @@ class ViewProducts(Resource):
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
-        return make_response(render_template('index.html', menus=menus, role=role, task="viewproducts"), 200, headers)
+        categories = tbcategories
+
+        return make_response(render_template('index.html', menus=menus, role=role,categories=categories, task="viewproducts"), 200, headers)
     
 class ViewCategories(Resource):
     @classmethod
@@ -100,4 +102,4 @@ class ViewCategories(Resource):
 
         categories = tbcategories
 
-        return make_response(render_template('index.html', menus=menus, role=role, task="viewcategories"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, categories=categories, task="viewcategories"), 200, headers)

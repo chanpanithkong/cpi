@@ -1,1 +1,102 @@
-viewcategory
+<div class="pagetitle">
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+            <li class="breadcrumb-item active">View Categories</li>
+        </ol>
+    </nav>
+</div>
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <center>
+                        <h5 class="card-title">Categories Management</h5>
+                    </center>
+                    <br />
+                    <div id="accordion">
+                        
+                        {% for cl in categories.find_by_parent() %}
+                        
+                        <div class="card">
+                            <div class="row">
+                                <div class="card-header" id="heading{{loop.index}}" style="text-align: left; cursor: pointer; color: green; font-weight:bold;">
+                                    {% if categories.find_by_parentid(cl.catid)|length > 0 %}
+                                    <div class="collapsed" data-toggle="collapse" data-target="#collapse{{loop.index}}" aria-expanded="false" aria-controls="collapse{{loop.index}}">
+                                        {{loop.index}}.&nbsp;{{cl.nameen}}
+                                    </div>
+                                    {% else %}
+                                    <div class="collapsed" data-toggle="collapse" data-target="#collapse{{loop.index}}" aria-expanded="false" aria-controls="collapse{{loop.index}}">
+                                        <div style="float: left;">{{loop.index}}.&nbsp;{{cl.nameen}}</div>
+                                        <div style="float: right;">
+                                            <button type="button" class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="top" title="Update Category">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </button>&nbsp;
+                                            <button type="button" class="btn btn-danger btn-sm"  data-toggle="tooltip" data-placement="top" title="Delete Category">
+                                                <i class="bi bi-trash-fill"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                
+                            </div>
+                            
+                            {% if categories.find_by_parentid(cl.catid)|length > 0 %}
+                            <div id="collapse{{loop.index}}" class="collapse1 show" aria-labelledby="heading{{loop.index}}" data-parent="#accordion">
+                            
+                            {% for chcat in categories.find_by_parentid(cl.catid) %}
+                                <div class="row">
+                                    <div class="card-header" style="text-align: left; cursor: pointer; color: blue; font-weight:bold;">
+                                        <div style="float: left;">&nbsp;&nbsp;&nbsp;&nbsp;{{loop.index}}.&nbsp;{{chcat.nameen}}</div>
+                                        <div style="float: right;">
+                                            <button type="button" class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="top" title="Update Category">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </button>&nbsp;
+                                            <button type="button" class="btn btn-danger btn-sm"  data-toggle="tooltip" data-placement="top" title="Delete Category">
+                                                <i class="bi bi-trash-fill"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            {% endfor %}
+                        
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        {% endfor %}
+                        <div>
+                            <div style="text-align: Center">
+                              <button type="button" class="btn btn-primary" id="save" >
+                                New Category
+                              </button>
+                              <button type="button" class="btn btn-success" id="submit">
+                                Refresh
+                              </button>
+                            </div>
+                            <br />
+                          </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<style>
+    .card {
+        margin-bottom: 10px;
+    }
+</style>
+<script>
+
+    $(document).ready(function () {
+        $('.collapse1').collapse();
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+
+
+</script>
