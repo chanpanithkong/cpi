@@ -36,14 +36,16 @@ class Rice(Resource):
         isbutton = False
         if batch is not None:
             trans = tbtrans
-            productlist = tbproducts.find_by_catid(category)
+            
+            productlist = tbproducts
+
             filter = (tbtrans.status == 1) & (tbcategories.catid == category) & (tbtrans.batchid == batch.batchid)
             submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
             isbutton = True    
             if len(submitdata) > 0:
                 disabled = "disabled "
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled, submitdata=submitdata,isbutton=isbutton, task="rice"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled, submitdata=submitdata,isbutton=isbutton,category = category, task="rice"), 200, headers)
 
 
 class Ingredient(Resource):

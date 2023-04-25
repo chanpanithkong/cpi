@@ -31,8 +31,20 @@
                                     <div class="collapsed" data-toggle="collapse" data-target="#collapse{{loop.index}}" aria-expanded="false" aria-controls="collapse{{loop.index}}">
                                         <div style="float: left;">{{loop.index}}.&nbsp;{{cl.nameen}}</div>
                                         <div style="float: right;">
+                                            <a href="/listproducts/{{cl.catid}}">
                                             <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Add Product to {{cl.nameen}}">
                                                 <i class="bi bi-save2-fill"></i>
+                                            </button>
+                                            </a>
+                                            &nbsp;
+                                            <a href="/updatecategories/{{cl.catid}}">
+                                            <button type="button" class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="top" title="Update Category">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </button>
+                                            </a>
+                                            &nbsp;
+                                            <button type="button" class="btn btn-danger btn-sm"  data-toggle="tooltip" data-placement="top" title="Delete Category">
+                                                <i class="bi bi-trash-fill"></i>
                                             </button>
                                         </div>
                                     </div>
@@ -49,8 +61,20 @@
                                     <div class="card-header" style="text-align: left; cursor: pointer; color: blue; font-weight:bold;">
                                         <div style="float: left;">&nbsp;&nbsp;&nbsp;&nbsp;{{loop.index}}.&nbsp;{{chcat.nameen}}</div>
                                         <div style="float: right;">
+                                            <a href="/listproducts/{{chcat.catid}}">
                                             <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Add Product to {{chcat.nameen}}">
                                                 <i class="bi bi-save2-fill"></i>
+                                            </button>
+                                            </a>
+                                            &nbsp;
+                                            <a href="/updatecategories/{{chcat.catid}}">
+                                            <button type="button" class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="top" title="Update Category">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </button>
+                                            </a>
+                                            &nbsp;
+                                            <button type="button" class="btn btn-danger btn-sm"  data-toggle="tooltip" data-placement="top" title="Delete Category">
+                                                <i class="bi bi-trash-fill"></i>
                                             </button>
                                         </div>
                                     </div>
@@ -65,6 +89,21 @@
                         {% endfor %}
 
                     </div>
+                    
+                    <div>
+                        <div style="text-align: Center">
+                          <a href="/createcategories">
+                          <button type="button" class="btn btn-primary" id="newcategory" >
+                            New Category
+                          </button>
+                          </a>
+                          &nbsp;
+                          <button type="button" class="btn btn-success" id="submit">
+                            Refresh
+                          </button>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>

@@ -21,7 +21,7 @@ from controls.users import User, UsersList, UserLogin, ChangePasswordForUser, Up
 from pagecontrollers.pages import ViewUsers, UpdateUsers, CreateUsers, CreateStatus, UpdateStatus, ViewStatus, AttachedRolePermission, CreatePermission, CreateRoles,CreateBatches,ViewBatches, UpdateBatches, Logout, UserLoginPage, LoginPage, HomePage, SubmittedTrans, AuthorizedTrans, CheckedTrans, CheckedTransDetails, HistoryOfTrans, BeverageTobacco, Restaurant, ClothShoes, Shipping, Medicine, Housing 
 from pagecontrollers.usersetting import UserProfile, ChangePassword
 from pagecontrollers.food import Rice, Ingredient, Meat, FishSeaFood, Fruit, Vegetables
-from pagecontrollers.categoryproduct import CreateProducts, CreateCategories, UpdateProducts, UpdateCategories, ViewProducts, ViewCategories
+from pagecontrollers.categoryproduct import ListProducts, CreateProducts, CreateCategories, UpdateProducts, UpdateCategories, ViewProducts, ViewCategories
 
 from dbinfo import dbconfig
 from flask_cors import CORS
@@ -110,10 +110,11 @@ api.add_resource(CheckedTransDetails, "/checkedtransdetail/<branchcode>")
 api.add_resource(HistoryOfTrans, "/historyoftrans")
 
 # products management
-api.add_resource(CreateProducts, "/createproducts")
+api.add_resource(CreateProducts, "/createproducts/<catid>")
+api.add_resource(ListProducts, "/listproducts/<catid>")
 api.add_resource(CreateCategories, "/createcategories")
-api.add_resource(UpdateProducts, "/updateproducts")
-api.add_resource(UpdateCategories, "/updatecategories")
+api.add_resource(UpdateProducts, "/updateproducts/<catid>/<prodid>")
+api.add_resource(UpdateCategories, "/updatecategories/<catid>")
 api.add_resource(ViewProducts, "/viewproducts")
 api.add_resource(ViewCategories, "/viewcategories")
 

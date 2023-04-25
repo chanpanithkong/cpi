@@ -28,13 +28,14 @@
                 </tr>
               </thead>
               <tbody>
-                {% for prod in productlist %}
+                {% for prod in productlist.find_by_catid(category) %}
                 <tr>
                   <td>{{loop.index }} <input type="hidden" name="prodid{{prod.prodid}}" value="{{prod.prodid}}" /> </td>
                   <td>{{prod.namekh}}</td>
-                  <td>
-                    <input type="text" class="form-control" name="weight{{prod.prodid}}"
-                      value="{{trans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,prod.prodid).weight}}" />
+                  <td><input type="text" class="form-control" name="weight{{prod.prodid}}" disabled
+                    value="{{prod.weight}}" /> 
+                    <!-- <input type="text" class="form-control" name="weight{{prod.prodid}}" disabled
+                      value="{{trans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,prod.prodid).weight}}" /> -->
                   </td>
                   <td>
                     <input type="text" class="form-control" name="price{{prod.prodid}}"

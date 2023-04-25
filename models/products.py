@@ -29,3 +29,7 @@ class tbproducts(db.Model):
     @classmethod
     def find_by_catid(cls, catid) -> "tbproducts":
         return cls.query.filter_by(catid=catid).all()
+
+    @classmethod
+    def find_by_catid(cls, catid) -> "tbproducts":
+        return cls.query.filter_by(catid=catid).all()

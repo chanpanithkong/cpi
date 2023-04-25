@@ -1,1 +1,105 @@
-updateproduct
+<div class="pagetitle">
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="/viewproducts">View Products</a></li>
+            <li class="breadcrumb-item active">Update Product</li>
+        </ol>
+    </nav>
+</div>
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <center>
+                        <h5 class="card-title">Update Products of {{category.find_by_catid(catid).nameen}} Category</h5>
+                    </center>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-4">
+                                <label for="inputEmail5" class="form-label">Product ID</label>
+                                <input type="text" class="form-control" id="productid"
+                                    placeholder="Please fill Product ID" name="productid" value="{{prodid}}">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="inputPassword5" class="form-label">Product Code</label>
+                                <input type="text" class="form-control" id="productcode"
+                                    placeholder="Please fill product code" name="productcode" value="{{product.find_by_prodid(prodid).productcode}}">
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-4">
+                                <label for="inputEmail5" class="form-label">Englis Name</label>
+                                <input type="text" class="form-control" id="nameen"
+                                    placeholder="Please fill english name" name="nameen" value="{{product.find_by_prodid(prodid).nameen}}">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="inputPassword5" class="form-label">Khmer Name</label>
+                                <input type="text" class="form-control" id="namekh"
+                                    placeholder="Please fill khmer name" name="namekh" value="{{product.find_by_prodid(prodid).namekh}}">
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-4">
+                                <label for="inputEmail5" class="form-label">Weight</label>
+                                <input type="text" class="form-control" id="weight"
+                                    placeholder="Please fill weight" name="weight" value="{{product.find_by_prodid(prodid).weight}}">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="inputPassword5" class="form-label">Category</label>
+                                <select id="catid" class="form-select" name="catid">
+                                {% for ct in category.query.all() %}
+                                {% if ct.catid == catid|int %}
+                                    <option selected value="{{ct.catid}}">{{ct.nameen}}</option>
+                                {% else %}
+                                    <option value="{{ct.catid}}">{{ct.nameen}}</option>
+                                {% endif %}
+                                {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-8">
+                                <label for="inputEmail5" class="form-label">Details</label>
+                                <input type="text" class="form-control" id="details"
+                                    placeholder="Please fill details" name="details" value="{{product.find_by_prodid(prodid).details}}">
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        
+                        <br/>
+
+                        <div>
+                            <div style="text-align: Center">
+                              <button type="button" class="btn btn-success" id="save" >
+                                Update Product
+                              </button>
+                              <button type="button" class="btn btn-danger" id="submit">
+                                Clear
+                              </button>
+                            </div>
+                        </div>
+
+
+                </div>
+
+
+
+            </div>
+
+            
+        </div>
+    </div>
+</section>

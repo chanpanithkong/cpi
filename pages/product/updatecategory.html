@@ -1,1 +1,104 @@
-updatecategory
+<div class="pagetitle">
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="/viewproducts">View Products</a></li>
+            <li class="breadcrumb-item active">Update Category</li>
+        </ol>
+    </nav>
+</div>
+
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <center>
+                        <h5 class="card-title">{{category.nameen}} Category Management</h5>
+                    </center>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-4">
+                                <label for="inputEmail5" class="form-label">Category ID</label>
+                                <input type="text" class="form-control" id="productid"
+                                    placeholder="Please fill Product ID" name="productid" value="{{category.catid}}">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="inputPassword5" class="form-label">Category Code</label>
+                                <input type="text" class="form-control" id="productcode"
+                                    placeholder="Please fill product code" name="productcode" value="{{category.catcode}}">
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-4">
+                                <label for="inputEmail5" class="form-label">Englis Name</label>
+                                <input type="text" class="form-control" id="nameen"
+                                    placeholder="Please fill english name" name="nameen" value="{{category.nameen}}">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="inputPassword5" class="form-label">Khmer Name</label>
+                                <input type="text" class="form-control" id="namekh"
+                                    placeholder="Please fill khmer name" name="namekh" value="{{category.namekh}}">
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-4">
+                                <label for="inputEmail5" class="form-label">Sub Category of</label>
+                                <label for="inputPassword5" class="form-label">Category</label>
+                                <select id="catid" class="form-select" name="catid">
+                                    <option value="0">No Sub Category</option>
+                                {% for ct in category.find_by_parent() %}
+                                
+                                {% if ct.catid == category.parentid %}
+                                    <option selected value="{{ct.catid}}">{{ct.nameen}}</option>
+                                {% else %}
+                                    <option value="{{ct.catid}}">{{ct.nameen}}</option>
+                                {% endif %}
+                                {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="inputPassword5" class="form-label">Details</label>
+                                <input type="text" class="form-control" id="details"
+                                    placeholder="Please fill details" name="details" value="{{category.details}}">
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        
+                        <br/>
+
+                        <div>
+                            <div style="text-align: Center">
+                              <button type="button" class="btn btn-primary" id="save" >
+                                Add New Category
+                              </button>
+                              &nbsp;
+                              <button type="button" class="btn btn-danger" id="clear">
+                                Clear
+                              </button>
+                              &nbsp;
+                              <button type="button" class="btn btn-success" id="back">
+                                Back
+                              </button>
+                            </div>
+                        </div>
+
+
+                </div>
+
+
+
+            </div>
+
+            
+        </div>
+    </div>
+</section>
