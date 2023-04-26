@@ -13,7 +13,7 @@
             <div class="card">
                 <div class="card-body">
                     <center>
-                        <h5 class="card-title">Products Management</h5>
+                        <h5 class="card-title">Categories and Products Management</h5>
                     </center>
                     <br />
                     <div id="accordion">
@@ -29,7 +29,10 @@
                                     </div>
                                     {% else %}
                                     <div class="collapsed" data-toggle="collapse" data-target="#collapse{{loop.index}}" aria-expanded="false" aria-controls="collapse{{loop.index}}">
-                                        <div style="float: left;">{{loop.index}}.&nbsp;{{cl.nameen}}</div>
+                                        <div style="float: left;" class="leftcontent">
+                                            {{loop.index}}.&nbsp;{{cl.nameen}}
+                                            <input type="hidden" class="catid" value="{{cl.catid}}" />
+                                        </div>
                                         <div style="float: right;">
                                             <a href="/listproducts/{{cl.catid}}">
                                             <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Add Product to {{cl.nameen}}">
@@ -43,7 +46,7 @@
                                             </button>
                                             </a>
                                             &nbsp;
-                                            <button type="button" class="btn btn-danger btn-sm"  data-toggle="tooltip" data-placement="top" title="Delete Category">
+                                            <button type="button" class="btn btn-danger btn-sm cdelete"  data-toggle="tooltip" data-placement="top" title="Delete Category">
                                                 <i class="bi bi-trash-fill"></i>
                                             </button>
                                         </div>
@@ -59,7 +62,10 @@
                             {% for chcat in categories.find_by_parentid(cl.catid) %}
                                 <div class="row">
                                     <div class="card-header" style="text-align: left; cursor: pointer; color: blue; font-weight:bold;">
-                                        <div style="float: left;">&nbsp;&nbsp;&nbsp;&nbsp;{{loop.index}}.&nbsp;{{chcat.nameen}}</div>
+                                        <div style="float: left;" class="leftcontent">
+                                            &nbsp;&nbsp;&nbsp;&nbsp;{{loop.index}}.&nbsp;{{chcat.nameen}}
+                                            <input type="hidden" class="catid" value="{{chcat.catid}}" />
+                                        </div>
                                         <div style="float: right;">
                                             <a href="/listproducts/{{chcat.catid}}">
                                             <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Add Product to {{chcat.nameen}}">
@@ -73,7 +79,7 @@
                                             </button>
                                             </a>
                                             &nbsp;
-                                            <button type="button" class="btn btn-danger btn-sm"  data-toggle="tooltip" data-placement="top" title="Delete Category">
+                                            <button type="button" class="btn btn-danger btn-sm cdelete"  data-toggle="tooltip" data-placement="top" title="Delete Category">
                                                 <i class="bi bi-trash-fill"></i>
                                             </button>
                                         </div>
@@ -98,7 +104,7 @@
                           </button>
                           </a>
                           &nbsp;
-                          <button type="button" class="btn btn-success" id="submit">
+                          <button type="button" class="btn btn-success" id="refresh">
                             Refresh
                           </button>
                         </div>
@@ -119,6 +125,34 @@
     $(document).ready(function () {
         $('.collapse1').collapse();
         $('[data-toggle="tooltip"]').tooltip();
+
+        $("#refresh").click(function(){
+            location.reload();
+        })
+        $(".cdelete").click(function(){
+            
+            catid = $(this).parent().parent().find(".catid").val();
+
+            $.ajax({
+                type: "POST",
+                url: "/api/createcategory",
+                data: JSON.stringify({ data: catid, userrequest:"deletecategory" }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                beforeSend: function() {    },
+                success: function (data){
+                    console.log(data);
+                    // alert(data.msg)
+                    location.reload();
+                },
+                error: function(data) {
+                    console.log(data);
+                }
+
+            })
+        })
+
+
     });
 
 

@@ -21,13 +21,13 @@
                             <div class="col-md-2"></div>
                             <div class="col-md-4">
                                 <label for="inputEmail5" class="form-label">Category ID</label>
-                                <input type="text" class="form-control" id="productid"
-                                    placeholder="Please fill Product ID" name="productid" value="">
+                                <input type="text" class="form-control" id="catid"
+                                    placeholder="Category ID is auto increment" name="catid" value="" disabled>
                             </div>
                             <div class="col-md-4">
                                 <label for="inputPassword5" class="form-label">Category Code</label>
-                                <input type="text" class="form-control" id="productcode"
-                                    placeholder="Please fill product code" name="productcode" value="">
+                                <input type="text" class="form-control" id="catcode"
+                                    placeholder="Please fill product code" name="catcode" value="">
                             </div>
                             <div class="col-md-2"></div>
                         </div>
@@ -52,7 +52,7 @@
                             <div class="col-md-4">
                                 <label for="inputEmail5" class="form-label">Sub Category of</label>
                                 <label for="inputPassword5" class="form-label">Category</label>
-                                <select id="catid" class="form-select" name="catid">
+                                <select id="parentid" class="form-select" name="parentid">
                                     <option value="0">No Sub Category</option>
                                 {% for ct in category.find_by_parent() %}
                                 
@@ -82,7 +82,7 @@
                               </button>
                               &nbsp;
                               <button type="button" class="btn btn-success" id="back">
-                                Back
+                                Category List
                               </button>
                             </div>
                         </div>
@@ -98,3 +98,64 @@
         </div>
     </div>
 </section>
+
+<script>
+
+    $(document).ready(function () {
+
+        $("#save").click(function () {
+
+            // $("#catid").val();
+            catcode =  $("#catcode").val();
+            nameen = $("#nameen").val();
+            namekh = $("#namekh").val();
+            parentid = $("#parentid").val();
+            details = $("#details").val();
+
+
+            item = {};
+            item['catcode'] = catcode;
+            item['nameen'] = nameen;
+            item['namekh'] = namekh;
+            item['parentid'] = parentid;
+            item['details'] = details;
+
+            $.ajax({
+                type: "POST",
+                url: "/api/createcategory",
+                data: JSON.stringify({ data: item, userrequest:"createcategory" }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                beforeSend: function() {    },
+                success: function (data) {
+                    console.log(data);
+                    location.reload();
+                },
+                error: function(data) {
+                    console.log(data);
+                }
+
+            })
+
+
+
+        })
+        $("#clear").click(function () {
+            // $("#catid").val();
+            $("#catcode").val("");
+            $("#nameen").val("");
+            $("#namekh").val("");
+            $("#parentid").val(0);
+            $("#details").val("");
+            
+            
+        })
+
+        $("#back").click(function () {
+            window.location = "/viewproducts"
+        })
+
+
+    })
+
+</script>

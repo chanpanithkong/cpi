@@ -32,7 +32,7 @@
                         <tbody>
                         {% for pd in products %}
                           <tr>
-                            <th scope="row">{{loop.index}}</th>
+                            <th scope="row">{{loop.index}}<input type="hidden" class="cprodid" value="{{pd.prodid}}" /></th>
                             <td>{{pd.productcode}}</td>
                             <td>{{pd.nameen}}</td>
                             <td>{{pd.namekh}}</td>
@@ -46,7 +46,7 @@
                                 </button>
                                 </a>
                                 &nbsp;
-                                <button type="button" class="btn btn-danger btn-sm"  data-toggle="tooltip" data-placement="top" title="Delete Product">
+                                <button type="button" class="btn btn-danger btn-sm pdelete"  data-toggle="tooltip" data-placement="top" title="Delete Product">
                                     <i class="bi bi-trash-fill"></i>
                                 </button>
                             </td>
@@ -60,12 +60,12 @@
                         <div style="text-align: Center">
                           <a href="/createproducts/{{catid}}" >
                           <button type="button" class="btn btn-primary" id="save" >
-                            New Product
+                            Add New Product
                           </button>
                           </a>
                           &nbsp;&nbsp;
-                          <button type="button" class="btn btn-success" id="submit">
-                            Refresh
+                          <button type="button" class="btn btn-success" id="refresh">
+                            Category List
                           </button>
                         </div>
                     </div>
@@ -81,6 +81,44 @@
     $(document).ready(function () {
         $('.collapse1').collapse();
         $('[data-toggle="tooltip"]').tooltip();
+
+
+        // $("#save").click(function () {
+          
+        //   alert("save")
+
+        // })
+
+        $(".pdelete").click(function(){
+
+          prodid = $(this).parent().parent().find(".cprodid").val();
+
+          $.ajax({
+                type: "POST",
+                url: "/api/createproduct",
+                data: JSON.stringify({ data: prodid, userrequest:"deleteproduct" }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                beforeSend: function() {    },
+                success: function (data){
+                    console.log(data);
+                    location.reload();
+                },
+                error: function(data) {
+                    console.log(data);
+                }
+
+            })
+
+          
+
+        })
+
+
+        $("#refresh").click(function () {
+          window.location = "/viewproducts"
+        })
+
     });
 
 

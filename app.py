@@ -8,10 +8,10 @@ from urllib.parse import quote
 # from config.db import db, app, api
 
 from controls.branches import Branch, BranchesList, IndexPage
-from controls.categories import CategoriesList, Category, CategoriesParent, CategoriesChildFromParent
+from controls.categories import CreateCategory, CategoriesList, Category, CategoriesParent, CategoriesChildFromParent
 from controls.measurement import Measurement, MeasurementList
 from controls.menus import Menu, MenusList
-from controls.products import Product, ProductsList
+from controls.products import APICreateProduct, Product, ProductsList
 from controls.rolemenu import RoleMenu, RoleMenuList, RoleMenuParents, RoleMenuChilds
 from controls.roles import Role, RoleList
 from controls.status import Status, StatusList
@@ -153,6 +153,7 @@ api.add_resource(UpdateUsers, "/updateusers")
 # api.add_resource(Branch, "/api/branch/<branchcode>")
 # api.add_resource(BranchesList, "/api/brancheslist")
 
+api.add_resource(CreateCategory, "/api/createcategory")
 # api.add_resource(Category, "/api/category/<catid>")
 # api.add_resource(CategoriesList, "/api/categorieslist")
 # api.add_resource(CategoriesParent, "/api/categoriesparent")
@@ -165,6 +166,7 @@ api.add_resource(UpdateUsers, "/updateusers")
 # api.add_resource(Menu, "/api/menu/<mid>")
 # api.add_resource(MenusList, "/api/menuslist")
 
+api.add_resource(APICreateProduct, "/api/createproduct")
 # api.add_resource(Product, "/api/product/<pid>")
 # api.add_resource(ProductsList, "/api/productslist")
 

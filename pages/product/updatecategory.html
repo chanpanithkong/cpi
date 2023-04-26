@@ -22,13 +22,14 @@
                             <div class="col-md-2"></div>
                             <div class="col-md-4">
                                 <label for="inputEmail5" class="form-label">Category ID</label>
-                                <input type="text" class="form-control" id="productid"
-                                    placeholder="Please fill Product ID" name="productid" value="{{category.catid}}">
+                                <input type="hidden" id="catid"  name="catid" value="{{category.catid}}" />
+                                <input type="text" class="form-control" 
+                                    placeholder="Category ID cannot update" value="" disabled>
                             </div>
                             <div class="col-md-4">
                                 <label for="inputPassword5" class="form-label">Category Code</label>
-                                <input type="text" class="form-control" id="productcode"
-                                    placeholder="Please fill product code" name="productcode" value="{{category.catcode}}">
+                                <input type="text" class="form-control" id="catcode"
+                                    placeholder="Please fill category code" name="catcode" value="{{category.catcode}}">
                             </div>
                             <div class="col-md-2"></div>
                         </div>
@@ -53,7 +54,7 @@
                             <div class="col-md-4">
                                 <label for="inputEmail5" class="form-label">Sub Category of</label>
                                 <label for="inputPassword5" class="form-label">Category</label>
-                                <select id="catid" class="form-select" name="catid">
+                                <select id="parentid" class="form-select" name="parentid">
                                     <option value="0">No Sub Category</option>
                                 {% for ct in category.find_by_parent() %}
                                 
@@ -77,8 +78,8 @@
 
                         <div>
                             <div style="text-align: Center">
-                              <button type="button" class="btn btn-primary" id="save" >
-                                Add New Category
+                              <button type="button" class="btn btn-primary" id="update" >
+                                Update Category
                               </button>
                               &nbsp;
                               <button type="button" class="btn btn-danger" id="clear">
@@ -86,7 +87,7 @@
                               </button>
                               &nbsp;
                               <button type="button" class="btn btn-success" id="back">
-                                Back
+                                Category List
                               </button>
                             </div>
                         </div>
@@ -102,3 +103,63 @@
         </div>
     </div>
 </section>
+
+<script>
+
+    $(document).ready(function() {
+
+        $("#back").click(function(){
+            window.location = "/viewproducts"
+        })
+
+        $("#clear").click(function(){
+            
+            $("#catcode").val("");
+            $("#nameen").val("");
+            $("#namekh").val("");
+            $("#parentid").val(0);
+            $("#details").val("");
+
+        })
+
+        $("#update").click(function(){
+            
+            catid = $("#catid").val();
+            catcode =  $("#catcode").val();
+            nameen = $("#nameen").val();
+            namekh = $("#namekh").val();
+            parentid = $("#parentid").val();
+            details = $("#details").val();
+
+
+            item = {};
+            item['catid'] = catid;
+            item['catcode'] = catcode;
+            item['nameen'] = nameen;
+            item['namekh'] = namekh;
+            item['parentid'] = parentid;
+            item['details'] = details;
+            console.log(item);
+            $.ajax({
+                type: "POST",
+                url: "/api/createcategory",
+                data: JSON.stringify({ data: item, userrequest:"updatecategory" }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                beforeSend: function() {    },
+                success: function (data) {
+                    console.log(data);
+                    location.reload();
+                },
+                error: function(data) {
+                    console.log(data);
+                }
+
+            })
+
+        })
+        
+
+    })
+
+</script>

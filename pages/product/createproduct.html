@@ -22,7 +22,7 @@
                             <div class="col-md-4">
                                 <label for="inputEmail5" class="form-label">Product ID</label>
                                 <input type="text" class="form-control" id="productid"
-                                    placeholder="Please fill Product ID" name="productid" value="{{prodid}}">
+                                    placeholder="Product ID is auto increment" name="productid" value="" disabled>
                             </div>
                             <div class="col-md-4">
                                 <label for="inputPassword5" class="form-label">Product Code</label>
@@ -86,20 +86,81 @@
                               <button type="button" class="btn btn-primary" id="save" >
                                 Add New Product
                               </button>
-                              <button type="button" class="btn btn-danger" id="submit">
+                              &nbsp;
+                              <button type="button" class="btn btn-danger" id="clear">
                                 Clear
                               </button>
+                              &nbsp;
+                              <a href="/listproducts/{{catid}}" >
+                              <button type="button" class="btn btn-success" id="productlist">
+                                Product List
+                              </button>
+                              </a>
                             </div>
                         </div>
-
-
                 </div>
-
-
-
             </div>
-
-            
         </div>
     </div>
 </section>
+
+<script>
+    
+    $(document).ready(function(){
+
+        $("#weight").val(0)
+
+        $("#save").click(function(){
+
+            productcode = $("#productcode").val()
+            nameen = $("#nameen").val()
+            namekh = $("#namekh").val()
+            weight = $("#weight").val()
+            catid = $("#catid").val()
+            details = $("#details").val()
+
+            item = {};
+            item['productcode'] = productcode;
+            item['nameen'] = nameen;
+            item['namekh'] = namekh;
+            item['weight'] = weight;
+            item['catid'] = catid;
+            item['details'] = details;
+
+            $.ajax({
+                type: "POST",
+                url: "/api/createproduct",
+                data: JSON.stringify({ data: item, userrequest:"createproduct" }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                beforeSend: function() {    },
+                success: function (data){
+                    console.log(data);
+                    location.reload();
+                },
+                error: function(data) {
+                    console.log(data);
+                }
+
+            })
+        })
+
+        $("#clear").click(function(){
+            $("#productcode").val("")
+            $("#nameen").val("")
+            $("#namekh").val("")
+            $("#weight").val(0)
+            $("#catid").val(1)
+            $("#details").val("")
+            
+        })
+
+        // $("#productlist").click(function(){
+
+        // })
+
+
+
+    })
+
+</script>
