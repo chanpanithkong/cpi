@@ -28,6 +28,7 @@ class LoginPage(Resource):
         headers = {'Content-Type': 'text/html'}
         return make_response(render_template('login.html'), 200, headers)
 
+
 class UserLoginPage(Resource):
     @classmethod
     def post(cls):
@@ -57,7 +58,7 @@ class Logout(Resource):
     def get(cls):
         headers = {'Content-Type': 'text/html'}
         session.clear()
-        return make_response(render_template('login.html'), 200, headers)   
+        return make_response(render_template('login.html'), 200, headers)
 
 
 class HomePage(Resource):
@@ -67,22 +68,23 @@ class HomePage(Resource):
             return redirect("/login")
 
         headers = {'Content-Type': 'text/html'}
-    
+
         menus = tbrolemenu
         role = tbroles.find_by_roleid(session.get('roleid'))
         batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
-        
+
         pprint(batch)
 
         user = tbusers.find_by_userid(session.get('userid'))
 
         batchdisabled = ""
-        if batch is not None :
+        if batch is not None:
             batchtrans = tbtrans.find_by_batchidnotaccept(batch.batchid)
             if len(batchtrans) > 0:
                 batchdisabled = "disabled"
 
-        sql = "select trn.branchcode, trn.status, trn.batchid, count(trn.productid) as cnt from tbtrans trn inner join tbbatches bat on bat.batchid = trn.batchid where bat.statusid = 9 and trn.branchcode = '" + session.get("branchcode") + "' group by trn.branchcode, trn.status, trn.batchid"
+        sql = "select trn.branchcode, trn.status, trn.batchid, count(trn.productid) as cnt from tbtrans trn inner join tbbatches bat on bat.batchid = trn.batchid where bat.statusid = 9 and trn.branchcode = '" + session.get(
+            "branchcode") + "' group by trn.branchcode, trn.status, trn.batchid"
         result = db.engine.execute(sql)
 
         transtatus = []
@@ -90,8 +92,8 @@ class HomePage(Resource):
             transtatus.append(record)
 
         pprint(transtatus)
-        
-        return make_response(render_template('index.html', menus=menus, role=role, batchdisabled=batchdisabled,user=user,transtatus=transtatus, task="dashboard"), 200, headers)
+
+        return make_response(render_template('index.html', menus=menus, role=role, batchdisabled=batchdisabled, user=user, transtatus=transtatus, task="dashboard"), 200, headers)
 
 
 class HistoryOfTrans(Resource):
@@ -106,7 +108,7 @@ class HistoryOfTrans(Resource):
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
-        return make_response(render_template('index.html', menus=menus,role=role, task="historyoftrans"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, task="historyoftrans"), 200, headers)
 
 
 class BeverageTobacco(Resource):
@@ -132,13 +134,15 @@ class BeverageTobacco(Resource):
         if batch is not None:
             trans = tbtrans
             productlist = tbproducts.find_by_catid(category)
-            filter = (tbtrans.status == 1) & (tbcategories.catid == category) & (tbtrans.batchid == batch.batchid)
-            submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
-            isbutton = True    
+            filter = (tbtrans.status == 1) & (tbcategories.catid ==
+                                              category) & (tbtrans.batchid == batch.batchid)
+            submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(
+                tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
+            isbutton = True
             if len(submitdata) > 0:
                 disabled = "disabled "
-            
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled,isbutton=isbutton, task="beveragetobacco"), 200, headers)
+
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist, trans=trans, batch=batch, disabled=disabled, isbutton=isbutton, task="beveragetobacco"), 200, headers)
 
 
 class Restaurant(Resource):
@@ -149,7 +153,8 @@ class Restaurant(Resource):
             return redirect("/login")
 
         headers = {'Content-Type': 'text/html'}
-        filter = (tbrolemenu.roleid == session.get('roleid')) & (tbmenus.parentid == 0)
+        filter = (tbrolemenu.roleid == session.get(
+            'roleid')) & (tbmenus.parentid == 0)
         menus = tbrolemenu
         role = tbroles.find_by_roleid(session.get('roleid'))
 
@@ -165,13 +170,15 @@ class Restaurant(Resource):
         if batch is not None:
             trans = tbtrans
             productlist = tbproducts.find_by_catid(category)
-            filter = (tbtrans.status == 1) & (tbcategories.catid == category) & (tbtrans.batchid == batch.batchid)
-            submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
-            isbutton = True    
+            filter = (tbtrans.status == 1) & (tbcategories.catid ==
+                                              category) & (tbtrans.batchid == batch.batchid)
+            submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(
+                tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
+            isbutton = True
             if len(submitdata) > 0:
                 disabled = "disabled "
 
-        return make_response(render_template('index.html', menus=menus,role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled, isbutton=isbutton, task="restaurant"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist, trans=trans, batch=batch, disabled=disabled, isbutton=isbutton, task="restaurant"), 200, headers)
 
 
 class ClothShoes(Resource):
@@ -182,7 +189,8 @@ class ClothShoes(Resource):
             return redirect("/login")
 
         headers = {'Content-Type': 'text/html'}
-        filter = (tbrolemenu.roleid == session.get('roleid')) & (tbmenus.parentid == 0)
+        filter = (tbrolemenu.roleid == session.get(
+            'roleid')) & (tbmenus.parentid == 0)
         menus = tbrolemenu
         role = tbroles.find_by_roleid(session.get('roleid'))
 
@@ -198,13 +206,16 @@ class ClothShoes(Resource):
         if batch is not None:
             trans = tbtrans
             productlist = tbproducts.find_by_catid(category)
-            filter = (tbtrans.status == 1) & (tbcategories.catid == category) & (tbtrans.batchid == batch.batchid)
-            submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
-            isbutton = True    
+            filter = (tbtrans.status == 1) & (tbcategories.catid ==
+                                              category) & (tbtrans.batchid == batch.batchid)
+            submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(
+                tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
+            isbutton = True
             if len(submitdata) > 0:
                 disabled = "disabled "
 
-        return make_response(render_template('index.html', menus=menus,role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled, isbutton=isbutton, task="clothshoes"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist, trans=trans, batch=batch, disabled=disabled, isbutton=isbutton, task="clothshoes"), 200, headers)
+
 
 class Shipping(Resource):
     @classmethod
@@ -229,13 +240,15 @@ class Shipping(Resource):
         if batch is not None:
             trans = tbtrans
             productlist = tbproducts.find_by_catid(category)
-            filter = (tbtrans.status == 1) & (tbcategories.catid == category) & (tbtrans.batchid == batch.batchid)
-            submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
-            isbutton = True    
+            filter = (tbtrans.status == 1) & (tbcategories.catid ==
+                                              category) & (tbtrans.batchid == batch.batchid)
+            submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(
+                tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
+            isbutton = True
             if len(submitdata) > 0:
                 disabled = "disabled "
 
-        return make_response(render_template('index.html', menus=menus,role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled, isbutton=isbutton, task="shipping"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist, trans=trans, batch=batch, disabled=disabled, isbutton=isbutton, task="shipping"), 200, headers)
 
 
 class Medicine(Resource):
@@ -261,13 +274,15 @@ class Medicine(Resource):
         if batch is not None:
             trans = tbtrans
             productlist = tbproducts.find_by_catid(category)
-            filter = (tbtrans.status == 1) & (tbcategories.catid == category) & (tbtrans.batchid == batch.batchid)
-            submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
-            isbutton = True    
+            filter = (tbtrans.status == 1) & (tbcategories.catid ==
+                                              category) & (tbtrans.batchid == batch.batchid)
+            submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(
+                tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
+            isbutton = True
             if len(submitdata) > 0:
                 disabled = "disabled "
 
-        return make_response(render_template('index.html', menus=menus,role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled, isbutton=isbutton, task="medicine"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist, trans=trans, batch=batch, disabled=disabled, isbutton=isbutton, task="medicine"), 200, headers)
 
 
 class Housing(Resource):
@@ -293,13 +308,15 @@ class Housing(Resource):
         if batch is not None:
             trans = tbtrans
             productlist = tbproducts.find_by_catid(category)
-            filter = (tbtrans.status == 1) & (tbcategories.catid == category) & (tbtrans.batchid == batch.batchid)
-            submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
-            isbutton = True    
+            filter = (tbtrans.status == 1) & (tbcategories.catid ==
+                                              category) & (tbtrans.batchid == batch.batchid)
+            submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(
+                tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
+            isbutton = True
             if len(submitdata) > 0:
                 disabled = "disabled "
 
-        return make_response(render_template('index.html', menus=menus,role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled,isbutton=isbutton, task="housing"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist, trans=trans, batch=batch, disabled=disabled, isbutton=isbutton, task="housing"), 200, headers)
 
 
 class SubmittedTrans(Resource):
@@ -315,13 +332,14 @@ class SubmittedTrans(Resource):
         role = tbroles.find_by_roleid(session.get('roleid'))
 
         catlist = tbcategories.query.filter(tbcategories.catid != 1).all()
-        
+
         products = tbproducts
-        
+
         batch = []
         if batch is not None:
-            batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
-            
+            batch = tbbatches.find_by_branchbatchopen(
+                session.get("branchcode"))
+
         trans = tbtrans
 
         return make_response(render_template('index.html', menus=menus, role=role, catlist=catlist, products=products, batch=batch, trans=trans, task="submittedtrans"), 200, headers)
@@ -338,19 +356,19 @@ class AuthorizedTrans(Resource):
         menus = tbrolemenu
 
         role = tbroles.find_by_roleid(session.get('roleid'))
-        
-        
+
         products = tbproducts
         batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
-        
+
         catlist = []
         trans = []
-        if batch is not None :
+        if batch is not None:
             catlist = tbtrans.find_by_authorizecatbatchid(batch.batchid)
             trans = tbtrans
 
         return make_response(render_template('index.html', menus=menus, role=role, catlist=catlist, products=products, batch=batch, trans=trans, task="authorizedtrans"), 200, headers)
-    
+
+
 class CheckedTrans(Resource):
     @classmethod
     def get(cls):
@@ -375,7 +393,6 @@ class CheckedTrans(Resource):
         return make_response(render_template('index.html', menus=menus, role=role, branches=branches, transtatus=transtatus, task="checkedtrans"), 200, headers)
 
 
-
 class CheckedTransDetails(Resource):
     @classmethod
     def get(cls, branchcode):
@@ -387,17 +404,16 @@ class CheckedTransDetails(Resource):
         menus = tbrolemenu
 
         role = tbroles.find_by_roleid(session.get('roleid'))
-        
-        
+
         products = tbproducts
         batch = tbbatches.find_by_branchbatchopen(branchcode)
         catlist = []
-        if batch is  not None :
+        if batch is not None:
             catlist = tbtrans.find_by_checkebatchid(batch.batchid)
-        
+
         trans = tbtrans
 
-        return make_response(render_template('index.html', menus=menus, role=role, catlist=catlist, products=products, batch=batch, trans=trans,branchcode=branchcode, task="checkedtransdetail"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, catlist=catlist, products=products, batch=batch, trans=trans, branchcode=branchcode, task="checkedtransdetail"), 200, headers)
 
 
 class CreateBatches(Resource):
@@ -408,13 +424,12 @@ class CreateBatches(Resource):
             return redirect("/login")
 
         headers = {'Content-Type': 'text/html'}
-        
+
         menus = tbrolemenu
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
         return make_response(render_template('index.html', menus=menus, role=role, task="createbatch"), 200, headers)
-
 
 
 class UpdateBatches(Resource):
@@ -425,7 +440,7 @@ class UpdateBatches(Resource):
             return redirect("/login")
 
         headers = {'Content-Type': 'text/html'}
-        
+
         menus = tbrolemenu
 
         role = tbroles.find_by_roleid(session.get('roleid'))
@@ -441,13 +456,14 @@ class ViewBatches(Resource):
             return redirect("/login")
 
         headers = {'Content-Type': 'text/html'}
-        
+
         menus = tbrolemenu
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
         return make_response(render_template('index.html', menus=menus, role=role, task="viewbatch"), 200, headers)
-    
+
+
 class CreateRoles(Resource):
     @classmethod
     def get(cls):
@@ -456,12 +472,13 @@ class CreateRoles(Resource):
             return redirect("/login")
 
         headers = {'Content-Type': 'text/html'}
-        
+
         menus = tbrolemenu
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
         return make_response(render_template('index.html', menus=menus, role=role, task="createrole"), 200, headers)
+
 
 class CreatePermission(Resource):
     @classmethod
@@ -471,13 +488,14 @@ class CreatePermission(Resource):
             return redirect("/login")
 
         headers = {'Content-Type': 'text/html'}
-        
+
         menus = tbrolemenu
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
         return make_response(render_template('index.html', menus=menus, role=role, task="createpermission"), 200, headers)
-    
+
+
 class AttachedRolePermission(Resource):
     @classmethod
     def get(cls):
@@ -486,13 +504,13 @@ class AttachedRolePermission(Resource):
             return redirect("/login")
 
         headers = {'Content-Type': 'text/html'}
-        
+
         menus = tbrolemenu
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
         return make_response(render_template('index.html', menus=menus, role=role, task="attachedrolepermission"), 200, headers)
-    
+
 
 class CreateStatus(Resource):
     @classmethod
@@ -502,12 +520,13 @@ class CreateStatus(Resource):
             return redirect("/login")
 
         headers = {'Content-Type': 'text/html'}
-        
+
         menus = tbrolemenu
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
         return make_response(render_template('index.html', menus=menus, role=role, task="createstatus"), 200, headers)
+
 
 class UpdateStatus(Resource):
     @classmethod
@@ -517,13 +536,14 @@ class UpdateStatus(Resource):
             return redirect("/login")
 
         headers = {'Content-Type': 'text/html'}
-        
+
         menus = tbrolemenu
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
         return make_response(render_template('index.html', menus=menus, role=role, task="updatestatus"), 200, headers)
-    
+
+
 class ViewStatus(Resource):
     @classmethod
     def get(cls):
@@ -532,13 +552,13 @@ class ViewStatus(Resource):
             return redirect("/login")
 
         headers = {'Content-Type': 'text/html'}
-        
+
         menus = tbrolemenu
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
         return make_response(render_template('index.html', menus=menus, role=role, task="viewstatus"), 200, headers)
-    
+
 
 class CreateUsers(Resource):
     @classmethod
@@ -548,12 +568,15 @@ class CreateUsers(Resource):
             return redirect("/login")
 
         headers = {'Content-Type': 'text/html'}
-        
+
         menus = tbrolemenu
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
-        return make_response(render_template('index.html', menus=menus, role=role, task="createusers"), 200, headers)
+        testing = "Hello world!"
+
+        return make_response(render_template('index.html', menus=menus, role=role, testing=testing, task="createusers"), 200, headers)
+
 
 class UpdateUsers(Resource):
     @classmethod
@@ -563,13 +586,14 @@ class UpdateUsers(Resource):
             return redirect("/login")
 
         headers = {'Content-Type': 'text/html'}
-        
+
         menus = tbrolemenu
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
         return make_response(render_template('index.html', menus=menus, role=role, task="updateusers"), 200, headers)
-    
+
+
 class ViewUsers(Resource):
     @classmethod
     def get(cls):
@@ -578,10 +602,17 @@ class ViewUsers(Resource):
             return redirect("/login")
 
         headers = {'Content-Type': 'text/html'}
-        
+
         menus = tbrolemenu
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
-        return make_response(render_template('index.html', menus=menus, role=role, task="viewusers"), 200, headers)
-    
+        sql = 'select ROW_NUMBER() OVER(ORDER BY userid) as RN, userid,username,roleid,branchcode,email from tbusers;'
+        result = db.engine.execute(sql)
+
+        user = []
+        for record in result:
+            user.append(record)
+        print(user)
+
+        return make_response(render_template('index.html', menus=menus, role=role, user=user, task="viewusers"), 200, headers)
