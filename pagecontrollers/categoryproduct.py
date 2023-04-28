@@ -13,6 +13,7 @@ from models.roles import tbroles
 
 from pprint import pprint
 
+
 class ListProducts(Resource):
     @classmethod
     def get(cls, catid):
@@ -21,17 +22,17 @@ class ListProducts(Resource):
             return redirect("/login")
 
         headers = {'Content-Type': 'text/html'}
-        
+
         menus = tbrolemenu
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
         products = tbproducts.find_by_catid(catid)
-        
+
         category = tbcategories
 
-        return make_response(render_template('index.html', menus=menus, role=role,products=products,category=category,catid=catid, task="listproducts"), 200, headers)
-   
+        return make_response(render_template('index.html', menus=menus, role=role, products=products, category=category, catid=catid, task="listproducts"), 200, headers)
+
 
 class CreateProducts(Resource):
     @classmethod
@@ -41,16 +42,16 @@ class CreateProducts(Resource):
             return redirect("/login")
 
         headers = {'Content-Type': 'text/html'}
-        
+
         menus = tbrolemenu
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
-        
         category = tbcategories
 
-        return make_response(render_template('index.html', menus=menus, role=role,catid=catid,category=category, task="createproducts"), 200, headers)
-    
+        return make_response(render_template('index.html', menus=menus, role=role, catid=catid, category=category, task="createproducts"), 200, headers)
+
+
 class CreateCategories(Resource):
     @classmethod
     def get(cls):
@@ -59,16 +60,16 @@ class CreateCategories(Resource):
             return redirect("/login")
 
         headers = {'Content-Type': 'text/html'}
-        
+
         menus = tbrolemenu
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
         category = tbcategories
 
+        return make_response(render_template('index.html', menus=menus, role=role, category=category, task="createcategories"), 200, headers)
 
-        return make_response(render_template('index.html', menus=menus, role=role,category=category, task="createcategories"), 200, headers)
-    
+
 class UpdateProducts(Resource):
     @classmethod
     def get(cls, catid, prodid):
@@ -77,7 +78,7 @@ class UpdateProducts(Resource):
             return redirect("/login")
 
         headers = {'Content-Type': 'text/html'}
-        
+
         menus = tbrolemenu
 
         print(catid, prodid)
@@ -87,8 +88,9 @@ class UpdateProducts(Resource):
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
-        return make_response(render_template('index.html', menus=menus, role=role,category=category,catid=catid,product=product,prodid=prodid, task="updateproducts"), 200, headers)
-    
+        return make_response(render_template('index.html', menus=menus, role=role, category=category, catid=catid, product=product, prodid=prodid, task="updateproducts"), 200, headers)
+
+
 class UpdateCategories(Resource):
     @classmethod
     def get(cls, catid):
@@ -97,15 +99,16 @@ class UpdateCategories(Resource):
             return redirect("/login")
 
         headers = {'Content-Type': 'text/html'}
-        
+
         menus = tbrolemenu
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
         category = tbcategories.find_by_catid(catid)
 
-        return make_response(render_template('index.html', menus=menus, role=role,category=category, task="updatecategories"), 200, headers)
-    
+        return make_response(render_template('index.html', menus=menus, role=role, category=category, task="updatecategories"), 200, headers)
+
+
 class ViewProducts(Resource):
     @classmethod
     def get(cls):
@@ -114,15 +117,16 @@ class ViewProducts(Resource):
             return redirect("/login")
 
         headers = {'Content-Type': 'text/html'}
-        
+
         menus = tbrolemenu
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
         categories = tbcategories
 
-        return make_response(render_template('index.html', menus=menus, role=role,categories=categories, task="viewproducts"), 200, headers)
-    
+        return make_response(render_template('index.html', menus=menus, role=role, categories=categories, task="viewproducts"), 200, headers)
+
+
 class ViewCategories(Resource):
     @classmethod
     def get(cls):
@@ -131,11 +135,10 @@ class ViewCategories(Resource):
             return redirect("/login")
 
         headers = {'Content-Type': 'text/html'}
-        
+
         menus = tbrolemenu
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
         categories = tbcategories
-
         return make_response(render_template('index.html', menus=menus, role=role, categories=categories, task="viewcategories"), 200, headers)

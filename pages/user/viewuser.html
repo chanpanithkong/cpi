@@ -2,7 +2,7 @@
     <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-          <li class="breadcrumb-item"><a href="/viewproducts">View Users</a></li>
+          <li class="breadcrumb-item"><a href="#">Users Management</a></li>
           <li class="breadcrumb-item active">Users List</li>
         </ol>
     </nav>
@@ -24,6 +24,7 @@
                             <th scope="col">User ID</th>
                             <th scope="col">Branch</th>
                             <th scope="col">Role</th>
+                            <th scope="col">Email</th>
                             <th scope="col">Action</th>
                           </tr>
                         </thead>
@@ -35,9 +36,14 @@
                                 <td>{{ usr[1] }}</td>
                                 <td>{{ usr[4] }}</td>
                                 <td>{{ usr[3] }}</td>
+                                <td>{{ usr[5] }}</td>
                                 <td>
-                                    <span class="badge bg-success text-dark" style="cursor: pointer;"><i class="bi bi-eye-fill me-1"></i> View</span>
-                                    <span class="badge bg-warning text-dark" style="cursor: pointer;"><i class="bi bi-pencil-square me-1"></i> Update</span>
+                                    <a href="/updateusers/{{usr.userid}}">
+                                        <span class="badge bg-success text-dark " style="cursor: pointer;"><i class="bi bi-eye-fill me-1"></i> View</span>
+                                    </a>
+                                    <a href="/updateusers/{{usr.userid}}">
+                                        <span class="badge bg-warning text-dark" style="cursor: pointer;"><i class="bi bi-pencil-square me-1"></i> Update</span>
+                                    </a>
                                     <span class="badge bg-danger text-dark" style="cursor: pointer;"><i class="bi bi-trash-fill me-1"></i> Delete</span>
                                 </td>
                             </tr>
@@ -49,13 +55,3 @@
         </div>
     </div>
 </section>
-
-<script>
-
-    $(document).ready(function () {
-        $('.collapse1').collapse();
-        $('[data-toggle="tooltip"]').tooltip();
-    });
-
-
-</script>

@@ -15,10 +15,10 @@ from controls.products import APICreateProduct, Product, ProductsList
 from controls.rolemenu import RoleMenu, RoleMenuList, RoleMenuParents, RoleMenuChilds
 from controls.roles import Role, RoleList
 from controls.status import Status, StatusList
-from controls.trans import Tran, TransList, InputterInsertTran, AuthorizerUpdateTran, InputterUpdateTran,CheckerUpdateTransaction,AuthorizerUpdateTransaction, InsertAllProductToTrans, UpdateTranByCategories, TransWithBatchWherePriceAndWeightIsEmpty, TransWithBatchCategoryWherePriceAndWeightIsEmpty, TransWithBatchCategory
+from controls.trans import Tran, TransList, InputterInsertTran, AuthorizerUpdateTran, InputterUpdateTran, CheckerUpdateTransaction, AuthorizerUpdateTransaction, InsertAllProductToTrans, UpdateTranByCategories, TransWithBatchWherePriceAndWeightIsEmpty, TransWithBatchCategoryWherePriceAndWeightIsEmpty, TransWithBatchCategory
 from controls.batches import Batch, BatchesList, CreateBatch, CloseBatch
 from controls.users import User, UsersList, UserLogin, ChangePasswordForUser, UpdateUserProfile
-from pagecontrollers.pages import ViewUsers, UpdateUsers, CreateUsers, CreateStatus, UpdateStatus, ViewStatus, AttachedRolePermission, CreatePermission, CreateRoles,CreateBatches,ViewBatches, UpdateBatches, Logout, UserLoginPage, LoginPage, HomePage, SubmittedTrans, AuthorizedTrans, CheckedTrans, CheckedTransDetails, HistoryOfTrans, BeverageTobacco, Restaurant, ClothShoes, Shipping, Medicine, Housing 
+from pagecontrollers.pages import ViewUsers, UpdateUsers, CreateUsers, CreateStatus, UpdateStatus, ViewStatus, AttachedRolePermission, CreatePermission, CreateRoles, CreateBatches, ViewBatches, UpdateBatches, Logout, UserLoginPage, LoginPage, HomePage, SubmittedTrans, AuthorizedTrans, CheckedTrans, CheckedTransDetails, HistoryOfTrans, BeverageTobacco, Restaurant, ClothShoes, Shipping, Medicine, Housing
 from pagecontrollers.usersetting import UserProfile, ChangePassword
 from pagecontrollers.food import Rice, Ingredient, Meat, FishSeaFood, Fruit, Vegetables
 from pagecontrollers.categoryproduct import ListProducts, CreateProducts, CreateCategories, UpdateProducts, UpdateCategories, ViewProducts, ViewCategories
@@ -133,18 +133,7 @@ api.add_resource(UpdateBatches, "/updatebatch")
 # user management
 api.add_resource(CreateUsers, "/createusers")
 api.add_resource(ViewUsers, "/viewusers")
-api.add_resource(UpdateUsers, "/updateusers")
-
-
-
-
-
-
-
-
-
-
-
+api.add_resource(UpdateUsers, "/updateusers/<userid>")
 
 
 ######## webservice #########

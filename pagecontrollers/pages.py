@@ -580,7 +580,7 @@ class CreateUsers(Resource):
 
 class UpdateUsers(Resource):
     @classmethod
-    def get(cls):
+    def get(cls, userid):
 
         if not session.get("userid"):
             return redirect("/login")
@@ -591,7 +591,9 @@ class UpdateUsers(Resource):
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
-        return make_response(render_template('index.html', menus=menus, role=role, task="updateusers"), 200, headers)
+        user = tbusers.find_by_userid(userid)
+
+        return make_response(render_template('index.html', menus=menus, role=role, task="updateusers", user=user), 200, headers)
 
 
 class ViewUsers(Resource):
@@ -607,7 +609,7 @@ class ViewUsers(Resource):
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
-        sql = 'select ROW_NUMBER() OVER(ORDER BY userid) as RN, userid,username,roleid,branchcode,email from tbusers;'
+        sql = 'select ROW_NUMBER() OVER(ORDER BY userid) as RN, usr.userid,usr.username,r.rolename,br.nameen,usr.email from tbusers usr left join tbbranches br on usr.branchcode=br.branchcode left join tbroles r on usr.roleid = r.roleid;'
         result = db.engine.execute(sql)
 
         user = []
