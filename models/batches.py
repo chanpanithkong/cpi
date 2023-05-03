@@ -1,4 +1,5 @@
 from config.db import db
+from sqlalchemy import desc
 
 class tbbatches(db.Model):
     
@@ -29,6 +30,25 @@ class tbbatches(db.Model):
         return cls.query.filter(filters).first()
 
     @classmethod
+    def find_by_branch(cls, branch) -> "tbbatches":
+        filters = (db.Column("branch") == branch)
+        return cls.query.filter(filters).first()
+
+    @classmethod
     def find_by_branchbatchopen(cls, branch) -> "tbbatches":
         filters = (db.Column("branch") == branch) & (db.Column("statusid") == 9)
+        return cls.query.filter(filters).order_by(desc(db.Column("batchid"))).first()
+    @classmethod
+    
+    def find_by_branchidbatchopen(cls, batchid) -> "tbbatches":
+        filters = (db.Column("batchid") == batchid) & (db.Column("statusid") == 9)
         return cls.query.filter(filters).first()
+    @classmethod
+    def find_by_branchidbatchclose(cls, batchid) -> "tbbatches":
+        filters = (db.Column("batchid") == batchid) & (db.Column("statusid") == 8)
+        return cls.query.filter(filters).first()
+
+    @classmethod
+    def find_by_branchbatchclose(cls, branch) -> "tbbatches":
+        filters = (db.Column("branch") == branch) & (db.Column("statusid") == 8)
+        return cls.query.filter(filters).order_by(desc(db.Column("batchid"))).first()

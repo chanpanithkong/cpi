@@ -17,6 +17,7 @@ from models.categories import tbcategories
 from models.branches import tbbranches
 
 from schema.usersschema import UserSchema
+from sqlalchemy import func
 
 import datetime
 from pprint import pprint
@@ -71,17 +72,47 @@ class HomePage(Resource):
 
         menus = tbrolemenu
         role = tbroles.find_by_roleid(session.get('roleid'))
-        batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
-
-        pprint(batch)
+        # batch = tbbatches.find_by_branch(session.get("branchcode"))
 
         user = tbusers.find_by_userid(session.get('userid'))
 
-        batchdisabled = ""
-        if batch is not None:
-            batchtrans = tbtrans.find_by_batchidnotaccept(batch.batchid)
-            if len(batchtrans) > 0:
-                batchdisabled = "disabled"
+
+        sql = "select max(bat.batchid) maxid from tbbatches bat where bat.branch = '" + session.get('branchcode') + "'"
+        batchresult = db.engine.execute(sql)
+
+        batches = []
+        for record in batchresult:
+            batches.append(record)
+        
+        
+        createdisable = ""
+        reopendisable = ""
+        closeddisable = ""
+
+        
+
+        if batches[0][0] is not None:
+            
+            if tbbatches.find_by_branchidbatchclose(batches[0][0]) is not None:
+                createdisable = ""
+                reopendisable = ""
+                closeddisable = "disabled"
+            
+            elif tbbatches.find_by_branchidbatchopen(batches[0][0]) is not None:
+                createdisable = "disabled"
+                reopendisable = "disabled"
+                closeddisable = ""
+            
+            else:
+                print(4)
+        else:
+            createdisable = ""
+            reopendisable = "disabled"
+            closeddisable = "disabled"
+            
+            
+        tbbatches.find_by_branchbatchclose(session.get("branchcode"))
+
 
         sql = "select trn.branchcode, trn.status, trn.batchid, count(trn.productid) as cnt from tbtrans trn inner join tbbatches bat on bat.batchid = trn.batchid where bat.statusid = 9 and trn.branchcode = '" + session.get(
             "branchcode") + "' group by trn.branchcode, trn.status, trn.batchid"
@@ -91,9 +122,7 @@ class HomePage(Resource):
         for record in result:
             transtatus.append(record)
 
-        pprint(transtatus)
-
-        return make_response(render_template('index.html', menus=menus, role=role, batchdisabled=batchdisabled, user=user, transtatus=transtatus, task="dashboard"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role,reopendisable=reopendisable,closeddisable=closeddisable, createdisable=createdisable, user=user, transtatus=transtatus, task="dashboard"), 200, headers)
 
 
 class HistoryOfTrans(Resource):
@@ -108,7 +137,17 @@ class HistoryOfTrans(Resource):
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
-        return make_response(render_template('index.html', menus=menus, role=role, task="historyoftrans"), 200, headers)
+        branchcode = session.get("branchcode")
+
+        sql = "select trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status, count(trn.productid) cnt from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid where trn.branchcode = '"+ branchcode +"' and trn.authorizer is not null and trn.checker is not null group by trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status"
+        result = db.engine.execute(sql)
+
+        trans = []
+        for record in result:
+            trans.append(record)
+
+
+        return make_response(render_template('index.html', menus=menus, role=role,trans=trans, task="historyoftrans"), 200, headers)
 
 
 class BeverageTobacco(Resource):
@@ -121,28 +160,35 @@ class BeverageTobacco(Resource):
         headers = {'Content-Type': 'text/html'}
         menus = tbrolemenu
         role = tbroles.find_by_roleid(session.get('roleid'))
+        batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
 
         category = 8
         productlist = []
-
-        batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
-
         submitdata = []
-        trans = []
-        disabled = ""
+        disabled = "disabled"
         isbutton = False
+        
         if batch is not None:
-            trans = tbtrans
-            productlist = tbproducts.find_by_catid(category)
-            filter = (tbtrans.status == 1) & (tbcategories.catid ==
-                                              category) & (tbtrans.batchid == batch.batchid)
-            submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(
-                tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
-            isbutton = True
-            if len(submitdata) > 0:
-                disabled = "disabled "
+            if batch.statusid == 9:
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist, trans=trans, batch=batch, disabled=disabled, isbutton=isbutton, task="beveragetobacco"), 200, headers)
+                productlist = tbproducts.find_by_catid(category)
+
+                filter = (tbtrans.batchid == batch.batchid) & (tbcategories.catid == category)
+                dataexist = db.session.query(tbtrans).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
+
+                if len(dataexist) > 0: 
+
+                    filter = ((tbtrans.status == 10) | (tbtrans.status == 12)) & (tbtrans.batchid == batch.batchid) & (tbcategories.catid == category)
+                    submitdata = db.session.query(tbtrans).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
+                    
+                    isbutton = True    
+                    if len(submitdata) > 0:
+                        disabled = ""
+                else:
+                    isbutton = True    
+                    disabled = ""
+
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="beveragetobacco"), 200, headers)
 
 
 class Restaurant(Resource):
@@ -153,32 +199,38 @@ class Restaurant(Resource):
             return redirect("/login")
 
         headers = {'Content-Type': 'text/html'}
-        filter = (tbrolemenu.roleid == session.get(
-            'roleid')) & (tbmenus.parentid == 0)
         menus = tbrolemenu
         role = tbroles.find_by_roleid(session.get('roleid'))
+        batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
 
         category = 9
         productlist = []
-
-        batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
-
         submitdata = []
-        trans = []
-        disabled = ""
+        disabled = "disabled"
         isbutton = False
+        
         if batch is not None:
-            trans = tbtrans
-            productlist = tbproducts.find_by_catid(category)
-            filter = (tbtrans.status == 1) & (tbcategories.catid ==
-                                              category) & (tbtrans.batchid == batch.batchid)
-            submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(
-                tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
-            isbutton = True
-            if len(submitdata) > 0:
-                disabled = "disabled "
+            if batch.statusid == 9:
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist, trans=trans, batch=batch, disabled=disabled, isbutton=isbutton, task="restaurant"), 200, headers)
+                productlist = tbproducts.find_by_catid(category)
+
+                filter = (tbtrans.batchid == batch.batchid) & (tbcategories.catid == category)
+                dataexist = db.session.query(tbtrans).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
+
+                if len(dataexist) > 0: 
+
+                    filter = ((tbtrans.status == 10) | (tbtrans.status == 12)) & (tbtrans.batchid == batch.batchid) & (tbcategories.catid == category)
+                    submitdata = db.session.query(tbtrans).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
+                    
+                    isbutton = True    
+                    if len(submitdata) > 0:
+                        disabled = ""
+                else:
+                    isbutton = True    
+                    disabled = ""
+
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="restaurant"), 200, headers)
+
 
 
 class ClothShoes(Resource):
@@ -189,32 +241,38 @@ class ClothShoes(Resource):
             return redirect("/login")
 
         headers = {'Content-Type': 'text/html'}
-        filter = (tbrolemenu.roleid == session.get(
-            'roleid')) & (tbmenus.parentid == 0)
         menus = tbrolemenu
         role = tbroles.find_by_roleid(session.get('roleid'))
+        batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
 
         category = 10
         productlist = []
-
-        batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
-
         submitdata = []
-        trans = []
-        disabled = ""
+        disabled = "disabled"
         isbutton = False
+        
         if batch is not None:
-            trans = tbtrans
-            productlist = tbproducts.find_by_catid(category)
-            filter = (tbtrans.status == 1) & (tbcategories.catid ==
-                                              category) & (tbtrans.batchid == batch.batchid)
-            submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(
-                tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
-            isbutton = True
-            if len(submitdata) > 0:
-                disabled = "disabled "
+            if batch.statusid == 9:
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist, trans=trans, batch=batch, disabled=disabled, isbutton=isbutton, task="clothshoes"), 200, headers)
+                productlist = tbproducts.find_by_catid(category)
+
+                filter = (tbtrans.batchid == batch.batchid) & (tbcategories.catid == category)
+                dataexist = db.session.query(tbtrans).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
+
+                if len(dataexist) > 0: 
+
+                    filter = ((tbtrans.status == 10) | (tbtrans.status == 12)) & (tbtrans.batchid == batch.batchid) & (tbcategories.catid == category)
+                    submitdata = db.session.query(tbtrans).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
+                    
+                    isbutton = True    
+                    if len(submitdata) > 0:
+                        disabled = ""
+                else:
+                    isbutton = True    
+                    disabled = ""
+
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="clothshoes"), 200, headers)
+
 
 
 class Shipping(Resource):
@@ -227,29 +285,35 @@ class Shipping(Resource):
         headers = {'Content-Type': 'text/html'}
         menus = tbrolemenu
         role = tbroles.find_by_roleid(session.get('roleid'))
+        batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
 
         category = 11
         productlist = []
-
-        batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
-
         submitdata = []
-        trans = []
-        disabled = ""
+        disabled = "disabled"
         isbutton = False
+        
         if batch is not None:
-            trans = tbtrans
-            productlist = tbproducts.find_by_catid(category)
-            filter = (tbtrans.status == 1) & (tbcategories.catid ==
-                                              category) & (tbtrans.batchid == batch.batchid)
-            submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(
-                tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
-            isbutton = True
-            if len(submitdata) > 0:
-                disabled = "disabled "
+            if batch.statusid == 9:
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist, trans=trans, batch=batch, disabled=disabled, isbutton=isbutton, task="shipping"), 200, headers)
+                productlist = tbproducts.find_by_catid(category)
 
+                filter = (tbtrans.batchid == batch.batchid) & (tbcategories.catid == category)
+                dataexist = db.session.query(tbtrans).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
+
+                if len(dataexist) > 0: 
+
+                    filter = ((tbtrans.status == 10) | (tbtrans.status == 12)) & (tbtrans.batchid == batch.batchid) & (tbcategories.catid == category)
+                    submitdata = db.session.query(tbtrans).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
+                    
+                    isbutton = True    
+                    if len(submitdata) > 0:
+                        disabled = ""
+                else:
+                    isbutton = True    
+                    disabled = ""
+
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="shipping"), 200, headers)
 
 class Medicine(Resource):
     @classmethod
@@ -261,28 +325,36 @@ class Medicine(Resource):
         headers = {'Content-Type': 'text/html'}
         menus = tbrolemenu
         role = tbroles.find_by_roleid(session.get('roleid'))
+        batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
 
         category = 12
         productlist = []
-
-        batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
-
         submitdata = []
-        trans = []
-        disabled = ""
+        disabled = "disabled"
         isbutton = False
+        
         if batch is not None:
-            trans = tbtrans
-            productlist = tbproducts.find_by_catid(category)
-            filter = (tbtrans.status == 1) & (tbcategories.catid ==
-                                              category) & (tbtrans.batchid == batch.batchid)
-            submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(
-                tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
-            isbutton = True
-            if len(submitdata) > 0:
-                disabled = "disabled "
+            if batch.statusid == 9:
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist, trans=trans, batch=batch, disabled=disabled, isbutton=isbutton, task="medicine"), 200, headers)
+                productlist = tbproducts.find_by_catid(category)
+
+                filter = (tbtrans.batchid == batch.batchid) & (tbcategories.catid == category)
+                dataexist = db.session.query(tbtrans).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
+
+                if len(dataexist) > 0: 
+
+                    filter = ((tbtrans.status == 10) | (tbtrans.status == 12)) & (tbtrans.batchid == batch.batchid) & (tbcategories.catid == category)
+                    submitdata = db.session.query(tbtrans).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
+                    
+                    isbutton = True    
+                    if len(submitdata) > 0:
+                        disabled = ""
+                else:
+                    isbutton = True    
+                    disabled = ""
+
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="medicine"), 200, headers)
+
 
 
 class Housing(Resource):
@@ -295,28 +367,35 @@ class Housing(Resource):
         headers = {'Content-Type': 'text/html'}
         menus = tbrolemenu
         role = tbroles.find_by_roleid(session.get('roleid'))
+        batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
 
         category = 13
         productlist = []
-
-        batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
-
         submitdata = []
-        trans = []
-        disabled = ""
+        disabled = "disabled"
         isbutton = False
+        
         if batch is not None:
-            trans = tbtrans
-            productlist = tbproducts.find_by_catid(category)
-            filter = (tbtrans.status == 1) & (tbcategories.catid ==
-                                              category) & (tbtrans.batchid == batch.batchid)
-            submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(
-                tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
-            isbutton = True
-            if len(submitdata) > 0:
-                disabled = "disabled "
+            if batch.statusid == 9:
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist, trans=trans, batch=batch, disabled=disabled, isbutton=isbutton, task="housing"), 200, headers)
+                productlist = tbproducts.find_by_catid(category)
+
+                filter = (tbtrans.batchid == batch.batchid) & (tbcategories.catid == category)
+                dataexist = db.session.query(tbtrans).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
+
+                if len(dataexist) > 0: 
+
+                    filter = ((tbtrans.status == 10) | (tbtrans.status == 12)) & (tbtrans.batchid == batch.batchid) & (tbcategories.catid == category)
+                    submitdata = db.session.query(tbtrans).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
+                    
+                    isbutton = True    
+                    if len(submitdata) > 0:
+                        disabled = ""
+                else:
+                    isbutton = True    
+                    disabled = ""
+
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="housing"), 200, headers)
 
 
 class SubmittedTrans(Resource):
@@ -331,14 +410,20 @@ class SubmittedTrans(Resource):
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
-        catlist = tbcategories.query.filter(tbcategories.catid != 1).all()
+        sql = ""
+        record = []
+        result = []
+        batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
+        if batch is not None:
+            
+            sql = "select cat.catid, cat.nameen, sts.status, sts.details from tbtrans trn inner join tbproducts pro on pro.prodid = trn.productid inner join tbcategories cat on cat.catid = pro.catid inner join tbstatus sts on sts.statusid = trn.status where trn.batchid = " + str(batch.batchid) + " and trn.branchcode = '" + session.get('branchcode') + "' group by cat.catid, cat.nameen, sts.status, sts.details order by cat.catid"
+            result = db.engine.execute(sql)
+
+        catlist = []
+        for record in result:
+            catlist.append(record)
 
         products = tbproducts
-
-        batch = []
-        if batch is not None:
-            batch = tbbatches.find_by_branchbatchopen(
-                session.get("branchcode"))
 
         trans = tbtrans
 
@@ -360,11 +445,21 @@ class AuthorizedTrans(Resource):
         products = tbproducts
         batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
 
-        catlist = []
+        # catlist = []
         trans = []
+        sql = ""
+        record = []
+        result = []
         if batch is not None:
-            catlist = tbtrans.find_by_authorizecatbatchid(batch.batchid)
+            # catlist = tbtrans.find_by_authorizecatbatchid(batch.batchid)
             trans = tbtrans
+            sql = "select cat.catid, cat.nameen, sts.status, sts.details from tbtrans trn inner join tbproducts pro on pro.prodid = trn.productid inner join tbcategories cat on cat.catid = pro.catid inner join tbstatus sts on sts.statusid = trn.status where trn.status != 7 and trn.batchid = " + str(batch.batchid) + " and trn.branchcode = '" + session.get('branchcode') + "' group by cat.catid, cat.nameen, sts.status, sts.details order by cat.catid"
+            result = db.engine.execute(sql)
+
+        catlist = []
+        for record in result:
+            catlist.append(record)
+
 
         return make_response(render_template('index.html', menus=menus, role=role, catlist=catlist, products=products, batch=batch, trans=trans, task="authorizedtrans"), 200, headers)
 
@@ -383,7 +478,7 @@ class CheckedTrans(Resource):
 
         branches = tbbranches.getallbranches()
 
-        sql = 'select t1.branchcode, t1.status, count(t1.status) as cnt from( select trn.branchcode,trn.status,  pro.catid, count(pro.catid) as cnt from tbtrans trn inner join tbproducts pro on trn.productid = pro.prodid group by trn.branchcode,trn.status,  pro.catid ) as t1 group by t1.branchcode, t1.status;'
+        sql = 'select t1.branchcode, t1.status, count(t1.status) as cnt from( select trn.branchcode,trn.status,  pro.catid, count(pro.catid) as cnt from tbtrans trn inner join tbproducts pro on trn.productid = pro.prodid inner join tbbatches bat on bat.batchid = trn.batchid where bat.statusid = 9 group by trn.branchcode,trn.status,  pro.catid ) as t1 group by t1.branchcode, t1.status;'
         result = db.engine.execute(sql)
 
         transtatus = []
@@ -407,11 +502,27 @@ class CheckedTransDetails(Resource):
 
         products = tbproducts
         batch = tbbatches.find_by_branchbatchopen(branchcode)
-        catlist = []
-        if batch is not None:
-            catlist = tbtrans.find_by_checkebatchid(batch.batchid)
+        # catlist = []
+        # if batch is not None:
+        #     catlist = tbtrans.find_by_checkebatchid(batch.batchid)
 
-        trans = tbtrans
+        # trans = tbtrans
+        print(batch)
+
+        # catlist = []
+        trans = []
+        sql = ""
+        record = []
+        result = []
+        if batch is not None:
+            # catlist = tbtrans.find_by_authorizecatbatchid(batch.batchid)
+            trans = tbtrans
+            sql = "select cat.catid, cat.nameen, sts.status, sts.details from tbtrans trn inner join tbproducts pro on pro.prodid = trn.productid inner join tbcategories cat on cat.catid = pro.catid inner join tbstatus sts on sts.statusid = trn.status where trn.status in (1,3,10,11,13) and trn.batchid = " + str(batch.batchid) + " and trn.branchcode = '" + branchcode + "' group by cat.catid, cat.nameen, sts.status, sts.details order by cat.catid"
+            result = db.engine.execute(sql)
+
+        catlist = []
+        for record in result:
+            catlist.append(record)
 
         return make_response(render_template('index.html', menus=menus, role=role, catlist=catlist, products=products, batch=batch, trans=trans, branchcode=branchcode, task="checkedtransdetail"), 200, headers)
 

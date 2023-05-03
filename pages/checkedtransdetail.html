@@ -24,14 +24,14 @@
                         {% for cl in catlist %}
                         
                         {% set textcolor = "color: red;" %}
-                        {% if trans.find_by_catbatchidachecked(cl.catid,batch.batchid)|length > 0 %}
+                        {% if trans.find_by_catbatchidachecked(cl[0],batch.batchid)|length > 0 %}
                         {% set textcolor = "color: green;" %}
-                        {% elif trans.find_by_catbatchidauthorize(cl.catid,batch.batchid)|length > 0 %}
+                        {% elif trans.find_by_catbatchidauthorize(cl[0],batch.batchid)|length > 0 %}
                         {% set textcolor = "color: blue;" %}
                         {% endif %}
 
                         {% set disabled = "" %}
-                        {% if trans.find_by_catbatchidrejectchecker(cl.catid,batch.batchid)|length > 0 %}
+                        {% if trans.find_by_catbatchidrejectchecker(cl[0],batch.batchid)|length > 0 %}
                         {% set disabled = "disabled" %}
                         {% endif %}
 
@@ -39,7 +39,8 @@
                         <div class="card">
                             <div class="card-header" id="heading{{loop.index}}" style="text-align: left; cursor: pointer; {{textcolor}} font-weight:bold;">
                                 <div class="collapsed" data-toggle="collapse" data-target="#collapse{{loop.index}}" aria-expanded="false" aria-controls="collapse{{loop.index}}">
-                                    {{loop.index}}.&nbsp;{{cl.nameen}}
+                                    <div style="float: left;" class="text-{{cl[3]}}">{{loop.index}}.&nbsp;{{cl[1]}}</div>
+                                    <div style="float: right;"><span class="badge bg-{{cl[3]}}">{{cl[2]}}</span></div>
                                 </div>
                             </div>
 
@@ -60,7 +61,7 @@
                                         </thead>
                                         <tbody>
                                             
-                                            {% for prod in products.find_by_catid(cl.catid) %}
+                                            {% for prod in products.find_by_catid(cl[0]) %}
                                             <tr  data-toggle="tooltip" title="{{trans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,prod.prodid).checkernote}}">
                                               <td scope="row">{{loop.index}}</td>
                                               <td>{{prod.namekh}}<input type="hidden" name="prodid{{prod.prodid}}" value="{{prod.prodid}}"/> </td>
@@ -123,6 +124,8 @@
     $(document).ready(function () {
         $('.collapse1').collapse();
         
+        $('#loading').modal({backdrop: 'static', keyboard: false})
+
         $('[data-toggle="tooltip"]').tooltip();
 
         $(".aureject").click(function(){
@@ -159,7 +162,7 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (data) {
-                    alert(data.msg);
+                    $("#loading").modal('show');
                     location.reload();
                 },
                 error: function (errMsg) {
@@ -207,7 +210,7 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (data) {
-                    alert(data.msg);
+                    $("#loading").modal('show');
                     location.reload();
                 },
                 error: function (errMsg) {

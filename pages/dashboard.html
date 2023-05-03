@@ -192,14 +192,29 @@
               <div style="text-align: Center">
                 
                 <button
-                  id="submit"
+                  id="create"
                   type="button"
                   class="btn btn-primary"
-                  {{batchdisabled}}
+                  {{createdisable}}
                 >
                   Create Transactions
+                </button>&nbsp;&nbsp;
+                <button
+                  id="reopen"
+                  type="button"
+                  class="btn btn-success"
+                  {{reopendisable}}
+                >
+                  Reopen Transactions
+                </button>&nbsp;&nbsp;
+                <button
+                  id="close"
+                  type="button"
+                  class="btn btn-danger"
+                  {{closeddisable}}
+                >
+                  Close Transactions
                 </button>
-                
               </div>
               <br />
             </div>
@@ -397,50 +412,124 @@
 
 <script>
   $(document).ready(function () {
-    $("#submit").click(function () {
-      // close batch
+
+    $('#loading').modal({backdrop: 'static', keyboard: false})  
+    
+    $("#create").click(function () {
+     
       $.ajax({
         type: "POST",
-        url: "/api/closebatch",
-        data: JSON.stringify({ data: "closebatch" }),
+        url: "/api/createbatch",
+        data: JSON.stringify({ data: "createbatch" }),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
+        beforeSend : function (){
+          $("#loading").modal('show');
+        },
         success: function (data) {
           console.log(data.msg);
-          // create batch
-          $.ajax({
-            type: "POST",
-            url: "/api/createbatch",
-            data: JSON.stringify({ data: "createbatch" }),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (data) {
-              console.log(data.msg);
-              // insert all products to trans
-              $.ajax({
-                type: "POST",
-                url: "/api/insertallproducttotrans",
-                data: JSON.stringify({ data: "inserttranns" }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (data) {
-                  console.log(data.msg);
-                  location.reload();
-                },
-                error: function (errMsg) {
-                  console.log(errMsg);
-                },
-              });
-            },
-            error: function (errMsg) {
-              console.log(errMsg);
-            },
-          });
-        },
-        error: function (errMsg) {
-          console.log(errMsg);
-        },
+          location.reload();
+
+          },
+          error: function(data){
+            console.log(data)
+          }
       });
-    });
+    })
+
+
+
+    $("#reopen").click(function () {
+      
+      
+        $.ajax({
+          type: "POST",
+          url: "/api/reopenbatch",
+          data: JSON.stringify({ data: "closebatch" }),
+          contentType: "application/json; charset=utf-8",
+          dataType: "json",
+          beforeSend: function(){
+            $("#loading").modal('show');
+          },
+          success: function (data) {
+            console.log(data.msg);
+            location.reload();
+          },
+          error: function(){
+
+          }
+        })
+
+    })
+    $("#close").click(function () {
+      
+      
+
+        $.ajax({
+          type: "POST",
+          url: "/api/closebatch",
+          data: JSON.stringify({ data: "closebatch" }),
+          contentType: "application/json; charset=utf-8",
+          dataType: "json",
+          beforeSend: function(){
+            $("#loading").modal('show');
+          },
+          success: function (data) {
+            console.log(data.msg);
+            location.reload();
+          },
+          error: function(){
+
+          }
+        })
+
+    })
+    
+
+    // $("#submit").click(function () {
+    //   // close batch
+    //   $.ajax({
+    //     type: "POST",
+    //     url: "/api/closebatch",
+    //     data: JSON.stringify({ data: "closebatch" }),
+    //     contentType: "application/json; charset=utf-8",
+    //     dataType: "json",
+    //     success: function (data) {
+    //       console.log(data.msg);
+    //       // create batch
+    //       $.ajax({
+    //         type: "POST",
+    //         url: "/api/createbatch",
+    //         data: JSON.stringify({ data: "createbatch" }),
+    //         contentType: "application/json; charset=utf-8",
+    //         dataType: "json",
+    //         success: function (data) {
+    //           console.log(data.msg);
+    //           // insert all products to trans
+    //           $.ajax({
+    //             type: "POST",
+    //             url: "/api/insertallproducttotrans",
+    //             data: JSON.stringify({ data: "inserttranns" }),
+    //             contentType: "application/json; charset=utf-8",
+    //             dataType: "json",
+    //             success: function (data) {
+    //               console.log(data.msg);
+    //               location.reload();
+    //             },
+    //             error: function (errMsg) {
+    //               console.log(errMsg);
+    //             },
+    //           });
+    //         },
+    //         error: function (errMsg) {
+    //           console.log(errMsg);
+    //         },
+    //       });
+    //     },
+    //     error: function (errMsg) {
+    //       console.log(errMsg);
+    //     },
+    //   });
+    // });
   });
 </script>

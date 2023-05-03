@@ -31,17 +31,14 @@
               <tr>
                 <td>{{loop.index }} <input type="hidden" name="prodid{{prod.prodid}}" value="{{prod.prodid}}" /> </td>
                 <td>{{prod.namekh}}</td>
-                <td>
-                  <input type="text" class="form-control" name="weight{{prod.prodid}}"
-                    value="{{prod.weight}}" disabled />
+                <td><input type="text" class="form-control" name="weight{{prod.prodid}}" disabled
+                  value="{{prod.weight}}" />
                 </td>
                 <td>
-                  <input type="text" class="form-control" name="price{{prod.prodid}}"
-                    value="{{trans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,prod.prodid).price}}" />
+                  <input type="text" class="form-control" name="price{{prod.prodid}}" value ="{{tbtrans.find_by_batchidprodid(batch.batchid,prod.prodid).price}}" />
                 </td>
                 <td>
-                  <input type="text" class="form-control" name="note{{prod.prodid}}"
-                    value="{{trans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,prod.prodid).submitternote}}" />
+                  <input type="text" class="form-control" name="note{{prod.prodid}}" value = "{{tbtrans.find_by_batchidprodid(batch.batchid,prod.prodid).submitternote}}" />
                 </td>
               </tr>
               {% endfor %}
@@ -71,6 +68,7 @@
 <script>
   $(document).ready(function () {
     $("#submit").click(function () {
+
       result = [];
 
       prodid = []
@@ -82,7 +80,7 @@
       weight_condition = true;
       $("input[name^='weight']").each(function () {
         if ($(this).val() == '') {
-          alert("Weight value cannot empty!");
+          $("#emptymessage").modal('show');
           weight_condition = false;
           return false;
         }
@@ -96,8 +94,8 @@
       price = []
       price_condition = true;
       $("input[name^='price']").each(function () {
-        if ($(this).val() == '') {
-          alert("Price value cannot empty!");
+        if ($(this).val() == '' || $(this).val() == '0' || $(this).val() == '0.00') {
+          $("#emptymessage").modal('show');
           price_condition = false;
           return false;
         }
@@ -123,27 +121,35 @@
 
       }
 
-      userid = $("#userid").val();
+            $.ajax({
+              type: "POST",
+              url: "/api/insertallproducttotrans",
+              data: JSON.stringify({ userrequest: "inserttranns", msg:"submitted", data: result}),
+              contentType: "application/json; charset=utf-8",
+              dataType: "json",
+              beforeSend: function() {
+                $("#loading").modal('show');
+              },
+              success: function (data) {
+                console.log(data.msg);
+                location.reload();
+              },
+              error: function (errMsg) {
+                console.log(errMsg);
+              },
+            });      
 
-      $.ajax({
-        type: "POST",
-        url: "/api/updatetranbycategories",
-        data: JSON.stringify({ data: result, userid: userid,userrequest: 'submit' }),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (data) {
-          alert(data.msg);
-          location.reload();
-        },
-        error: function (errMsg) {
-          console.log(errMsg);
-        }
-      });
     });
 
 
     $("#clear").click(function () {
-      alert("I am clear");
+      
+      $("input[name^='price']").each(function () {
+        $(this).val("");
+      });
+      $("input[name^='note']").each(function () {
+        $(this).val("");
+      });
     });
 
     $("#save").click(function () {
@@ -158,7 +164,7 @@
       weight_condition = true;
       $("input[name^='weight']").each(function () {
         if ($(this).val() == '') {
-          alert("Weight value cannot empty!");
+          $("#emptymessage").modal('show');
           weight_condition = false;
           return false;
         }
@@ -172,8 +178,8 @@
       price = []
       price_condition = true;
       $("input[name^='price']").each(function () {
-        if ($(this).val() == '') {
-          alert("Price value cannot empty!");
+        if ($(this).val() == '' || $(this).val() == '0' || $(this).val() == '0.00') {
+          $("#emptymessage").modal('show');
           price_condition = false;
           return false;
         }
@@ -199,22 +205,24 @@
 
       }
 
-      userid = $("#userid").val();
+            $.ajax({
+              type: "POST",
+              url: "/api/insertallproducttotrans",
+              data: JSON.stringify({ userrequest: "inserttranns", msg:"saved", data: result}),
+              contentType: "application/json; charset=utf-8",
+              dataType: "json",
+              beforeSend: function() {
+                $("#loading").modal('show');
+              },
+              success: function (data) {
+                console.log(data.msg);
+                location.reload();
+              },
+              error: function (errMsg) {
+                console.log(errMsg);
+              },
+            });      
 
-      $.ajax({
-        type: "POST",
-        url: "/api/updatetranbycategories",
-        data: JSON.stringify({ data: result, userrequest: 'save' }),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (data) {
-          alert(data.msg);
-          location.reload();
-        },
-        error: function (errMsg) {
-          console.log(errMsg);
-        }
-      });
     });
 
   });
