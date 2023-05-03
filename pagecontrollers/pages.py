@@ -476,8 +476,10 @@ class CreateRoles(Resource):
         menus = tbrolemenu
 
         role = tbroles.find_by_roleid(session.get('roleid'))
+        sql = 'select * from tbroles;'
+        result = db.engine.execute(sql)
 
-        return make_response(render_template('index.html', menus=menus, role=role, task="createrole"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, result=result, task="createrole"), 200, headers)
 
 
 class CreatePermission(Resource):
@@ -492,8 +494,10 @@ class CreatePermission(Resource):
         menus = tbrolemenu
 
         role = tbroles.find_by_roleid(session.get('roleid'))
+        sql = 'select * from tbroles;'
+        result = db.engine.execute(sql)
 
-        return make_response(render_template('index.html', menus=menus, role=role, task="createpermission"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, result=result, task="createpermission"), 200, headers)
 
 
 class AttachedRolePermission(Resource):
@@ -574,8 +578,10 @@ class CreateUsers(Resource):
         role = tbroles.find_by_roleid(session.get('roleid'))
 
         testing = "Hello world!"
-
-        return make_response(render_template('index.html', menus=menus, role=role, testing=testing, task="createusers"), 200, headers)
+        sql = 'select * from tbroles;'
+        roles = db.engine.execute(sql)
+        print(roles)
+        return make_response(render_template('index.html', menus=menus, role=role, testing=testing, roles=roles, task="createusers"), 200, headers)
 
 
 class UpdateUsers(Resource):
@@ -592,8 +598,14 @@ class UpdateUsers(Resource):
         role = tbroles.find_by_roleid(session.get('roleid'))
 
         user = tbusers.find_by_userid(userid)
+        sql = 'select ROW_NUMBER() OVER(ORDER BY userid) as RN, usr.userid,usr.username,r.rolename,br.nameen,usr.email from tbusers usr left join tbbranches br on usr.branchcode=br.branchcode left join tbroles r on usr.roleid = r.roleid;'
+        result = db.engine.execute(sql)
 
-        return make_response(render_template('index.html', menus=menus, role=role, task="updateusers", user=user), 200, headers)
+        sql = 'select * from tbroles;'
+        roles = db.engine.execute(sql)
+
+        print(result)
+        return make_response(render_template('index.html', menus=menus, role=role, roles=roles, task="updateusers", user=user), 200, headers)
 
 
 class ViewUsers(Resource):
