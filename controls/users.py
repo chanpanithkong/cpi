@@ -12,7 +12,6 @@ from pprint import pprint
 jwt = JWTManager(app)
 
 
-
 class UpdateUserProfile(Resource):
     @classmethod
     # @jwt_required()
@@ -20,33 +19,34 @@ class UpdateUserProfile(Resource):
     def post(cls):
 
         try:
-            
+
             data = json.loads(request.data)
-            
-            if data['userrequest'] == 'updateuserprofile' :
-            
+
+            if data['userrequest'] == 'updateuserprofile':
+
                 fullname = data['data']['fullname']
                 gender = data['data']['gender']
                 branchcode = data['data']['branchcode']
                 department = data['data']['department']
                 email = data['data']['email']
-            
+
                 userid = session.get("userid")
                 user_data = tbusers.find_by_userid(userid)
-            
+
                 user_data.username = fullname
                 user_data.gender = gender
                 user_data.branchcode = branchcode
                 user_data.details = department
                 user_data.email = email
-            
+
                 db.session.commit()
-                return {"msg":"User updated successfully"}
-            
+                return {"msg": "User updated successfully"}
+
             return {"msg": "Cannot update user profile"}
 
         except Exception as err:
             return {"msg": err}
+
 
 class ChangePasswordForUser(Resource):
     @classmethod
@@ -55,10 +55,10 @@ class ChangePasswordForUser(Resource):
     def post(cls):
 
         try:
-            
+
             data = json.loads(request.data)
-            
-            if data['userrequest'] == 'change' :
+
+            if data['userrequest'] == 'change':
 
                 oldpassword = data['data']['oldpassword']
                 confirmoldpassword = data['data']['confirmoldpassword']
@@ -71,15 +71,16 @@ class ChangePasswordForUser(Resource):
                     if user_data.password == oldpassword:
                         user_data.password = newpassword
                     else:
-                        return {"msg":"Cannot change password"}
-                    
+                        return {"msg": "Cannot change password"}
+
                     db.session.commit()
-                    return {"msg":"Password changed"}
-            
+                    return {"msg": "Password changed"}
+
             return {"msg": "Cannot change password"}
 
         except Exception as err:
             return {"msg": err}
+
 
 class UserLogin(Resource):
     @classmethod
@@ -88,9 +89,9 @@ class UserLogin(Resource):
     def post(cls):
 
         try:
-            
+
             data = json.loads(request.data)
-            
+
             userid = data['data']['userid']
             password = data['data']['password']
             user_data = tbusers.find_by_userid(userid)
@@ -127,5 +128,62 @@ class UsersList(Resource):
             schema = UserSchema(many=True)
             _data = schema.dump(data)
             return {"users": _data}
+        except Exception as err:
+            return {"msg": err}
+
+
+class CreateUser(Resource):
+    @classmethod
+    # @jwt_required()
+    def post(cls):
+        try:
+            msg = "fail"
+            data = json.loads(request.data)
+
+            if data['userrequest'] == "createcategory":
+                maxtid = db.session.query(
+                    func.max(tbcategories.catid)).scalar()
+                if maxtid is None:
+                    maxtid = 1
+                else:
+                    maxtid = maxtid + 1
+                cat = tbcategories()
+                cat.catid = maxtid
+                cat.catcode = data['data']['catcode']
+                cat.nameen = data['data']['nameen']
+                cat.namekh = data['data']['namekh']
+                cat.parentid = data['data']['parentid']
+                cat.details = data['data']['details']
+                db.session.add(cat)
+                db.session.commit()
+                msg = "create sucessfully"
+
+            elif data['userrequest'] == "updatecategory":
+
+                cat = tbcategories.find_by_catid(data['data']['catid'])
+                cat.catcode = data['data']['catcode']
+                cat.nameen = data['data']['nameen']
+                cat.namekh = data['data']['namekh']
+                cat.parentid = data['data']['parentid']
+                cat.details = data['data']['details']
+
+                db.session.commit()
+                msg = "update sucessfully"
+
+            elif data['userrequest'] == "deletecategory":
+
+                prod = tbproducts.find_by_catid(data['data'])
+                pprint(prod)
+                if len(prod) > 0:
+                    msg = "This category has products, Please delete products first"
+
+                else:
+                    cat = tbcategories.find_by_catid(data['data'])
+                    db.session.delete(cat)
+                    db.session.commit()
+                    msg = "update sucessfully"
+
+            return {"msg": msg}
+
         except Exception as err:
             return {"msg": err}
