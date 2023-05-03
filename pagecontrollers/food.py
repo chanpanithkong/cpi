@@ -15,6 +15,8 @@ from models.batches import tbbatches
 from models.trans import tbtrans
 from models.categories import tbcategories
 
+from pprint import pprint
+
 class Rice(Resource):
     @classmethod
     def get(cls):
@@ -32,18 +34,19 @@ class Rice(Resource):
 
         submitdata = []
         trans = []
-        disabled = ""
+        disabled = "disabled"
         isbutton = False
         if batch is not None:
             trans = tbtrans
             
-            productlist = tbproducts
+            productlist = tbproducts.find_by_catid(category)
 
-            filter = (tbtrans.status == 1) & (tbcategories.catid == category) & (tbtrans.batchid == batch.batchid)
-            submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
+            filter = ((tbtrans.status == 7) | (tbtrans.status == 10) | (tbtrans.status == 12)) & (tbtrans.batchid == batch.batchid) & (tbcategories.catid == category)
+            submitdata = db.session.query(tbtrans).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
+            
             isbutton = True    
             if len(submitdata) > 0:
-                disabled = "disabled "
+                disabled = " "
 
         return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled, submitdata=submitdata,isbutton=isbutton,category = category, task="rice"), 200, headers)
 
@@ -65,16 +68,16 @@ class Ingredient(Resource):
 
         submitdata = []
         trans = []
-        disabled = ""
+        disabled = "disabled"
         isbutton = False
         if batch is not None:
             trans = tbtrans
             productlist = tbproducts.find_by_catid(category)
-            filter = (tbtrans.status == 1) & (tbcategories.catid == category) & (tbtrans.batchid == batch.batchid)
-            submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
+            filter = ((tbtrans.status == 7) | (tbtrans.status == 10) | (tbtrans.status == 12)) & (tbtrans.batchid == batch.batchid) & (tbcategories.catid == category)
+            submitdata = db.session.query(tbtrans).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
             isbutton = True    
             if len(submitdata) > 0:
-                disabled = "disabled "
+                disabled = ""
 
         return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled,isbutton=isbutton, task="ingredient"), 200, headers)
 
@@ -96,16 +99,16 @@ class Meat(Resource):
 
         submitdata = []
         trans = []
-        disabled = ""
+        disabled = "disabled"
         isbutton = False
         if batch is not None:
             trans = tbtrans
             productlist = tbproducts.find_by_catid(category)
-            filter = (tbtrans.status == 1) & (tbcategories.catid == category) & (tbtrans.batchid == batch.batchid)
-            submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
+            filter = ((tbtrans.status == 7) | (tbtrans.status == 10) | (tbtrans.status == 12)) & (tbtrans.batchid == batch.batchid) & (tbcategories.catid == category)
+            submitdata = db.session.query(tbtrans).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
             isbutton = True    
             if len(submitdata) > 0:
-                disabled = "disabled "
+                disabled = ""
 
         return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled,isbutton=isbutton, task="meat"), 200, headers)
 
@@ -127,16 +130,16 @@ class FishSeaFood(Resource):
 
         submitdata = []
         trans = []
-        disabled = ""
+        disabled = "disabled"
         isbutton = False
         if batch is not None:
             trans = tbtrans
             productlist = tbproducts.find_by_catid(category)
-            filter = (tbtrans.status == 1) & (tbcategories.catid == category) & (tbtrans.batchid == batch.batchid)
-            submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
+            filter = ((tbtrans.status == 7) | (tbtrans.status == 10) | (tbtrans.status == 12)) & (tbtrans.batchid == batch.batchid) & (tbcategories.catid == category)
+            submitdata = db.session.query(tbtrans).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
             isbutton = True    
             if len(submitdata) > 0:
-                disabled = "disabled "
+                disabled = ""
 
         return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled,isbutton=isbutton, task="fishandseafood"), 200, headers)
 
@@ -158,16 +161,16 @@ class Fruit(Resource):
 
         submitdata = []
         trans = []
-        disabled = ""
+        disabled = "disabled"
         isbutton = False
         if batch is not None:
             trans = tbtrans
             productlist = tbproducts.find_by_catid(category)
-            filter = (tbtrans.status == 1) & (tbcategories.catid == category) & (tbtrans.batchid == batch.batchid)
-            submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
+            filter = ((tbtrans.status == 7) | (tbtrans.status == 10) | (tbtrans.status == 12)) & (tbtrans.batchid == batch.batchid) & (tbcategories.catid == category)
+            submitdata = db.session.query(tbtrans).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
             isbutton = True    
             if len(submitdata) > 0:
-                disabled = "disabled "
+                disabled = ""
 
         return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled,isbutton=isbutton, task="fruit"), 200, headers)
 
@@ -189,15 +192,15 @@ class Vegetables(Resource):
 
         submitdata = []
         trans = []
-        disabled = ""
+        disabled = "disabled"
         isbutton = False
         if batch is not None:
             trans = tbtrans
             productlist = tbproducts.find_by_catid(category)
-            filter = (tbtrans.status == 1) & (tbcategories.catid == category) & (tbtrans.batchid == batch.batchid)
-            submitdata = db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
+            filter = ((tbtrans.status == 7) | (tbtrans.status == 10) | (tbtrans.status == 12)) & (tbtrans.batchid == batch.batchid) & (tbcategories.catid == category)
+            submitdata = db.session.query(tbtrans).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).all()
             isbutton = True    
             if len(submitdata) > 0:
-                disabled = "disabled "
+                disabled = ""
 
         return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist, trans=trans,batch=batch, disabled=disabled,isbutton=isbutton, task="vegetable"), 200, headers)

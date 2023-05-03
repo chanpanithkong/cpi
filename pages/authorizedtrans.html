@@ -20,7 +20,7 @@
                     <div id="accordion">
                         
                         {% for cl in catlist %}
-                        
+                                                
                         {% set textcolor = "color: red;" %}
                         {% if trans.find_by_catbatchidsubmit(cl.catid,batch.batchid)|length > 0 %}
                         {% set textcolor = "color: green;" %}
@@ -35,9 +35,10 @@
 
                         
                         <div class="card">
-                            <div class="card-header" id="heading{{loop.index}}" style="text-align: left; cursor: pointer; {{textcolor}} font-weight:bold;">
+                            <div class="card-header" id="heading{{loop.index}}" style="text-align: left; cursor: pointer; font-weight:bold;">
                                 <div class="collapsed" data-toggle="collapse" data-target="#collapse{{loop.index}}" aria-expanded="false" aria-controls="collapse{{loop.index}}">
-                                    {{loop.index}}.&nbsp;{{cl.nameen}}
+                                    <div style="float: left;" class="text-{{cl[3]}}">{{loop.index}}.&nbsp;{{cl[1]}}</div>
+                                    <div style="float: right;"><span class="badge bg-{{cl[3]}}">{{cl[2]}}</span></div>
                                 </div>
                             </div>
 
@@ -58,7 +59,7 @@
                                         </thead>
                                         <tbody>
                                             
-                                            {% for prod in products.find_by_catid(cl.catid) %}
+                                            {% for prod in products.find_by_catid(cl[0]) %}
                                             <tr  data-toggle="tooltip" title="{{trans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,prod.prodid).checkernote}}">
                                               <td scope="row">{{loop.index}}</td>
                                               <td>{{prod.namekh}}<input type="hidden" name="prodid{{prod.prodid}}" value="{{prod.prodid}}"/> </td>

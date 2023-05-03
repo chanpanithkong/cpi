@@ -40,6 +40,26 @@ class BatchesList(Resource):
             return {"msg": err}
 
 
+class ReopenBatch(Resource):
+    @classmethod
+    # @jwt_required()
+    def post(cls):
+        try:
+            data = json.loads(request.data)
+            if data['data'] == "closebatch":
+                batch = tbbatches.find_by_branchbatchclose(session.get('branchcode'))
+                if batch is not None:
+                    batch.statusid = 9
+
+                    db.session.commit()
+                    result = "no batch"
+                result = "close batch"
+
+                return {"msg": result}
+            return {"msg": "cannot create batch"}
+        except Exception as err:
+            return {"msg": err}
+        
 class CloseBatch(Resource):
     @classmethod
     # @jwt_required()
@@ -67,27 +87,28 @@ class CreateBatch(Resource):
     def post(cls):
         try:
             data = json.loads(request.data)
+            
             if data['data'] == "createbatch":
-                print(1)
+                
                 maxtid = db.session.query(func.max(tbbatches.batchid)).scalar()
-                print(1)
+                
                 if maxtid is None:
                     maxtid = 1
                 else:
                     maxtid = maxtid + 1
-                print(1)
+                
                 now = datetime.now()
                 currentdatetime = now.strftime("%y-%m-%dT%H:%M:%S")
-                print(1)
+                
                 batchobject = tbbatches()
                 batchobject.batchid = maxtid
-                batchobject.batch = ""  # data['data']['batch']
-                batchobject.detail = ""  # data['data']['detail']
+                batchobject.batch = "batch" + str(maxtid)
+                batchobject.detail = session.get('userid') + session.get('branchcode')
                 batchobject.createdate = currentdatetime
                 batchobject.createby = session.get('userid')
                 batchobject.branch = session.get('branchcode')
                 batchobject.statusid = 9
-                print(1)
+                
                 db.session.add(batchobject)
                 db.session.commit()
                 result = {"batchid:": str(maxtid)}

@@ -162,9 +162,9 @@ class UpdateTranByCategories(Resource):
             if len(data['data']) > 0:
                 for dt in data['data']:
                     batch = tbbatches.find_by_branchbatchopen(branchcode)
-                    print(1)
+                    
                     tran_data = tbtrans.find_by_prodbatchidnotsubmit(dt['prodid'], batch.batchid)[0]
-                    pprint(tran_data)
+                    
                     if (tran_data is not None):
                         # tran_data = tbtrans().update()
                         tran_data.weight = dt['weight']

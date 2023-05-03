@@ -16,7 +16,7 @@ from controls.rolemenu import RoleMenu, RoleMenuList, RoleMenuParents, RoleMenuC
 from controls.roles import Role, RoleList
 from controls.status import Status, StatusList
 from controls.trans import Tran, TransList, InputterInsertTran, AuthorizerUpdateTran, InputterUpdateTran, CheckerUpdateTransaction, AuthorizerUpdateTransaction, InsertAllProductToTrans, UpdateTranByCategories, TransWithBatchWherePriceAndWeightIsEmpty, TransWithBatchCategoryWherePriceAndWeightIsEmpty, TransWithBatchCategory
-from controls.batches import Batch, BatchesList, CreateBatch, CloseBatch
+from controls.batches import Batch, BatchesList, CreateBatch, CloseBatch, ReopenBatch
 from controls.users import User, UsersList, UserLogin, ChangePasswordForUser, UpdateUserProfile
 from pagecontrollers.pages import ViewUsers, UpdateUsers, CreateUsers, CreateStatus, UpdateStatus, ViewStatus, AttachedRolePermission, CreatePermission, CreateRoles, CreateBatches, ViewBatches, UpdateBatches, Logout, UserLoginPage, LoginPage, HomePage, SubmittedTrans, AuthorizedTrans, CheckedTrans, CheckedTransDetails, HistoryOfTrans, BeverageTobacco, Restaurant, ClothShoes, Shipping, Medicine, Housing
 from pagecontrollers.usersetting import UserProfile, ChangePassword
@@ -192,6 +192,7 @@ api.add_resource(CheckerUpdateTransaction, "/api/checkerupdatetransactions")
 # api.add_resource(BatchesList, "/api/batcheslist")
 api.add_resource(CreateBatch, "/api/createbatch")
 api.add_resource(CloseBatch, "/api/closebatch")
+api.add_resource(ReopenBatch, "/api/reopenbatch")
 
 # api.add_resource(User, "/api/user/<userid>")
 # api.add_resource(UsersList, "/api/userslist")
