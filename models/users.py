@@ -12,7 +12,7 @@ class tbusers(db.Model):
     details = db.Column(db.String)
     email = db.Column(db.String)
 
-    def __init__(self, userid, password, roleid, username, gender, branchcode, details, email):
+    def __init__(self, userid=None, password=None, roleid=None, username=None, gender=None, branchcode=None, details=None, email=None):
         self.userid = userid
         self.password = password
         self.roleid = roleid
