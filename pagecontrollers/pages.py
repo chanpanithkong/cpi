@@ -3,6 +3,7 @@ from flask_jwt_extended import (
     JWTManager
 )
 from flask_restful import Resource, request
+from config.db import db, app, api, json
 from config.db import db, app, api
 from flask import make_response, render_template, redirect, send_file, session
 
@@ -21,6 +22,7 @@ from sqlalchemy import func
 
 import datetime
 from pprint import pprint
+from sqlalchemy import func
 
 
 class LoginPage(Resource):
@@ -685,14 +687,14 @@ class CreateUsers(Resource):
         headers = {'Content-Type': 'text/html'}
 
         menus = tbrolemenu
-
+        testing = "hello"
         role = tbroles.find_by_roleid(session.get('roleid'))
-
-        testing = "Hello world!"
-        sql = 'select * from tbroles;'
+        sql = "select * from tbbranches"
+        branch = db.engine.execute(sql)
+        sql = "select * from tbroles"
         roles = db.engine.execute(sql)
-        print(roles)
-        return make_response(render_template('index.html', menus=menus, role=role, testing=testing, roles=roles, task="createusers"), 200, headers)
+
+        return make_response(render_template('index.html', menus=menus, role=role, branch=branch, roles=roles, testing=testing, task="createusers"), 200, headers)
 
 
 class UpdateUsers(Resource):
