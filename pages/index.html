@@ -355,6 +355,54 @@
     <!-- end if -->
     {% endif %}
 
+  <!-- Modal -->
+<div class="modal fade" id="loading" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div style="text-align: center";>
+          <div class="spinner-grow text-primary" role="status">
+          </div>
+          <div class="spinner-grow text-secondary" role="status">
+          </div>
+          <div class="spinner-grow text-success" role="status">
+          </div>
+          <div class="spinner-grow text-danger" role="status">
+          </div>
+          <div class="spinner-grow text-warning" role="status">
+          </div>
+          <div class="spinner-grow text-info" role="status">
+          </div>
+          <div class="spinner-grow text-dark" role="status">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- modal empty -->
+<div class="modal fade" id="emptymessage" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Warning Message</h5>
+      </div>
+      <div class="modal-body">
+        <div>
+          Weight and Price value cannot empty ...
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
   </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->

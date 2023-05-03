@@ -71,6 +71,11 @@ class tbtrans(db.Model):
         return cls.query.filter_by(tid=tid).first()
 
     @classmethod
+    def find_by_batchidprodid(cls, batchid, productid) -> "tbtrans":
+        filters = (db.Column("batchid") == batchid) & (db.Column("productid") == productid)
+        return cls.query.filter(filters).first()
+
+    @classmethod
     def find_by_submitterbatchidprodid(cls, submitter, batchid, productid) -> "tbtrans":
         filters = (db.Column("submitter") == submitter) & (
             db.Column("batchid") == batchid) & (db.Column("productid") == productid)

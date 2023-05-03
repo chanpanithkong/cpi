@@ -25,54 +25,91 @@ class InsertAllProductToTrans(Resource):
     def post(cls):
         try:
             data = json.loads(request.data)
-            if data['data'] == "inserttranns" :
-                productlist = tbproducts.query.all()
-                for pl in productlist:
-                    userid = session.get('userid')
-                    batches = tbbatches.find_by_branchbatchopen(session.get('branchcode'))
-                    users = tbusers.find_by_userid(userid)
-            
-                    maxtid = db.session.query(func.max(tbtrans.tid)).scalar()
-                    if maxtid is None:
-                        maxtid = 1
-                    else:
-                        maxtid = maxtid + 1
-            
-                    get_trandata = tbtrans()
-                    get_trandata.tid = maxtid
-
-                    get_trandata.branchcode = users.branchcode
-                    get_trandata.productid = pl.prodid
-                    
-                    get_trandata.weight = 0 #data['data']['weight']
-                    get_trandata.price = 0 #data['data']['price']
-                    get_trandata.submitter = userid
-                    
-                    get_trandata.submitternote = "" #data['data']['submitternote']
-                    # get_trandata.authorizer
-                    # get_trandata.authorizedate
-                    get_trandata.authorizernote = ""
-                    get_trandata.checkernote = ""
-                    get_trandata.status = 7
-                    
-                    now = datetime.now()
-                    currentdatetime = now.strftime("%y-%m-%dT%H:%M:%S")
-
-                    get_trandata.submitdate = currentdatetime
-                    get_trandata.authorizedate = currentdatetime
-                    get_trandata.checkerdate = currentdatetime
-                    get_trandata.valuedate = currentdatetime
-                    get_trandata.trandate = currentdatetime
-                    get_trandata.countsubmitted = 0
-                    get_trandata.batchid = batches.batchid
+            if data['userrequest'] == "inserttranns" :
                 
-                    db.session.add(get_trandata)
-                    db.session.commit()
-                result = "insert all products with batch : " + str(batches.batchid)
+                userid = session.get('userid')
+                batches = tbbatches.find_by_branchbatchopen(session.get('branchcode'))
+                users = tbusers.find_by_userid(userid)
+            
+                for dt in data['data']:
+            
+                    trans = tbtrans.find_by_batchidprodid(batches.batchid, dt['prodid'])
+                    if trans is not None:
+                        print(1)
+                        get_trandata = tbtrans.find_by_tid(trans.tid)
+                        get_trandata.price = dt['price']
+                        print(1)
+                        get_trandata.submitternote = dt['note']
+                        print(1)
+                        #saved 12
+                        #submitted 1
+                        if data['msg'] == "submitted":
+                            get_trandata.status = 1
+                        elif data['msg'] == "saved":
+                            get_trandata.status = 12
+                        print(1)    
+                        now = datetime.now()
+                        currentdatetime = now.strftime("%y-%m-%dT%H:%M:%S")
+                        print(1)
+                        get_trandata.submitdate = currentdatetime
+                        get_trandata.authorizedate = currentdatetime
+                        get_trandata.checkerdate = currentdatetime
+                        get_trandata.valuedate = currentdatetime
+                        get_trandata.trandate = currentdatetime
+                        get_trandata.countsubmitted = 0
+                        print(1)
+                        db.session.commit()       
+
+                    else:    
+                        maxtid = db.session.query(func.max(tbtrans.tid)).scalar()
+                        if maxtid is None:
+                            maxtid = 1
+                        else:
+                            maxtid = maxtid + 1
+                
+                        get_trandata = tbtrans()
+                        get_trandata.tid = maxtid
+                
+                        get_trandata.branchcode = users.branchcode
+                        get_trandata.productid = dt['prodid']
+                
+                        get_trandata.weight = dt['weight']
+                        get_trandata.price = dt['price']
+                        get_trandata.submitter = userid
+                        get_trandata.submitternote = dt['note']
+                        get_trandata.authorizer = ""
+                        get_trandata.authorizernote = ""
+                        get_trandata.checker =  ""
+                        get_trandata.checkernote = ""
+                    
+                        #saved 12
+                        #submitted 1
+                        if data['msg'] == "submitted":
+                            get_trandata.status = 1
+                        elif data['msg'] == "saved":
+                            get_trandata.status = 12
+                            
+                        now = datetime.now()
+                        currentdatetime = now.strftime("%y-%m-%dT%H:%M:%S")
+                    
+                        get_trandata.submitdate = currentdatetime
+                        get_trandata.authorizedate = currentdatetime
+                        get_trandata.checkerdate = currentdatetime
+                        get_trandata.valuedate = currentdatetime
+                        get_trandata.trandate = currentdatetime
+                        get_trandata.countsubmitted = 0
+                        get_trandata.batchid = batches.batchid
+                    
+                        db.session.add(get_trandata)
+                        db.session.commit()
+                
+                result = "insert all products of category"
                 return {"msg": result}
+            
             return {"msg": "cannot insert products"}
         except Exception as err:
             return {"msg": err}
+        
 
 class InputterInsertTran(Resource):
     @classmethod
