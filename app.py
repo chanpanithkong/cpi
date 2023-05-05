@@ -7,6 +7,8 @@ from blacklist import BLACKLIST
 from urllib.parse import quote
 # from config.db import db, app, api
 
+from models.menus import tbmenus
+
 from controls.branches import Branch, BranchesList, IndexPage
 from controls.categories import CreateCategory, CategoriesList, Category, CategoriesParent, CategoriesChildFromParent
 from controls.measurement import Measurement, MeasurementList
@@ -28,6 +30,8 @@ from dbinfo import dbconfig
 from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_session import Session
+
+from pprint import pprint
 
 # config file
 app = Flask(__name__, template_folder='pages')
@@ -82,6 +86,7 @@ api.add_resource(ChangePassword, "/changepassword")
 api.add_resource(LoginPage, "/login/")
 api.add_resource(Logout, "/logout")
 api.add_resource(UserLoginPage, "/userloginpage")
+
 # food
 api.add_resource(Rice, "/rice")
 api.add_resource(Ingredient, "/ingredients")
@@ -101,11 +106,17 @@ api.add_resource(Shipping, "/shipping")
 api.add_resource(Medicine, "/medicine")
 # housing
 api.add_resource(Housing, "/housing")
+
+
+
+
+
 # submitted & authorized & checked trans
 api.add_resource(SubmittedTrans, "/submittedtrans")
 api.add_resource(AuthorizedTrans, "/authorizedtrans")
 api.add_resource(CheckedTrans, "/checkedtrans")
 api.add_resource(CheckedTransDetails, "/checkedtransdetail/<branchcode>")
+
 
 # historyoftrans
 api.add_resource(HistoryOfTrans, "/historyoftrans")
