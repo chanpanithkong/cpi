@@ -25,9 +25,10 @@
                             <div class="row">
                                 <div class="card-header" id="heading{{loop.index}}" style="text-align: left; cursor: pointer; font-weight:bold;">
                                     <div class="collapsed" data-toggle="collapse" data-target="#collapse{{loop.index}}" aria-expanded="false" aria-controls="collapse{{loop.index}}">
-                                        <div style="float: left;" class="text-{{cl[3]}}">{{loop.index}}.&nbsp;{{cl[1]}}</div>
-                                        <div style="float: right;"><span class="badge bg-{{cl[3]}}">{{cl[2]}}</span></div>
+                                        <div style="float: left;" class="text-{{cl[5]}}">{{loop.index}}.&nbsp;{{cl[1]}}</div>
+                                        
                                     </div>
+                                    <div style="float: right;"><a href="{{cl[7]}}" id="statuslink"><span class="badge bg-{{cl[5]}}">{{cl[4]}}</span></a></div>
                                     <!-- <div style="text-align: right;"><span class="badge bg-primary">Primary</span></div> -->
                                 </div>
                                 

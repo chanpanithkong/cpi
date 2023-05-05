@@ -11,5 +11,6 @@ class StatusSchema(SQLAlchemyAutoSchema):
     statusid = auto_field()
     status = auto_field()
     details = auto_field()
+    icon = auto_field()
     
 
