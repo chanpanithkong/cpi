@@ -3,6 +3,7 @@ from flask_jwt_extended import (
     JWTManager
 )
 from flask_restful import Resource, request
+from config.db import db, app, api, json
 from config.db import db, app, api
 from flask import make_response, render_template, redirect, send_file, session
 
@@ -21,6 +22,7 @@ from sqlalchemy import func
 
 import datetime
 from pprint import pprint
+from sqlalchemy import func
 
 
 class LoginPage(Resource):
@@ -592,8 +594,10 @@ class CreateRoles(Resource):
         menus = tbrolemenu
 
         role = tbroles.find_by_roleid(session.get('roleid'))
+        sql = 'select * from tbroles;'
+        result = db.engine.execute(sql)
 
-        return make_response(render_template('index.html', menus=menus, role=role, task="createrole"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, result=result, task="createrole"), 200, headers)
 
 
 class CreatePermission(Resource):
@@ -608,8 +612,10 @@ class CreatePermission(Resource):
         menus = tbrolemenu
 
         role = tbroles.find_by_roleid(session.get('roleid'))
+        sql = 'select * from tbroles;'
+        result = db.engine.execute(sql)
 
-        return make_response(render_template('index.html', menus=menus, role=role, task="createpermission"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, result=result, task="createpermission"), 200, headers)
 
 
 class AttachedRolePermission(Resource):
@@ -686,12 +692,14 @@ class CreateUsers(Resource):
         headers = {'Content-Type': 'text/html'}
 
         menus = tbrolemenu
-
+        testing = "hello"
         role = tbroles.find_by_roleid(session.get('roleid'))
+        sql = "select * from tbbranches"
+        branch = db.engine.execute(sql)
+        sql = "select * from tbroles"
+        roles = db.engine.execute(sql)
 
-        testing = "Hello world!"
-
-        return make_response(render_template('index.html', menus=menus, role=role, testing=testing, task="createusers"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, branch=branch, roles=roles, testing=testing, task="createusers"), 200, headers)
 
 
 class UpdateUsers(Resource):
@@ -708,8 +716,14 @@ class UpdateUsers(Resource):
         role = tbroles.find_by_roleid(session.get('roleid'))
 
         user = tbusers.find_by_userid(userid)
+        sql = 'select ROW_NUMBER() OVER(ORDER BY userid) as RN, usr.userid,usr.username,r.rolename,br.nameen,usr.email from tbusers usr left join tbbranches br on usr.branchcode=br.branchcode left join tbroles r on usr.roleid = r.roleid;'
+        result = db.engine.execute(sql)
 
-        return make_response(render_template('index.html', menus=menus, role=role, task="updateusers", user=user), 200, headers)
+        sql = 'select * from tbroles;'
+        roles = db.engine.execute(sql)
+
+        print(result)
+        return make_response(render_template('index.html', menus=menus, role=role, roles=roles, task="updateusers", user=user), 200, headers)
 
 
 class ViewUsers(Resource):

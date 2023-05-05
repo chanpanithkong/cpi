@@ -1,1 +1,53 @@
-createpermission
+<div class="pagetitle">
+    <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+          <li class="breadcrumb-item"><a href="#">Role Management</a></li>
+          <li class="breadcrumb-item active">View Role</li>
+        </ol>
+    </nav>
+</div>
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <center>
+                        <h5 class="card-title">List of Roles</h5>
+                    </center>
+
+                    <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th scope="col">Role Code</th>
+                            <th scope="col">Role Name</th>
+                            <th scope="col">Detail</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            {% for usr in result %}
+                            <tr>
+                                <td>{{ usr[0] }}</td>
+                                <td>{{ usr[1] }}</td>
+                                <td>{{ usr[2] }}</td>
+                                <td></td>
+                                <td>
+                                    <a href="/updateusers/{{usr.userid}}">
+                                        <span class="badge bg-success text-dark " style="cursor: pointer;"><i class="bi bi-eye-fill me-1"></i> View</span>
+                                    </a>
+                                    <a href="/updateusers/{{usr.userid}}">
+                                        <span class="badge bg-warning text-dark" style="cursor: pointer;"><i class="bi bi-pencil-square me-1"></i> Update</span>
+                                    </a>
+                                    <span class="badge bg-danger text-dark" style="cursor: pointer;"><i class="bi bi-trash-fill me-1"></i> Delete</span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                      </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
