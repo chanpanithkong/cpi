@@ -30,13 +30,14 @@ from dbinfo import dbconfig
 from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_session import Session
-
+import logging
 from pprint import pprint
 
 # config file
 app = Flask(__name__, template_folder='pages')
 api = Api(app)
 
+# logging.basicConfig(filename='record.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
 
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
@@ -53,7 +54,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + dbconfig.username + ':' + \
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # app.config['CORS_HEADERS'] = 'Content-Type'
 
-DEBUG = True
+DEBUG = False
 
 db = SQLAlchemy(app)
 

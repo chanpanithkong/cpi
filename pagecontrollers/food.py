@@ -28,6 +28,8 @@ class Rice(Resource):
         role = tbroles.find_by_roleid(session.get('roleid'))
         batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
 
+        # app.logger.critical("Critical log info")
+
         category = 2
         productlist = []
         submitdata = []
