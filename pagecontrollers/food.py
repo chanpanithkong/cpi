@@ -54,7 +54,7 @@ class Rice(Resource):
                     isbutton = True    
                     disabled = ""
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="rice"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="rice",main="food"), 200, headers)
 
 
 class Ingredient(Resource):
@@ -94,7 +94,7 @@ class Ingredient(Resource):
                     isbutton = True    
                     disabled = ""
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="ingredient"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="ingredients",main="food"), 200, headers)
 
 
 class Meat(Resource):
@@ -134,7 +134,7 @@ class Meat(Resource):
                     isbutton = True    
                     disabled = ""
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="meat"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="meat",main="food"), 200, headers)
 
 class FishSeaFood(Resource):
     @classmethod
@@ -173,7 +173,7 @@ class FishSeaFood(Resource):
                     isbutton = True    
                     disabled = ""
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="fishandseafood"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="fishandseafood",main="food"), 200, headers)
 
 class Fruit(Resource):
     @classmethod
@@ -212,7 +212,7 @@ class Fruit(Resource):
                     isbutton = True    
                     disabled = ""
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="fruit"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="fruit",main="food"), 200, headers)
 
 
 class Vegetables(Resource):
@@ -252,4 +252,4 @@ class Vegetables(Resource):
                     isbutton = True    
                     disabled = ""
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="vegetable"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="vegetables",main="food"), 200, headers)

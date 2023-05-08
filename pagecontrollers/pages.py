@@ -133,7 +133,7 @@ class HomePage(Resource):
         
         
 
-        return make_response(render_template('index.html', menus=menus, role=role,reopendisable=reopendisable,closeddisable=closeddisable, createdisable=createdisable, user=user, transtatus=transtatus, task="dashboard"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role,reopendisable=reopendisable,closeddisable=closeddisable, createdisable=createdisable, user=user, transtatus=transtatus, task="dashboard",main=""), 200, headers)
 
 
 class HistoryOfTrans(Resource):
@@ -199,7 +199,7 @@ class BeverageTobacco(Resource):
                     isbutton = True    
                     disabled = ""
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="beveragetobacco"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="beveragestobacco",main=""), 200, headers)
 
 
 class Restaurant(Resource):
@@ -240,7 +240,7 @@ class Restaurant(Resource):
                     isbutton = True    
                     disabled = ""
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="restaurant"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="restaurant",main=""), 200, headers)
 
 
 
@@ -282,7 +282,7 @@ class ClothShoes(Resource):
                     isbutton = True    
                     disabled = ""
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="clothshoes"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="clothesshoes",main=""), 200, headers)
 
 
 
@@ -324,7 +324,7 @@ class Shipping(Resource):
                     isbutton = True    
                     disabled = ""
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="shipping"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="shipping",main=""), 200, headers)
 
 class Medicine(Resource):
     @classmethod
@@ -364,7 +364,7 @@ class Medicine(Resource):
                     isbutton = True    
                     disabled = ""
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="medicine"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="medicine",main=""), 200, headers)
 
 
 
@@ -406,7 +406,7 @@ class Housing(Resource):
                     isbutton = True    
                     disabled = ""
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="housing"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="housing",main=""), 200, headers)
 
 
 class SubmittedTrans(Resource):
@@ -438,7 +438,7 @@ class SubmittedTrans(Resource):
 
         trans = tbtrans
 
-        return make_response(render_template('index.html', menus=menus, role=role, catlist=catlist, products=products, batch=batch, trans=trans, task="submittedtrans"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, catlist=catlist, products=products, batch=batch, trans=trans, task="submittedtrans",main=""), 200, headers)
 
 
 class AuthorizedTrans(Resource):
@@ -472,7 +472,7 @@ class AuthorizedTrans(Resource):
             catlist.append(record)
 
 
-        return make_response(render_template('index.html', menus=menus, role=role, catlist=catlist, products=products, batch=batch, trans=trans, task="authorizedtrans"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, catlist=catlist, products=products, batch=batch, trans=trans, task="authorizedtrans",main=""), 200, headers)
 
 
 class CheckedTrans(Resource):
@@ -496,7 +496,7 @@ class CheckedTrans(Resource):
         for record in result:
             transtatus.append(record)
 
-        return make_response(render_template('index.html', menus=menus, role=role, branches=branches, transtatus=transtatus, task="checkedtrans"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, branches=branches, transtatus=transtatus, task="checkedtrans",main=""), 200, headers)
 
 
 class CheckedTransDetails(Resource):
@@ -535,7 +535,7 @@ class CheckedTransDetails(Resource):
         for record in result:
             catlist.append(record)
 
-        return make_response(render_template('index.html', menus=menus, role=role, catlist=catlist, products=products, batch=batch, trans=trans, branchcode=branchcode, task="checkedtransdetail"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, catlist=catlist, products=products, batch=batch, trans=trans, branchcode=branchcode, task="checkedtransdetail",main=""), 200, headers)
 
 
 class CreateBatches(Resource):
@@ -551,7 +551,7 @@ class CreateBatches(Resource):
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
-        return make_response(render_template('index.html', menus=menus, role=role, task="createbatch"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, task="createbatch",main=""), 200, headers)
 
 
 class UpdateBatches(Resource):
@@ -567,7 +567,7 @@ class UpdateBatches(Resource):
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
-        return make_response(render_template('index.html', menus=menus, role=role, task="updatebatch"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, task="updatebatch",main=""), 200, headers)
 
 
 class ViewBatches(Resource):
@@ -583,7 +583,7 @@ class ViewBatches(Resource):
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
-        return make_response(render_template('index.html', menus=menus, role=role, task="viewbatch"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, task="viewbatch",main=""), 200, headers)
 
 
 class CreateRoles(Resource):
@@ -601,7 +601,7 @@ class CreateRoles(Resource):
         sql = 'select * from tbroles;'
         result = db.engine.execute(sql)
 
-        return make_response(render_template('index.html', menus=menus, role=role, result=result, task="createrole"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, result=result, task="createrole",main=""), 200, headers)
 
 
 class CreatePermission(Resource):
@@ -619,7 +619,7 @@ class CreatePermission(Resource):
         sql = 'select * from tbroles;'
         result = db.engine.execute(sql)
 
-        return make_response(render_template('index.html', menus=menus, role=role, result=result, task="createpermission"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, result=result, task="createpermission",main=""), 200, headers)
 
 
 class AttachedRolePermission(Resource):
@@ -635,7 +635,7 @@ class AttachedRolePermission(Resource):
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
-        return make_response(render_template('index.html', menus=menus, role=role, task="attachedrolepermission"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, task="attachedrolepermission",main=""), 200, headers)
 
 
 class CreateStatus(Resource):
@@ -651,7 +651,7 @@ class CreateStatus(Resource):
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
-        return make_response(render_template('index.html', menus=menus, role=role, task="createstatus"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, task="createstatus",main=""), 200, headers)
 
 
 class UpdateStatus(Resource):
@@ -667,7 +667,7 @@ class UpdateStatus(Resource):
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
-        return make_response(render_template('index.html', menus=menus, role=role, task="updatestatus"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, task="updatestatus",main=""), 200, headers)
 
 
 class ViewStatus(Resource):
@@ -683,7 +683,7 @@ class ViewStatus(Resource):
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
-        return make_response(render_template('index.html', menus=menus, role=role, task="viewstatus"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, task="viewstatus",main=""), 200, headers)
 
 
 class CreateUsers(Resource):
@@ -703,7 +703,7 @@ class CreateUsers(Resource):
         sql = "select * from tbroles"
         roles = db.engine.execute(sql)
 
-        return make_response(render_template('index.html', menus=menus, role=role, branch=branch, roles=roles, testing=testing, task="createusers"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, branch=branch, roles=roles, testing=testing, task="createusers",main=""), 200, headers)
 
 
 class UpdateUsers(Resource):
@@ -727,7 +727,7 @@ class UpdateUsers(Resource):
         roles = db.engine.execute(sql)
 
         print(result)
-        return make_response(render_template('index.html', menus=menus, role=role, roles=roles, task="updateusers", user=user), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, roles=roles, task="updateusers",main="", user=user), 200, headers)
 
 
 class ViewUsers(Resource):
@@ -751,4 +751,4 @@ class ViewUsers(Resource):
             user.append(record)
         print(user)
 
-        return make_response(render_template('index.html', menus=menus, role=role, user=user, task="viewusers"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, user=user, task="viewusers",main=""), 200, headers)

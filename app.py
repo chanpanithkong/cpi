@@ -71,6 +71,17 @@ db = SQLAlchemy(app)
 #     jti = jwt_payload["jti"]
 #     return jti in BLACKLIST
 
+# from flask_simple_crypt import SimpleCrypt
+
+# cipher = SimpleCrypt()
+# cipher.init_app(app)
+
+# enc_data = cipher.encrypt("userprofile")
+# print(enc_data)  # returns base64 encoded and encrypted data
+
+# dec_data = cipher.decrypt(enc_data)
+# print(dec_data)  # returns original data
+
 
 @app.errorhandler(404)
 def page_not_found(err):
@@ -79,7 +90,7 @@ def page_not_found(err):
 ######### webpage #########
 
 
-api.add_resource(HomePage, "/")
+api.add_resource(HomePage, "/dashboard")
 # user settings
 api.add_resource(UserProfile, "/userprofile")
 api.add_resource(ChangePassword, "/changepassword")
