@@ -244,10 +244,10 @@
 
         {% if menus.find_by_menuchild(menu[0].roleid,menu[1].menuid)|length > 0 %}
         
-        {% set active1 = "" %}
+        {% set active1 = "collapsed" %}
         {% set active2 = "collapse" %}
         {% if "/" + main == menu[1].functions %}
-        {% set active1 = "collapse" %}
+        {% set active1 = "" %}
         {% set active2 = "collapse show" %}
         {% endif %}
         

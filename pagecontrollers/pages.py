@@ -50,7 +50,7 @@ class UserLoginPage(Resource):
                     session['username'] = user_data.username
                     session['branchcode'] = user_data.branchcode
                     session['details'] = user_data.details
-                    return redirect("/")
+                    return redirect("/dashboard")
             return make_response(render_template('login.html', data="Wrong userid and password !!!"), 200, headers)
         except Exception as err:
             return make_response(render_template('login.html', data=err), 200, headers)
