@@ -25,3 +25,8 @@ class tbmenus(db.Model):
     @classmethod
     def find_by_menuid(cls, menuid) -> "tbmenus":
         return cls.query.filter_by(menuid=menuid).first()
+
+    @classmethod
+    def find_by_iscat(cls) -> "tbmenus":
+        filters = (db.Column("iscat") != 0) & (db.Column("functions") != "None")
+        return cls.query.filter(filters).all()

@@ -7,6 +7,8 @@ from blacklist import BLACKLIST
 from urllib.parse import quote
 # from config.db import db, app, api
 
+from models.menus import tbmenus
+
 from controls.branches import Branch, BranchesList, IndexPage
 from controls.categories import CreateCategory, CategoriesList, Category, CategoriesParent, CategoriesChildFromParent
 from controls.measurement import Measurement, MeasurementList
@@ -28,11 +30,14 @@ from dbinfo import dbconfig
 from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_session import Session
+import logging
+from pprint import pprint
 
 # config file
 app = Flask(__name__, template_folder='pages')
 api = Api(app)
 
+# logging.basicConfig(filename='record.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
 
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
@@ -49,7 +54,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + dbconfig.username + ':' + \
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # app.config['CORS_HEADERS'] = 'Content-Type'
 
-DEBUG = True
+DEBUG = False
 
 db = SQLAlchemy(app)
 
@@ -67,6 +72,17 @@ db = SQLAlchemy(app)
 #     jti = jwt_payload["jti"]
 #     return jti in BLACKLIST
 
+# from flask_simple_crypt import SimpleCrypt
+
+# cipher = SimpleCrypt()
+# cipher.init_app(app)
+
+# enc_data = cipher.encrypt("userprofile")
+# print(enc_data)  # returns base64 encoded and encrypted data
+
+# dec_data = cipher.decrypt(enc_data)
+# print(dec_data)  # returns original data
+
 
 @app.errorhandler(404)
 def page_not_found(err):
@@ -75,13 +91,14 @@ def page_not_found(err):
 ######### webpage #########
 
 
-api.add_resource(HomePage, "/")
+api.add_resource(HomePage, "/dashboard")
 # user settings
 api.add_resource(UserProfile, "/userprofile")
 api.add_resource(ChangePassword, "/changepassword")
 api.add_resource(LoginPage, "/login/")
 api.add_resource(Logout, "/logout")
 api.add_resource(UserLoginPage, "/userloginpage")
+
 # food
 api.add_resource(Rice, "/rice")
 api.add_resource(Ingredient, "/ingredients")
@@ -101,11 +118,17 @@ api.add_resource(Shipping, "/shipping")
 api.add_resource(Medicine, "/medicine")
 # housing
 api.add_resource(Housing, "/housing")
+
+
+
+
+
 # submitted & authorized & checked trans
 api.add_resource(SubmittedTrans, "/submittedtrans")
 api.add_resource(AuthorizedTrans, "/authorizedtrans")
 api.add_resource(CheckedTrans, "/checkedtrans")
 api.add_resource(CheckedTransDetails, "/checkedtransdetail/<branchcode>")
+
 
 # historyoftrans
 api.add_resource(HistoryOfTrans, "/historyoftrans")

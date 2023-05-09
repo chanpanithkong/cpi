@@ -21,7 +21,7 @@ class UserProfile(Resource):
         user = tbusers.find_by_userid(session.get('userid'))
         role = tbroles.find_by_roleid(session.get('roleid'))
         branch = tbbranches
-        return make_response(render_template('index.html', menus=menus,  role=role, user=user, branch=branch, task="userprofile"), 200, headers)
+        return make_response(render_template('index.html', menus=menus,  role=role, user=user, branch=branch, task="userprofile",main="user"), 200, headers)
 
 
 class ChangePassword(Resource):
@@ -33,4 +33,4 @@ class ChangePassword(Resource):
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
-        return make_response(render_template('index.html', menus=menus, role=role, task="changepassword"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, task="changepassword",main="user"), 200, headers)
