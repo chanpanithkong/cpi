@@ -48,6 +48,9 @@ app.config['SECRET_KEY'] = 'eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJpc3MiOiJodHRw
 # disable message error in internal system
 # app.config['PROPAGATE_EXCEPTIONS'] = True
 
+# MySQL closes it self the stale connections (8 hours of inactivity by default). You can set the pool recycle to solve this problem.
+app.config["SQLALCHEMY_POOL_RECYCLE"] = 300
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + dbconfig.username + ':' + \
     dbconfig.password + '@' + dbconfig.url + ':' + \
     dbconfig.port + '/' + dbconfig.mysqldb
