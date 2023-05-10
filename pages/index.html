@@ -362,8 +362,8 @@
     {% elif task == 'viewcategories' %}
     {% include 'product/viewcategory.html' %}
     <!-- roles management -->
-    {% elif task == 'createrole' %}
-    {% include 'role/createrole.html' %}
+    {% elif task == 'createroles' %}
+    {% include 'role/createroles.html' %}
     {% elif task == 'createpermission' %}
     {% include 'role/createpermission.html' %}
     {% elif task == 'attachedrolepermission' %}
@@ -440,8 +440,46 @@
         </div>
       </div>
     </div>
+    <!-- modal user already exist -->
+    <div class="modal fade" id="userexist" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Warning Message</h5>
+          </div>
+          <div class="modal-body">
+            <div>
+              User ID is already exists in the system.
+            </div>
 
-
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+        <!-- modal userid cannot null -->
+        <div class="modal fade" id="useridnull" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Warning Message</h5>
+            </div>
+            <div class="modal-body">
+              <div>
+                User ID cannot be null.
+              </div>
+  
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
   </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->

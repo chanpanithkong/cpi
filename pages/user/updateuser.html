@@ -1,99 +1,175 @@
 <div class="pagetitle">
   <nav>
-      <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-          <li class="breadcrumb-item"><a href="/viewuser">User Management</a></li>
-          <li class="breadcrumb-item active">Update User</li>
-      </ol>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+      <li class="breadcrumb-item"><a href="/viewusers">Users List</a></li>
+      <li class="breadcrumb-item active">Create Users</li>
+    </ol>
   </nav>
-</div>
+</div><!-- End Page Title -->
 
 <section class="section">
   <div class="row">
-      <div class="col-lg-2"></div>
-    <div class="col-lg-8">
+    <div class="col-lg-12">
 
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Create Users</h5>
+          <center>
+            <h5 class="card-title">User Management</h5>
+          </center>
+          <br />
+          {% for user in user %}
 
-          <!-- General Form Elements -->
-          <form>
-              <div class="row mb-3">
-                  <label for="userid" class="col-sm-2 col-form-label">User ID</label>
-                  <div class="col-sm-10">
-                    <input type="text" name="userid" class="form-control" value="{{user.userid}}">
-                  </div>
-                </div>
-            <div class="row mb-3">
-              <label for="username" class="col-sm-2 col-form-label">Full Name</label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control" name="username" value="{{user.username}}">
-              </div>
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-4">
+              <label for="inputEmail5" class="form-label">User ID</label>
+              <input type="text" class="form-control" id="user_id" placeholder="Please fill UserID" disabled="disabled"
+                name="user_id" value="{{user[0].userid}}">
             </div>
-            <div class="row mb-3">
-              <label for="inputText" class="col-sm-2 col-form-label">Branch</label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control" value="{{user.branchcode}}">
-              </div>
+            <div class="col-md-4">
+              <label for="inputPassword5" class="form-label">Full Name</label>
+              <input type="text" class="form-control" id="username" placeholder="Please fill Full Name" name="usernmae"
+                value="{{user[0].username}}">
             </div>
-            <div class="row mb-3">
-              <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
-              <div class="col-sm-10">
-                <input type="password" class="form-control" value="{{user.password}}" disabled>
-              </div>
+            <div class="col-md-2"></div>
+          </div>
+          <br />
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-4">
+              <label for="inputEmail5" class="form-label">Gender</label>
+              <select id="gender" class="form-select" name="gender">
+                {% if user[0].gender == "Female" %}  
+                  <option value="Female" selected>Female</option>
+                  <option value="Male">Male</option>
+                {% else %}
+                  <option value="Female">Female</option>
+                  <option value="Male" selected>Male</option>
+                {% endif %}
+              </select>
             </div>
-            <div class="row mb-3">
-              <label for="role" class="col-sm-2 col-form-label">Role</label>
-              <div class="col-sm-10">
-                <select id="role" class="form-select" name="role">
-                  <option value="0">Select Role</option>
-                  {% for ct in roles %}
-                  <option value="{{ct.roleid}}">{{ct.rolename}}</option>
-                  {% endfor %}
+            <div class="col-md-4">
+              <label for="inputPassword5" class="form-label">Role</label>
+              <select id="roleid" class="form-select" name="roleid">
+
+                {% for role in tb_roles.query.all() %}
+
+                    {% if user[1].roleid == role.roleid %}
+                      <option value="{{role.roleid}}" selected>{{role.rolename}}</option>
+                    {% else %}
+                      <option value="{{role.roleid}}">{{role.rolename}}</option>
+                    {% endif %}
+                    
+              
+                {% endfor %}
+            </select>
+              
+            </div>
+            <div class="col-md-2"></div>
+          </div>
+          <br />
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-4">
+              <label for="inputEmail5" class="form-label">Branch Code</label>
+              <select id="branchcode" class="form-select" name="branchcode">
+                {% for branch in tb_branches.query.all() %}
+                
+                  {% if user[2].branchcode == branch.branchcode %}
+                    <option value="{{branch.branchcode}}" selected>{{branch.nameen}}</option>
+                  {% else %}
+                    <option value="{{branch.branchcode}}">{{branch.nameen}}</option>
+                  {% endif %}
+              
+                {% endfor %}
                 </select>
-              </div>
             </div>
-            <div class="row mb-3">
-              <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
-              <div class="col-sm-10">
-                <input type="email" class="form-control" value="{{user.email}}">
-              </div>
+            <div class="col-md-4">
+              <label for="inputPassword5" class="form-label">Department</label>
+              <input type="text" class="form-control" id="department" placeholder="Please fill Department" name="department"
+                value="{{user[0].details}}">
             </div>
-            <div class="row mb-3">
-              <label for="inputNumber" class="col-sm-2 col-form-label">Phone Number</label>
-              <div class="col-sm-10">
-                <input type="number" class="form-control">
-              </div>
+            <div class="col-md-2"></div>
+          </div>
+          <br />
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+              <label for="inputEmail5" class="form-label">Email</label>
+              <input type="text" class="form-control" id="email" placeholder="Please fill Email"
+                name="email" value="{{user[0].email}}">
             </div>
-            <div class="row mb-3">
-              <label for="inputDate" class="col-sm-2 col-form-label">Date of Birth</label>
-              <div class="col-sm-10">
-                <input type="date" class="form-control">
-              </div>
+            <div class="col-md-2"></div>
+          </div>
+                   
+          <br/>
+          <div>
+            <div style="text-align: Center">
+              <button type="button" class="btn btn-primary" id="update">
+                Update User
+              </button>
+              &nbsp;
+              <button type="button" class="btn btn-success" id="back">
+                User List
+              </button>
             </div>
-            <div class="row mb-3">
-              <label class="col-sm-2 col-form-label">Gender</label>
-              <div class="col-sm-10">
-                <select class="form-select" aria-label="Default select example">
-                  <option selected>Choose</option>
-                  <option value="1">Male</option>
-                  <option value="2">Female</option>
-                </select>
-              </div>
-            </div>
-            <br/>
-            <div class="text-center">
-              <button type="submit" class="btn btn-primary">Save</button>
-              <button type="reset" class="btn btn-info">Clear</button>
-            </div>
-
-          </form><!-- End General Form Elements -->
-
+        </div>
+        {% endfor %}
         </div>
       </div>
 
+
+
     </div>
-    <div class="col-lg-2"></div>
   </div>
 </section>
+
+<script>
+
+  $(document).ready(function () {
+
+    $("#update").click(function () {
+
+      userid = $("#user_id").val();
+      username = $("#username").val();
+      roleid = $("#roleid").val();
+      gender = $("#gender").val();
+      branchcode = $("#branchcode").val();
+      department = $("#department").val();
+      email = $("#email").val();
+
+
+      item = {};
+      item['userid'] = userid;
+      item['username'] = username;
+      item['roleid'] = roleid;
+      item['gender'] = gender;
+      item['branchcode'] = branchcode;
+      item['department'] = department;
+      item['email'] = email;
+
+      $.ajax({
+        type: "POST",
+        url: "/api/updateuserprofile",
+        data: JSON.stringify({ data: item, userrequest: "updateuser" }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        beforeSend: function () { },
+        success: function (data) {
+          location.reload();
+        },
+        error: function (data) {
+          console.log(data);
+        }
+
+      })
+    })
+
+
+    $("#back").click(function () {
+      window.location = "/viewusers";
+    })
+  })
+
+</script>

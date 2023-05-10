@@ -24,7 +24,6 @@ from pagecontrollers.pages import ViewUsers, UpdateUsers, CreateUsers, CreateSta
 from pagecontrollers.usersetting import UserProfile, ChangePassword
 from pagecontrollers.food import Rice, Ingredient, Meat, FishSeaFood, Fruit, Vegetables
 from pagecontrollers.categoryproduct import ListProducts, CreateProducts, CreateCategories, UpdateProducts, UpdateCategories, ViewProducts, ViewCategories
-from pagecontrollers.user import CreateUser
 
 from dbinfo import dbconfig
 from flask_cors import CORS
@@ -166,7 +165,7 @@ api.add_resource(UpdateUsers, "/updateusers/<userid>")
 
 
 ######## webservice #########
-api.add_resource(CreateUser, "/api/createuser")
+# api.add_resource(UpdateUserProfile, "/api/createuser")
 
 # api.add_resource(IndexPage, "/api/")
 # api.add_resource(Branch, "/api/branch/<branchcode>")

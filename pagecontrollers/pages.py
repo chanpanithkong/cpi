@@ -601,7 +601,7 @@ class CreateRoles(Resource):
         sql = 'select * from tbroles;'
         result = db.engine.execute(sql)
 
-        return make_response(render_template('index.html', menus=menus, role=role, result=result, task="createrole",main=""), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, result=result, task="createroles",main="role"), 200, headers)
 
 
 class CreatePermission(Resource):
@@ -619,7 +619,7 @@ class CreatePermission(Resource):
         sql = 'select * from tbroles;'
         result = db.engine.execute(sql)
 
-        return make_response(render_template('index.html', menus=menus, role=role, result=result, task="createpermission",main=""), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, result=result, task="createpermission",main="role"), 200, headers)
 
 
 class AttachedRolePermission(Resource):
@@ -635,7 +635,7 @@ class AttachedRolePermission(Resource):
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
-        return make_response(render_template('index.html', menus=menus, role=role, task="attachedrolepermission",main=""), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, task="attachedrolepermission",main="role"), 200, headers)
 
 
 class CreateStatus(Resource):
@@ -696,14 +696,12 @@ class CreateUsers(Resource):
         headers = {'Content-Type': 'text/html'}
 
         menus = tbrolemenu
-        testing = "hello"
         role = tbroles.find_by_roleid(session.get('roleid'))
-        sql = "select * from tbbranches"
-        branch = db.engine.execute(sql)
-        sql = "select * from tbroles"
-        roles = db.engine.execute(sql)
 
-        return make_response(render_template('index.html', menus=menus, role=role, branch=branch, roles=roles, testing=testing, task="createusers",main=""), 200, headers)
+        tb_roles = tbroles
+        tb_branches = tbbranches
+
+        return make_response(render_template('index.html', menus=menus, role=role, tb_roles=tb_roles, tb_branches=tb_branches, task="createusers",main="users"), 200, headers)
 
 
 class UpdateUsers(Resource):
@@ -719,15 +717,15 @@ class UpdateUsers(Resource):
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
-        user = tbusers.find_by_userid(userid)
-        sql = 'select ROW_NUMBER() OVER(ORDER BY userid) as RN, usr.userid,usr.username,r.rolename,br.nameen,usr.email from tbusers usr left join tbbranches br on usr.branchcode=br.branchcode left join tbroles r on usr.roleid = r.roleid;'
-        result = db.engine.execute(sql)
+        filters = (tbusers.userid == userid)
+        user = db.session.query(tbusers,tbroles, tbbranches).filter(tbusers.roleid == tbroles.roleid).filter(tbusers.branchcode == tbbranches.branchcode).filter(filters).all()
+        
+        tb_roles = tbroles
+        tb_branches = tbbranches
 
-        sql = 'select * from tbroles;'
-        roles = db.engine.execute(sql)
+        pprint(user)
 
-        print(result)
-        return make_response(render_template('index.html', menus=menus, role=role, roles=roles, task="updateusers",main="", user=user), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role,tb_roles=tb_roles, tb_branches=tb_branches, user=user, task="updateusers",main="users"), 200, headers)
 
 
 class ViewUsers(Resource):
@@ -743,12 +741,8 @@ class ViewUsers(Resource):
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
-        sql = 'select ROW_NUMBER() OVER(ORDER BY userid) as RN, usr.userid,usr.username,r.rolename,br.nameen,usr.email from tbusers usr left join tbbranches br on usr.branchcode=br.branchcode left join tbroles r on usr.roleid = r.roleid;'
-        result = db.engine.execute(sql)
-
-        user = []
-        for record in result:
-            user.append(record)
-        print(user)
-
-        return make_response(render_template('index.html', menus=menus, role=role, user=user, task="viewusers",main=""), 200, headers)
+        user = db.session.query(tbusers,tbroles, tbbranches).filter(tbusers.roleid == tbroles.roleid).filter(tbusers.branchcode == tbbranches.branchcode).all()
+        
+        pprint(user)
+        
+        return make_response(render_template('index.html', menus=menus, role=role, user=user, task="viewusers",main="users"), 200, headers)

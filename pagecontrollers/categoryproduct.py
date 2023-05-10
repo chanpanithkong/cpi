@@ -31,7 +31,7 @@ class ListProducts(Resource):
 
         category = tbcategories
 
-        return make_response(render_template('index.html', menus=menus, role=role, products=products, category=category, catid=catid, task="listproducts"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, products=products, category=category, catid=catid, task="listproducts",main="product"), 200, headers)
 
 
 class CreateProducts(Resource):
@@ -49,7 +49,7 @@ class CreateProducts(Resource):
 
         category = tbcategories
 
-        return make_response(render_template('index.html', menus=menus, role=role, catid=catid, category=category, task="createproducts"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, catid=catid, category=category, task="createproducts",main="product"), 200, headers)
 
 
 class CreateCategories(Resource):
@@ -67,7 +67,7 @@ class CreateCategories(Resource):
 
         category = tbcategories
 
-        return make_response(render_template('index.html', menus=menus, role=role, category=category, task="createcategories"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, category=category, task="createcategories",main="product"), 200, headers)
 
 
 class UpdateProducts(Resource):
@@ -88,7 +88,7 @@ class UpdateProducts(Resource):
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
-        return make_response(render_template('index.html', menus=menus, role=role, category=category, catid=catid, product=product, prodid=prodid, task="updateproducts"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, category=category, catid=catid, product=product, prodid=prodid, task="updateproducts",main="product"), 200, headers)
 
 
 class UpdateCategories(Resource):
@@ -106,7 +106,7 @@ class UpdateCategories(Resource):
 
         category = tbcategories.find_by_catid(catid)
 
-        return make_response(render_template('index.html', menus=menus, role=role, category=category, task="updatecategories"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, category=category, task="updatecategories",main="product"), 200, headers)
 
 
 class ViewProducts(Resource):
@@ -124,7 +124,7 @@ class ViewProducts(Resource):
 
         categories = tbcategories
 
-        return make_response(render_template('index.html', menus=menus, role=role, categories=categories, task="viewproducts"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, categories=categories, task="viewproducts",main="product"), 200, headers)
 
 
 class ViewCategories(Resource):
@@ -141,4 +141,4 @@ class ViewCategories(Resource):
         role = tbroles.find_by_roleid(session.get('roleid'))
 
         categories = tbcategories
-        return make_response(render_template('index.html', menus=menus, role=role, categories=categories, task="viewcategories"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, categories=categories, task="viewcategories",main="product"), 200, headers)

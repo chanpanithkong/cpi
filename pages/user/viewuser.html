@@ -13,45 +13,103 @@
             <div class="card">
                 <div class="card-body">
                     <center>
-                        <h5 class="card-title">List of Users</h5>
+                        <h5 class="card-title">Users Management</h5>
                     </center>
 
                     <table class="table table-hover">
                         <thead>
                           <tr>
                             <th scope="col">#</th>
-                            <th scope="col">User Name</th>
                             <th scope="col">User ID</th>
-                            <th scope="col">Branch</th>
+                            <th scope="col">User Name</th>
+                            <th scope="col">Branch Name</th>
                             <th scope="col">Role</th>
+                            <th scope="col">Department</th>
                             <th scope="col">Email</th>
                             <th scope="col">Action</th>
                           </tr>
                         </thead>
                         <tbody>
-                            {% for usr in user %}
+                            {% for user in user %}
                             <tr>
-                                <td>{{ usr[0] }}</td>
-                                <td>{{ usr[2] }}</td>
-                                <td>{{ usr[1] }}</td>
-                                <td>{{ usr[4] }}</td>
-                                <td>{{ usr[3] }}</td>
-                                <td>{{ usr[5] }}</td>
+                                <td>{{loop.index}}</td>
+                                <td class="user_id">{{ user[0].userid }}</td>
+                                <td>{{ user[0].username }}</td>
+                                <td>{{ user[2].nameen }}</td>
+                                <td>{{ user[1].rolename }}</td>
+                                <td>{{ user[0].details }}</td>
+                                <td>{{ user[0].email }}</td>
                                 <td>
-                                    <a href="/updateusers/{{usr.userid}}">
-                                        <span class="badge bg-success text-dark " style="cursor: pointer;"><i class="bi bi-eye-fill me-1"></i> View</span>
-                                    </a>
-                                    <a href="/updateusers/{{usr.userid}}">
-                                        <span class="badge bg-warning text-dark" style="cursor: pointer;"><i class="bi bi-pencil-square me-1"></i> Update</span>
-                                    </a>
-                                    <span class="badge bg-danger text-dark" style="cursor: pointer;"><i class="bi bi-trash-fill me-1"></i> Delete</span>
+                                    <button type="button" class="btn btn-warning btn-sm update" data-toggle="tooltip" data-placement="top" title="Update User">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>
+                                    &nbsp;
+                                    <button type="button" class="btn btn-danger btn-sm delete"  data-toggle="tooltip" data-placement="top" title="Delete User">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                    &nbsp;
+                                    <button type="button" class="btn btn-primary btn-sm reset" data-toggle="tooltip" data-placement="top" title="Reset Password">
+                                        <i class="bx bx-reset"></i>
+                                    </button>
+                                    
                                 </td>
                             </tr>
                             {% endfor %}
                         </tbody>
                       </table>
+                      <div>
+                        <div style="text-align: Center">
+                          <button type="button" class="btn btn-primary" id="add">
+                            Add New User
+                          </button>
+                          &nbsp;
+                          <button type="button" class="btn btn-success" id="refresh">
+                            Refresh
+                          </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+<script>
+    $(document).ready(function() {
+        $('[data-toggle="tooltip"]').tooltip();
+
+        $("#add").click(function(e) {
+            window.location = "/createusers"
+        })
+        
+        $(".reset").click(function(e) {
+            userid = $(this).parent().parent().find(".user_id").text()
+
+            item = {};
+            item['userid'] = userid;
+
+            $.ajax({
+                type: "POST",
+                url: "/api/updateuserprofile",
+                data: JSON.stringify({ data: item, userrequest: "resetpassword" }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                beforeSend: function () { },
+                success: function (data) {
+                    location.reload();
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+
+            })
+        })
+        $(".update").click(function(e) {
+            userid = $(this).parent().parent().find(".user_id").text()
+            window.location = "/updateusers/"+userid
+        })
+        $(".delete").click(function(e) {
+            alert('delete User');
+        })
+        
+    })
+</script>

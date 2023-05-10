@@ -1,176 +1,182 @@
 <div class="pagetitle">
-    <h1>Users Management</h1>
-    <nav>
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-        <li class="breadcrumb-item">Users Management</li>
-        <li class="breadcrumb-item active">Create Users</li>
-      </ol>
-    </nav>
-  </div><!-- End Page Title -->
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+      <li class="breadcrumb-item"><a href="/viewusers">Users List</a></li>
+      <li class="breadcrumb-item active">Create Users</li>
+    </ol>
+  </nav>
+</div><!-- End Page Title -->
 
-  <section class="section">
-    <div class="row">
-        <div class="col-lg-2"></div>
-        <div class="col-lg-8">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Create Users</h5>
-                <div class="row mb-3">
-                  <label for="branch" class="col-sm-2 col-form-label">Branch</label>
-                  <div class="col-sm-10">
-                    <select class="form-select" id="branch" name="branch">
-                      <option value="0">Select Branch</option>
-                      {% for br in branch %}
-                      <option value="{{br.branchcode}}">{{br.branchcode}}-{{br.nameen}}</option>
-                      {% endfor %}
-                    </select>
-                  </div>
-                </div>
-                <div class="row mb-3">
-                  <label for="fname" class="col-sm-2 col-form-label">Full Name</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="fname" name="fname">
-                  </div>
-                </div>
-                <div class="row mb-3">
-                  <label for="usrid" class="col-sm-2 col-form-label">UserID</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="usrid" name="usrid">
-                  </div>
-                </div>
-                <div class="row mb-3">
-                  <label for="password" class="col-sm-2 col-form-label">Password</label>
-                  <div class="col-sm-10">
-                    <input type="password" class="form-control" id="password" name="password">
-                  </div>
-                </div>
-                <div class="row mb-3">
-                  <label for="role" class="col-sm-2 col-form-label">Role</label>
-                  <div class="col-sm-10">
-                    <select id="role" class="form-select" id="role" name="role">
-                      <option value="0">Select Role</option>
-                      {% for ct in roles %}
-                      <option value="{{ct.roleid}}">{{ct.rolename}}</option>
-                      {% endfor %}
-                    </select>
-                  </div>
-                </div>
-                <div class="row mb-3">
-                  <label for="email" class="col-sm-2 col-form-label">Email</label>
-                  <div class="col-sm-10">
-                    <input type="email" class="form-control" id="email" name="email">
-                  </div>
-                </div>
-                <div class="row mb-3">
-                  <label for="phone" class="col-sm-2 col-form-label">Phone Number</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="phone" name="phone">
-                  </div>
-                </div>
-                <div class="row mb-3">
-                  <label for="dob" class="col-sm-2 col-form-label">Date of Birth</label>
-                  <div class="col-sm-10">
-                    <input type="date" class="form-control" id="dob" name="dob">
-                  </div>
-                </div>
+<section class="section">
+  <div class="row">
+    <div class="col-lg-12">
 
-                <div class="row mb-3">
-                  <label class="col-sm-2 col-form-label">Gender</label>
-                  <div for="gender" class="col-sm-10">
-                    <select class="form-select" aria-label="Default select example" id="gender" name="gender">
-                      <option selected>Choose</option>
-                      <option value="Male">Male</option>
-                      <option value="Female">Female</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="row mb-3">
-                  <label for="fname" class="col-sm-2 col-form-label">Detail</label>
-                  <div class="col-sm-10">
-                    <textarea class="form-control" style="height: 100px" id="detail" name="detail"></textarea>
-                  </div>
-                </div>
-                <br/>
-                <div class="text-center">
-                  <button type="submit" class="btn btn-primary" id="save">Save</button>
-                  <button type="reset" class="btn btn-info" id="clear">Clear</button>
-                </div>
+      <div class="card">
+        <div class="card-body">
+          <center>
+            <h5 class="card-title">User Management</h5>
+          </center>
+          <br />
 
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-4">
+              <label for="inputEmail5" class="form-label">User ID</label>
+              <input type="text" class="form-control" id="user_id" placeholder="Please fill UserID"
+                name="user_id" value="">
+            </div>
+            <div class="col-md-4">
+              <label for="inputPassword5" class="form-label">Full Name</label>
+              <input type="text" class="form-control" id="username" placeholder="Please fill Full Name" name="usernmae"
+                value="">
+            </div>
+            <div class="col-md-2"></div>
+          </div>
+          <br />
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-4">
+              <label for="inputEmail5" class="form-label">Gender</label>
+              <select id="gender" class="form-select" name="gender">
+                <option value="Female">Female</option>
+                <option value="Male">Male</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="inputPassword5" class="form-label">Role</label>
+              <select id="roleid" class="form-select" name="roleid">
+                {% for role in tb_roles.query.all() %}
+                
+                    <option value="{{role.roleid}}">{{role.rolename}}</option>
+              
+                {% endfor %}
+            </select>
+              
+            </div>
+            <div class="col-md-2"></div>
+          </div>
+          <br />
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-4">
+              <label for="inputEmail5" class="form-label">Branch Code</label>
+              <select id="branchcode" class="form-select" name="branchcode">
+                {% for branch in tb_branches.query.all() %}
+                
+                    <option value="{{branch.branchcode}}">{{branch.nameen}}</option>
+              
+                {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4">
+              <label for="inputPassword5" class="form-label">Department</label>
+              <input type="text" class="form-control" id="department" placeholder="Please fill Department" name="department"
+                value="">
+            </div>
+            <div class="col-md-2"></div>
+          </div>
+          <br />
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+              <label for="inputEmail5" class="form-label">Email</label>
+              <input type="text" class="form-control" id="email" placeholder="Please fill Email"
+                name="email" value="">
+            </div>
+            <div class="col-md-2"></div>
+          </div>
+                   
+          <br/>
+          <div>
+            <div style="text-align: Center">
+              <button type="button" class="btn btn-primary" id="save">
+                Add New User
+              </button>
+              &nbsp;
+              <button type="button" class="btn btn-danger" id="clear">
+                Clear
+              </button>
+            </div>
+        </div>
+        <br/>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="alert alert-primary" role="alert">
+                User Default Password is "P12345678"
+              </div>
             </div>
           </div>
-
         </div>
-        <div class="col-lg-2"></div>
+      </div>
+
+
+
     </div>
-  </section>
+  </div>
+</section>
 
-  <script>
+<script>
 
-    $(document).ready(function () {
+  $(document).ready(function () {
 
-        $("#save").click(function () {
+    $("#save").click(function () {
 
-            // $("#catid").val();
-            fname =  $("#fname").val();
-            usrid = $("#usrid").val();
-            password = $("#password").val();
-            role = $("#role").val();
-            // phone = $("#phone").val();
-            gender = $("#gender").val();
-            branch = $("#branch").val();
-            detail = $("#detail").val();
-            email = $("#email").val();
+      userid = $("#user_id").val();
+      username = $("#username").val();
+      roleid = $("#roleid").val();
+      gender = $("#gender").val();
+      branchcode = $("#branchcode").val();
+      department = $("#department").val();
+      email = $("#email").val();
 
 
-            item = {};
-            item['usrid'] = usrid;
-            item['password'] = password;
-            item['role'] = role;
-            item['fname'] = fname;
-            item['gender'] = gender;
-            item['branch'] = branch;
-            item['detail'] = detail;
-            item['email'] = email;
-            alert(JSON.stringify(item));
-            $.ajax({
-                type: "POST",
-                url: "api/createuser",
-                data: JSON.stringify({ data: item, userrequest:"createuser" }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                beforeSend: function() {    },
-                success: function (data) {
-                  alert('success');
-                    console.log(data);
-                    location.reload();
-                },
-                error: function(data) {
-                    alert('fail');
-                    console.log(data);
-                }
+      item = {};
+      item['userid'] = userid;
+      item['username'] = username;
+      item['roleid'] = roleid;
+      item['gender'] = gender;
+      item['branchcode'] = branchcode;
+      item['department'] = department;
+      item['email'] = email;
 
-            })
+      if( userid == ''){
+        $("#useridnull").modal('show');
+        return;
+      }
 
 
+      $.ajax({
+        type: "POST",
+        url: "/api/updateuserprofile",
+        data: JSON.stringify({ data: item, userrequest: "createuser" }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        beforeSend: function () { },
+        success: function (data) {
+          if(data.msg == "UserID already exist"){
+            $("#userexist").modal('show');
+          }else{  
+            location.reload();
+          }
+        },
+        error: function (data) {
+          console.log(data);
+        }
 
-        })
-        $("#clear").click(function () {
-            // $("#catid").val();
-            $("#fname").val("");
-            $("#nameen").val("");
-            $("#namekh").val("");
-            $("#parentid").val(0);
-            $("#details").val("");
-            
-            
-        })
-
-        $("#back").click(function () {
-            window.location = "/viewproducts"
-        })
-
-
+      })
     })
+
+
+    $("#clear").click(function () {
+      $("#user_id").val("");
+      $("#username").val("");
+      $("#roleid").val(1);
+      $("#gender").val("Female");
+      $("#branchcode").val("001");
+      $("#department").val("");
+      $("#email").val("");
+    })
+  })
 
 </script>
