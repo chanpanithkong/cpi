@@ -586,6 +586,27 @@ class ViewBatches(Resource):
         return make_response(render_template('index.html', menus=menus, role=role, task="viewbatch",main=""), 200, headers)
 
 
+class UpdateRoles(Resource):
+    @classmethod
+    def get(cls,roleid):
+
+        if not session.get("userid"):
+            return redirect("/login")
+
+        headers = {'Content-Type': 'text/html'}
+
+        menus = tbrolemenu
+
+        role = tbroles.find_by_roleid(session.get('roleid'))
+
+
+        tb_role = tbroles.find_by_roleid(roleid)
+
+        return make_response(render_template('index.html', menus=menus, role=role,tb_role=tb_role, task="updateroles",main="role"), 200, headers)
+
+
+
+
 class CreateRoles(Resource):
     @classmethod
     def get(cls):
@@ -598,15 +619,13 @@ class CreateRoles(Resource):
         menus = tbrolemenu
 
         role = tbroles.find_by_roleid(session.get('roleid'))
-        sql = 'select * from tbroles;'
-        result = db.engine.execute(sql)
 
-        return make_response(render_template('index.html', menus=menus, role=role, result=result, task="createroles",main="role"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, task="createroles",main="role"), 200, headers)
 
 
 class CreatePermission(Resource):
     @classmethod
-    def get(cls):
+    def get(cls,roleid):
 
         if not session.get("userid"):
             return redirect("/login")
@@ -616,10 +635,31 @@ class CreatePermission(Resource):
         menus = tbrolemenu
 
         role = tbroles.find_by_roleid(session.get('roleid'))
-        sql = 'select * from tbroles;'
-        result = db.engine.execute(sql)
+        
+        
+        products = tbproducts
+        batch = tbbatches.find_by_branchbatchopen("001")
 
-        return make_response(render_template('index.html', menus=menus, role=role, result=result, task="createpermission",main="role"), 200, headers)
+        # catlist = []
+        trans = []
+        sql = ""
+        record = []
+        result = []
+        if batch is not None:
+            # catlist = tbtrans.find_by_authorizecatbatchid(batch.batchid)
+            trans = tbtrans
+            sql = "select * from tbmenus men where men.parentid = 0"
+            result = db.engine.execute(sql)
+
+        menulist = []
+        for record in result:
+            menulist.append(record)
+
+        tb_role = tbroles.find_by_roleid(roleid)
+
+        tb_menus = tbmenus
+        
+        return make_response(render_template('index.html', menus=menus, role=role,tb_role=tb_role,menulist=menulist,tb_menus= tb_menus,  task="createpermission",main="role"), 200, headers)
 
 
 class AttachedRolePermission(Resource):
@@ -635,7 +675,10 @@ class AttachedRolePermission(Resource):
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
-        return make_response(render_template('index.html', menus=menus, role=role, task="attachedrolepermission",main="role"), 200, headers)
+        tb_roles = tbroles
+
+
+        return make_response(render_template('index.html', menus=menus, role=role,tb_role=tb_roles, task="attachedrolepermission",main="role"), 200, headers)
 
 
 class CreateStatus(Resource):

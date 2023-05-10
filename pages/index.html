@@ -60,12 +60,12 @@
 
   <script>
 
-    $(document).ready(function(){
+    $(document).ready(function () {
 
-        $('.toggle-sidebar-btn').click(function(e) {
-          $('body').toggleClass('toggle-sidebar')
-        })
-       
+      $('.toggle-sidebar-btn').click(function (e) {
+        $('body').toggleClass('toggle-sidebar')
+      })
+
     });
 
   </script>
@@ -240,17 +240,17 @@
       {% for menu in menus.find_by_menuparent(role.roleid) %}
       <!-- <ul class="sidebar-nav" id="sidebar-nav"> -->
 
-        
 
-        {% if menus.find_by_menuchild(menu[0].roleid,menu[1].menuid)|length > 0 %}
-        
-        {% set active1 = "collapsed" %}
-        {% set active2 = "collapse" %}
-        {% if "/" + main == menu[1].functions %}
-        {% set active1 = "" %}
-        {% set active2 = "collapse show" %}
-        {% endif %}
-        
+
+      {% if menus.find_by_menuchild(menu[0].roleid,menu[1].menuid)|length > 0 %}
+
+      {% set active1 = "collapsed" %}
+      {% set active2 = "collapse" %}
+      {% if "/" + main == menu[1].functions %}
+      {% set active1 = "" %}
+      {% set active2 = "collapse show" %}
+      {% endif %}
+
       <li class="nav-item">
         <a class="nav-link {{active1}}" data-bs-target="#{{menu[1].details}}" data-bs-toggle="collapse" href="#">
           <i class="bx {{ menu[1].icon }}"></i><span>{{ menu[1].nameen }}</span><i
@@ -285,7 +285,7 @@
       </li>
       {% endif %}
 
-    <!-- </ul> -->
+      <!-- </ul> -->
       {% endfor %}
       <!-- parent with children  -->
       <!-- end menu -->
@@ -364,6 +364,8 @@
     <!-- roles management -->
     {% elif task == 'createroles' %}
     {% include 'role/createroles.html' %}
+    {% elif task == 'updateroles' %}
+    {% include 'role/updateroles.html' %}
     {% elif task == 'createpermission' %}
     {% include 'role/createpermission.html' %}
     {% elif task == 'attachedrolepermission' %}
@@ -460,8 +462,28 @@
         </div>
       </div>
     </div>
-        <!-- modal userid cannot null -->
-        <div class="modal fade" id="useridnull" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    <!-- modal userid cannot null -->
+    <div class="modal fade" id="useridnull" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Warning Message</h5>
+          </div>
+          <div class="modal-body">
+            <div>
+              User ID cannot be null.
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+        <!-- modal role name is null -->
+        <div class="modal fade" id="rolenameisnull" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
@@ -470,7 +492,7 @@
             </div>
             <div class="modal-body">
               <div>
-                User ID cannot be null.
+                Role name cannot be null.
               </div>
   
             </div>
@@ -480,6 +502,10 @@
           </div>
         </div>
       </div>
+
+
+
+
   </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->

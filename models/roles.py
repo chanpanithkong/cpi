@@ -7,7 +7,7 @@ class tbroles(db.Model):
     details = db.Column(db.String)
     
     
-    def __init__(self, roleid, rolename, details):
+    def __init__(self, roleid=None, rolename=None, details=None):
         self.roleid = roleid
         self.rolename = rolename
         self.details = details

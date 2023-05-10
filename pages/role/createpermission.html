@@ -1,9 +1,9 @@
 <div class="pagetitle">
     <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-          <li class="breadcrumb-item"><a href="#">Role Management</a></li>
-          <li class="breadcrumb-item active">View Role</li>
+            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="/attachedrolepermission">Role Management</a></li>
+            <li class="breadcrumb-item active">Attach Permission</li>
         </ol>
     </nav>
 </div>
@@ -13,41 +13,99 @@
             <div class="card">
                 <div class="card-body">
                     <center>
-                        <h5 class="card-title">List of Roles</h5>
+                        <h5 class="card-title">Permission of Role {{tb_role.rolename}} Management</h5>
                     </center>
+                    <div id="row">
+                        <div class="col-lg-12">
+                                
+                            <table class="table table-hover">
+                                <thead>
+                                    <th width="10%">#</th>
+                                    <th width="30%">Menu Name</th>
+                                    <th width="20%">Link</th>
+                                    <th width="20%">Details</th>
+                                    <th width="10%">Parent</th>
+                                    <th width="10%">Action</th>
+                                </thead>
+                                <tbody>
+                                {% for tbmenu in menulist %}
 
-                    <table class="table table-hover">
-                        <thead>
-                          <tr>
-                            <th scope="col">Role Code</th>
-                            <th scope="col">Role Name</th>
-                            <th scope="col">Detail</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Action</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                            {% for usr in result %}
-                            <tr>
-                                <td>{{ usr[0] }}</td>
-                                <td>{{ usr[1] }}</td>
-                                <td>{{ usr[2] }}</td>
-                                <td></td>
-                                <td>
-                                    <a href="/updateusers/{{usr.userid}}">
-                                        <span class="badge bg-success text-dark " style="cursor: pointer;"><i class="bi bi-eye-fill me-1"></i> View</span>
-                                    </a>
-                                    <a href="/updateusers/{{usr.userid}}">
-                                        <span class="badge bg-warning text-dark" style="cursor: pointer;"><i class="bi bi-pencil-square me-1"></i> Update</span>
-                                    </a>
-                                    <span class="badge bg-danger text-dark" style="cursor: pointer;"><i class="bi bi-trash-fill me-1"></i> Delete</span>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                      </table>
+
+
+
+                                        <tr class="table-info">
+                                        <td>{{loop.index}}</td>
+                                        <td>{{tbmenu[1]}}</td>
+                                        <td>{{tbmenu[5]}}</td>
+                                        <td>{{tbmenu[6]}}</td>
+                                        <td>Yes</td>
+                                        <td>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch"
+                                                    id="flexSwitchCheckDefault">
+                                            </div>
+                                        </td>
+                                        </tr>
+
+
+
+
+                                        {% if tb_menus.find_by_parent(tbmenu[0]) |length > 0 %}
+
+                                        
+                                                {% for men in tb_menus.find_by_parent(tbmenu[0]) %}
+                                                <tr class="table-warning">
+                                                    <td><i class="ri-arrow-right-line"></i></td>
+                                                    <td>{{men.nameen}}</td>
+                                                    <td>{{men.functions}}</td>
+                                                    <td>{{men.details}}</td>
+                                                    <td>No</td>
+                                                    <td>
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                role="switch" id="flexSwitchCheckDefault">
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+
+                                           
+
+                                {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div style="text-align: Center">
+                                <button type="button" class="btn btn-primary" id="save">
+                                    Save
+                                </button>
+                                &nbsp;
+                                <button type="button" class="btn btn-success" id="back">
+                                    Refresh
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                    <br/>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+<script>
+    $(document).ready(function () {
+        // $('.collapse1').collapse();
+
+
+        $("#save").click(function () {
+            alert("save");
+        })
+    });
+</script>

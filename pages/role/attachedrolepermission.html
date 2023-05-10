@@ -1,1 +1,107 @@
-attachedrolepermission
+<div class="pagetitle">
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+            <li class="breadcrumb-item active">Role Management</li>
+        </ol>
+    </nav>
+</div>
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <center>
+                        <h5 class="card-title">Role Management</h5>
+                    </center>
+                    <br/>
+                    <div class='row'>
+                        <div class="col-lg-2"></div>
+                        <div class="col-lg-8">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Role Name</th>
+                                        <th scope="col">Details</th>
+                                        <th scope="col"><center>Action</center></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for role in tb_role.query.all() %}
+                                    <tr>
+                                        <td class="role_id">{{role.roleid}}</td>
+                                        <td>{{role.rolename}}</td>
+                                        <td>{{role.details}}</td>
+                                        <td align="center">
+                                            <button type="button" class="btn btn-warning btn-sm update"
+                                                data-toggle="tooltip" data-placement="top" title="Update Role">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </button>
+                                            &nbsp;
+                                            <button type="button" class="btn btn-danger btn-sm delete"
+                                                data-toggle="tooltip" data-placement="top" title="Delete Role">
+                                                <i class="bi bi-trash-fill"></i>
+                                            </button>
+                                            &nbsp;
+                                            <button type="button" class="btn btn-primary btn-sm permission"
+                                                data-toggle="tooltip" data-placement="top" title="Add Permission">
+                                                <i class="bx bx-spreadsheet"></i>
+                                            </button>
+
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-lg-2"></div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div style="text-align: Center">
+                                <button type="button" class="btn btn-primary" id="add">
+                                  Add New Role
+                                </button>
+                                &nbsp;
+                                <button type="button" class="btn btn-success" id="refresh">
+                                  Refresh
+                                </button>
+                              </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    $(document).ready(function() {
+
+        $('[data-toggle="tooltip"]').tooltip();
+
+
+        $("#refresh").click(function() {
+            window.location.reload();
+        })
+        $("#add").click(function() {
+            
+            window.location = "/createroles"
+        })
+        $(".delete").click(function() {
+            roleid = $(this).parent().parent().find(".role_id").text();
+            alert(roleid)
+        })
+        $(".update").click(function(){
+            roleid = $(this).parent().parent().find(".role_id").text();
+            window.location = "/updateroles/" + roleid
+        })
+        $(".permission").click(function(){
+            roleid = $(this).parent().parent().find(".role_id").text();
+            window.location = "/createpermission/" + roleid
+        })
+
+    })
+</script>

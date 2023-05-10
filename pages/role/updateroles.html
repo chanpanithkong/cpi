@@ -21,7 +21,7 @@
             <div class="col-lg-4">
               <label for="inputEmail5" class="form-label">Role ID</label>
               <input type="text" class="form-control" id="roleid" placeholder="Role ID is auto increment" disabled
-                name="roleid" value="">
+                name="roleid" value="{{tb_role.roleid}}">
             </div>
             <div class="col-lg-4"></div>
           </div>
@@ -31,7 +31,7 @@
             <div class="col-lg-4">
               <label for="inputEmail5" class="form-label">Role Name</label>
               <input type="text" class="form-control" id="rolename" placeholder="Please fill role name"
-                name="rolename" value="">
+                name="rolename" value="{{tb_role.rolename}}">
             </div>
             <div class="col-lg-4"></div>
           </div>
@@ -41,7 +41,7 @@
             <div class="col-lg-4">
               <label for="inputEmail5" class="form-label">Role Details</label>
               <input type="text" class="form-control" id="details" placeholder="Please fill role details"
-                name="details" value="">
+                name="details" value="{{tb_role.details}}">
             </div>
             <div class="col-lg-4"></div>
           </div>
@@ -49,8 +49,8 @@
           <div class="row">
             <div class="col-lg-12">
               <div style="text-align: Center">
-                <button type="button" class="btn btn-primary" id="add">
-                  Add New Role
+                <button type="button" class="btn btn-primary" id="update">
+                  Update Role
                 </button>
                 &nbsp;
                 <button type="button" class="btn btn-danger" id="clear">
@@ -75,12 +75,13 @@
     $('[data-toggle="tooltip"]').tooltip();
 
 
-    $("#add").click(function () {
-      
+    $("#update").click(function () {
+      roleid = $("#roleid").val();
       rolename = $("#rolename").val();
       details = $("#details").val();
 
       item = {};
+      item['roleid'] = roleid;
       item['rolename'] = rolename;
       item['details'] = details;
 
@@ -93,16 +94,12 @@
       $.ajax({
         type: "POST",
         url: "/api/rolemanagement",
-        data: JSON.stringify({ data: item, userrequest: "createrole" }),
+        data: JSON.stringify({ data: item, userrequest: "updaterole" }),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         beforeSend: function () { },
         success: function (data) {
-          // if(data.msg == "UserID already exist"){
-          //   $("#userexist").modal('show');
-          // }else{  
             location.reload();
-          // }
         },
         error: function (data) {
           console.log(data);

@@ -30,3 +30,8 @@ class tbmenus(db.Model):
     def find_by_iscat(cls) -> "tbmenus":
         filters = (db.Column("iscat") != 0) & (db.Column("functions") != "None")
         return cls.query.filter(filters).all()
+    
+    @classmethod
+    def find_by_parent(cls,parentid) -> "tbmenus":
+        filters = (db.Column("parentid") == parentid)
+        return cls.query.filter(filters).all()
