@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Api
 from marshmallow import ValidationError
@@ -60,10 +60,12 @@ db = SQLAlchemy(app)
 
 # CORS(app, resources={r"/*": {"origins": "*"}})
 
-# @app.route("/")
-# def index():
-#     return "Hello World"
-
+@app.route("/")
+def index():
+    if not session.get("userid"):
+        return redirect("/login")
+    else:
+        return redirect("/dashboard")
 # jwt = JWTManager(app)
 
 

@@ -158,7 +158,7 @@ class HistoryOfTrans(Resource):
             trans.append(record)
 
 
-        return make_response(render_template('index.html', menus=menus, role=role,trans=trans, task="historyoftrans"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role,trans=trans, task="historyoftrans",main=""), 200, headers)
 
 
 class BeverageTobacco(Resource):
