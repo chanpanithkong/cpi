@@ -3,12 +3,13 @@ from flask_jwt_extended import (
     JWTManager
 )
 from flask_restful import Resource, request
-from config.db import db, app, api
+from config.db import db, app, api, json
+from flask import session
 from models.rolemenus import tbrolemenu
 from models.menus import tbmenus
 from schema.rolemenuschema import RoleMenuSchema
 from schema.menusschema import MenusSchema
-
+from datetime import datetime
 from pprint import pprint
 jwt = JWTManager(app)
 
@@ -92,5 +93,46 @@ class RoleMenuChilds(Resource):
             # schema = RoleMenuSchema(many=True)
             # _data = schema.dump(data)
             return {"rolemenus": rolemenu, "menus": menu}
+        except Exception as err:
+            return {"msg": err}
+
+
+
+class DeleteInsertRoleMenu(Resource):
+    @classmethod
+    # @jwt_required()
+    def post(cls):
+        try:
+
+            msg = ""
+            data = json.loads(request.data)
+            
+            if data['userrequest'] == 'deleteinsertrolemenu':
+                
+                if len(data['data']) > 0:
+                    roleid = data['data'][0]['roleid']
+                    tbrolemenu.query.filter(tbrolemenu.roleid == roleid).delete()
+
+                for dt in data['data']:
+            
+                    tb_rolemenu = tbrolemenu()
+            
+                    tb_rolemenu.roleid = dt['roleid']
+                    tb_rolemenu.menuid = dt['menuid']
+                    tb_rolemenu.details = ""
+                    tb_rolemenu.statusid = 5
+                    tb_rolemenu.createby = session.get('userid')
+            
+                    now = datetime.now()
+                    currentdatetime = now.strftime("%y-%m-%dT%H:%M:%S")
+                    tb_rolemenu.createdate = currentdatetime
+            
+                    db.session.add(tb_rolemenu)
+                    db.session.commit()
+            
+                    msg = "role menu insert successfully"
+            
+
+            return {"msg": msg}
         except Exception as err:
             return {"msg": err}

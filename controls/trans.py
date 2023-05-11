@@ -35,29 +35,29 @@ class InsertAllProductToTrans(Resource):
             
                     trans = tbtrans.find_by_batchidprodid(batches.batchid, dt['prodid'])
                     if trans is not None:
-                        print(1)
+                        
                         get_trandata = tbtrans.find_by_tid(trans.tid)
                         get_trandata.price = dt['price']
-                        print(1)
+                        
                         get_trandata.submitternote = dt['note']
-                        print(1)
+                        
                         #saved 12
                         #submitted 1
                         if data['msg'] == "submitted":
                             get_trandata.status = 1
                         elif data['msg'] == "saved":
                             get_trandata.status = 12
-                        print(1)    
+                        
                         now = datetime.now()
                         currentdatetime = now.strftime("%y-%m-%dT%H:%M:%S")
-                        print(1)
+                        
                         get_trandata.submitdate = currentdatetime
                         get_trandata.authorizedate = currentdatetime
                         get_trandata.checkerdate = currentdatetime
                         get_trandata.valuedate = currentdatetime
                         get_trandata.trandate = currentdatetime
                         get_trandata.countsubmitted = 0
-                        print(1)
+                        
                         db.session.commit()       
 
                     else:    

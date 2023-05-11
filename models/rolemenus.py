@@ -35,3 +35,17 @@ class tbrolemenu(db.Model):
         data = db.session.query(tbrolemenu, tbmenus).filter(
             tbrolemenu.menuid == tbmenus.menuid).filter(filter).order_by(tbrolemenu.menuid).all()
         return data
+    
+    @classmethod
+    def is_menuid_in_userrole(cls, userroleid, menuid) -> "tbrolemenu":
+        
+        result = False
+        filter = (tbrolemenu.roleid == userroleid)
+        data = db.session.query(tbrolemenu).filter(filter).order_by(tbrolemenu.menuid).all()
+        
+        for dt in data:
+            if dt.menuid == menuid:
+                result = True
+                break
+
+        return result

@@ -634,6 +634,8 @@ class CreatePermission(Resource):
 
         menus = tbrolemenu
 
+        pprint(tbrolemenu.is_menuid_in_userrole(session.get('roleid'),2))
+
         role = tbroles.find_by_roleid(session.get('roleid'))
         
         

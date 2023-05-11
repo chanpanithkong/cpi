@@ -14,7 +14,7 @@ from controls.categories import CreateCategory, CategoriesList, Category, Catego
 from controls.measurement import Measurement, MeasurementList
 from controls.menus import Menu, MenusList
 from controls.products import APICreateProduct, Product, ProductsList
-from controls.rolemenu import RoleMenu, RoleMenuList, RoleMenuParents, RoleMenuChilds
+from controls.rolemenu import RoleMenu, RoleMenuList, RoleMenuParents, RoleMenuChilds, DeleteInsertRoleMenu
 from controls.roles import Role, RoleList, RoleManagement
 from controls.status import Status, StatusList
 from controls.trans import Tran, TransList, InputterInsertTran, AuthorizerUpdateTran, InputterUpdateTran, CheckerUpdateTransaction, AuthorizerUpdateTransaction, InsertAllProductToTrans, UpdateTranByCategories, TransWithBatchWherePriceAndWeightIsEmpty, TransWithBatchCategoryWherePriceAndWeightIsEmpty, TransWithBatchCategory
@@ -188,12 +188,13 @@ api.add_resource(APICreateProduct, "/api/createproduct")
 # api.add_resource(Product, "/api/product/<pid>")
 # api.add_resource(ProductsList, "/api/productslist")
 
-api.add_resource(RoleManagement, "/api/rolemanagement")
+
+api.add_resource(DeleteInsertRoleMenu, "/api/deleteinsertrolemenu")
 # api.add_resource(RoleMenu, "/api/rolemenu/<roleid>")
 # api.add_resource(RoleMenuList, "/api/rolemenulist")
 # api.add_resource(RoleMenuParents, "/api/rolemenuparents/<roleid>")
 # api.add_resource(RoleMenuChilds, "/api/rolemenuchilds/<roleid>/<parentid>")
-
+api.add_resource(RoleManagement, "/api/rolemanagement")
 # api.add_resource(Role, "/api/role/<roleid>")
 # api.add_resource(RoleList, "/api/rolelist")
 

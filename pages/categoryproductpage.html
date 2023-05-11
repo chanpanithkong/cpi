@@ -18,7 +18,7 @@
                     value="{{prod.weight}}" />
                   </td>
                   <td>
-                    <input type="text" class="form-control" name="price{{prod.prodid}}" value ="{{tbtrans.find_by_batchidprodid(batch.batchid,prod.prodid).price}}" />
+                    <input type="number" class="form-control" name="price{{prod.prodid}}" value ="{{tbtrans.find_by_batchidprodid(batch.batchid,prod.prodid).price}}" />
                   </td>
                   <td>
                     <input type="text" class="form-control" name="note{{prod.prodid}}" value = "{{tbtrans.find_by_batchidprodid(batch.batchid,prod.prodid).submitternote}}" />
@@ -52,10 +52,21 @@
     $(document).ready(function () {
       $("#submit").click(function () {
 
+        
         result = [];
   
         prodid = []
         $("input[name^='prodid']").each(function () {
+
+          $(this).validate({
+            rules: {
+              amount: {
+                required: true,
+                digits: true
+              }
+            }
+          });
+
           prodid.push($(this).val());
         });
   

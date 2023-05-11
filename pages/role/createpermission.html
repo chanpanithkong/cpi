@@ -30,10 +30,12 @@
                                 <tbody>
                                 {% for tbmenu in menulist %}
 
-
-
-
-                                        <tr class="table-info">
+                                    {% set ischeck = "" %}
+                                    {% if menus.is_menuid_in_userrole(tb_role.roleid, tbmenu[0]) %}
+                                        {% set ischeck = "checked" %}
+                                    {% endif %}
+                                    
+                                    <tr class="table-info">
                                         <td>{{loop.index}}</td>
                                         <td>{{tbmenu[1]}}</td>
                                         <td>{{tbmenu[5]}}</td>
@@ -41,29 +43,39 @@
                                         <td>Yes</td>
                                         <td>
                                             <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch"
+                                                <input class="form-check-input" type="checkbox" role="switch" {{ischeck}}
                                                     id="flexSwitchCheckDefault">
+                                                <input type="hidden" name="roleid{{tbmenu[0]}}" id="roleid{{tbmenu[0]}}" value="{{tb_role.roleid}}" />
+                                                <input type="hidden" name="menuid{{tbmenu[0]}}" id="menuid{{tbmenu[0]}}" value="{{tbmenu[0]}}" />
                                             </div>
                                         </td>
                                         </tr>
 
-
+                                        
 
 
                                         {% if tb_menus.find_by_parent(tbmenu[0]) |length > 0 %}
-
                                         
                                                 {% for men in tb_menus.find_by_parent(tbmenu[0]) %}
+
+                                                {% set ischecksub = "" %}
+                                                {% if menus.is_menuid_in_userrole(tb_role.roleid, men.menuid) %}
+                                                    {% set ischecksub = "checked" %}
+                                                {% endif %}
+
+
                                                 <tr class="table-warning">
                                                     <td><i class="ri-arrow-right-line"></i></td>
                                                     <td>{{men.nameen}}</td>
                                                     <td>{{men.functions}}</td>
                                                     <td>{{men.details}}</td>
-                                                    <td>No</td>
+                                                    <td>{{tbmenu[1]}}</td>
                                                     <td>
                                                         <div class="form-check form-switch">
-                                                            <input class="form-check-input" type="checkbox"
+                                                            <input class="form-check-input" type="checkbox" {{ischecksub}} 
                                                                 role="switch" id="flexSwitchCheckDefault">
+                                                            <input type="hidden" name="roleid{{tbmenu[0]}}" id="roleid{{men.menuid}}" value="{{tb_role.roleid}}" />
+                                                            <input type="hidden" name="menuid{{tbmenu[0]}}" id="menuid{{men.menuid}}" value="{{men.menuid}}" />
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -71,7 +83,8 @@
 
                                            
 
-                                {% endif %}
+                                        {% endif %}
+                                    
                                 {% endfor %}
                             </tbody>
                         </table>
@@ -86,7 +99,7 @@
                                 </button>
                                 &nbsp;
                                 <button type="button" class="btn btn-success" id="back">
-                                    Refresh
+                                    Role List
                                 </button>
                             </div>
                         </div>
@@ -102,10 +115,54 @@
 <script>
     $(document).ready(function () {
         // $('.collapse1').collapse();
-
+        $("#back").click(function(){
+            window.location = "/attachedrolepermission"
+        })
 
         $("#save").click(function () {
-            alert("save");
+            
+            roleid = []
+            $("input[name^='roleid']").each(function () {
+                if($(this).parent().find("input[type='checkbox']").is(":checked")){
+                    roleid.push($(this).val());
+                }
+            });
+            menuid = []
+            $("input[name^='menuid']").each(function () {
+
+                if($(this).parent().find("input[type='checkbox']").is(":checked")){
+                    menuid.push($(this).val());
+                }
+            });
+
+            result = [];
+            for (i = 0; i < roleid.length; i++) {
+                item = {};
+                item['roleid'] = roleid[i];
+                item['menuid'] = menuid[i];
+                result.push(item);
+
+            }
+
+
+            $.ajax({
+                type: "POST",
+                url: "/api/deleteinsertrolemenu",
+                data: JSON.stringify({ userrequest: "deleteinsertrolemenu",  data: result}),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                beforeSend: function() {
+                  $("#loading").modal('show');
+                },
+                success: function (data) {
+                  console.log(data.msg);
+                  location.reload();
+                },
+                error: function (errMsg) {
+                  console.log(errMsg);
+                },
+              });
+
         })
     });
 </script>
