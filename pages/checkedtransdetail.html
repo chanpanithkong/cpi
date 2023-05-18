@@ -70,16 +70,13 @@
                                               <td>{{trans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,prod.prodid).price}}</td>
                                               <td>{{trans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,prod.prodid).submitternote}}</td>
                                               <td>
-                                                {% if textcolor == "color: green;" %}
-                                                <input type="text" class="form-control" name="authorizernote{{prod.prodid}}"
-                                                value="{{trans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,prod.prodid).authorizernote}}" />
-                                                {% else %}
                                                 {{trans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,prod.prodid).authorizernote}}
-                                                {% endif %}
                                             </td>
                                             <td> 
-                                                {% if textcolor == "color: green;" or textcolor == "color: blue;" %}
+                                                {% if textcolor == "color: blue;" %}
                                                 <input type="text" class="form-control" value="{{trans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,prod.prodid).checkernote}}" id="checkernoted" name="checkernoted" /></th>
+                                                {% else %}
+                                                {{trans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,prod.prodid).checkernote}}
                                                 {% endif %}
                                             </tr>
                                             {% endfor %}

@@ -16,4 +16,5 @@ class UserSchema(SQLAlchemyAutoSchema):
     branchcode = auto_field()
     details = auto_field()
     email = auto_field()
+    status = auto_field()
 

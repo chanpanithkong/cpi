@@ -122,10 +122,16 @@ class HomePage(Resource):
         
         if tbbat is not None :
             if role.roleid == 3 or role.roleid == 2:
-                sql = "select   t2.sts,   sum(cnt) procnt,  t2.status,   t2.details,   t2.icon,    count(t2.catid) catcnt from (	select t1.*,   sts.status,	   sts.details,	   sts.icon	from (	select cat.catid,   (case when trn.status is null then 7 else trn.status end) sts,   count(pro.prodid) cnt from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid   left join  tbtrans trn on pro.prodid = trn.productid	where trn.batchid = " + str(tbbat.batchid) + " or trn.batchid is null group by catid, sts ) t1 inner join tbstatus sts on t1.sts = sts.statusid where t1.sts = sts.statusid ) t2 group by t2.sts,  t2.status,  t2.details, t2.icon union select '10' sts, sum(procnt) procnt, 'Total' status, 'primary' details, 'bx bxl-firebase' icon, sum(catcnt) catcnt  from ( select   t2.sts,   sum(cnt) procnt,  t2.status,   t2.details,   t2.icon,    count(t2.catid) catcnt from (	select t1.*,   sts.status,	   sts.details,	   sts.icon	from (	select cat.catid,   (case when trn.status is null then 7 else trn.status end) sts,   count(pro.prodid) cnt from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid   left join  tbtrans trn on pro.prodid = trn.productid	where trn.batchid = " + str(tbbat.batchid) + " or trn.batchid is null group by catid, sts ) t1 inner join tbstatus sts on t1.sts = sts.statusid where t1.sts = sts.statusid ) t2 group by t2.sts,  t2.status,  t2.details, t2.icon ) t3"
+                sql = "select   t2.sts,   sum(cnt) procnt,  t2.status,   t2.details,   t2.icon,    count(t2.catid) catcnt from (	select t1.*,   sts.status,	   sts.details,	   sts.icon	from (	select cat.catid,   (case when trn.status is null then 7 else trn.status end) sts,   count(pro.prodid) cnt from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid   left join  tbtrans trn on pro.prodid = trn.productid	where trn.batchid = " + str(tbbat.batchid) + " group by catid, sts ) t1 inner join tbstatus sts on t1.sts = sts.statusid where t1.sts = sts.statusid ) t2 group by t2.sts,  t2.status,  t2.details, t2.icon "\
+                      " union "\
+                      " select '10' sts, sum(procnt) procnt, 'Total' status, 'primary' details, 'bx bxl-firebase' icon, sum(catcnt) catcnt from ( select   t2.sts,   sum(cnt) procnt,  t2.status,   t2.details,   t2.icon,    count(t2.catid) catcnt  from (	select t1.*,   sts.status,	   sts.details,	   sts.icon	from (	select cat.catid,    '10'  sts,    count(pro.prodid) cnt from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid group by catid, sts ) t1 inner join tbstatus sts on t1.sts = sts.statusid where t1.sts = sts.statusid ) t2 group by t2.sts,  t2.status,  t2.details, t2.icon ) t3 "\
+                      " union "\
+                      " select '7' sts, (case when ttt1.procnt is null then 80 else (ttt2.procnt - ttt1.procnt) end)  procnt, 'Pending' status, 'warning' details, 'bx bx-grid-alt' icon, (case when ttt1.procnt is null then 12 else (ttt2.catcnt - ttt1.catcnt) end) catcnt "\
+                      " from (select sum(tt1.procnt) procnt ,sum(tt1.catcnt) catcnt from( select   t2.sts,   sum(cnt) procnt,  t2.status,   t2.details,   t2.icon,    count(t2.catid) catcnt from (	select t1.*,   sts.status,	   sts.details,	   sts.icon	from (	select cat.catid,   (case when trn.status is null then 7 else trn.status end) sts,   count(pro.prodid) cnt from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid   left join  tbtrans trn on pro.prodid = trn.productid	where trn.batchid = " + str(tbbat.batchid) + " group by catid, sts ) t1 inner join tbstatus sts on t1.sts = sts.statusid where t1.sts = sts.statusid ) t2 group by t2.sts,  t2.status,  t2.details, t2.icon  ) tt1 ) ttt1 "\
+                      " , (select '10' sts, sum(procnt) procnt, 'Total' status, 'primary' details, 'bx bxl-firebase' icon, sum(catcnt) catcnt from ( select   t2.sts,   sum(cnt) procnt,  t2.status,   t2.details,   t2.icon,    count(t2.catid) catcnt  from (	select t1.*,   sts.status,	   sts.details,	   sts.icon	from (	select cat.catid,    '10'  sts,    count(pro.prodid) cnt from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid group by catid, sts ) t1 inner join tbstatus sts on t1.sts = sts.statusid where t1.sts = sts.statusid ) t2 group by t2.sts,  t2.status,  t2.details, t2.icon ) t3) ttt2 "
             else:
-                sql = "select '10' sts, sum(cntpro) cntpro, 'Total' status, 'primary' details, 'bx bxl-firebase' icon, sum(cntcat) cntcat from ( 	select sum(t1.cntpro) cntpro, count(t1.catid) cntcat from ( 	select count(pro.prodid) cntpro, cat.catid 	from tbcategories cat inner join tbproducts pro on pro.catid = cat.catid 	group by cat.catid 	) t1 ) t3"
-
+                sql = " select '10' sts, sum(procnt) procnt, 'Total' status, 'primary' details, 'bx bxl-firebase' icon, sum(catcnt) catcnt from ( select   t2.sts,   sum(cnt) procnt,  t2.status,   t2.details,   t2.icon,    count(t2.catid) catcnt  from (	select t1.*,   sts.status,	   sts.details,	   sts.icon	from (	select cat.catid,    '10'  sts,    count(pro.prodid) cnt from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid group by catid, sts ) t1 inner join tbstatus sts on t1.sts = sts.statusid where t1.sts = sts.statusid ) t2 group by t2.sts,  t2.status,  t2.details, t2.icon ) t3 "
+                      
         result = db.engine.execute(sql)
         for record in result:
             transtatus.append(record)
@@ -150,7 +156,8 @@ class HistoryOfTrans(Resource):
 
         branchcode = session.get("branchcode")
 
-        sql = "select trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status, count(trn.productid) cnt from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid where trn.branchcode = '"+ branchcode +"' and trn.authorizer is not null and trn.checker is not null group by trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status"
+        dateformat = "'%m-%Y'"
+        sql = "select trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status, count(trn.productid) cnt, date(trn.checkerdate) checkdate from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid  where trn.branchcode = '"+ branchcode +"' and trn.status = 13 group by trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status,date(trn.checkerdate)"
         result = db.engine.execute(sql)
 
         trans = []
@@ -422,18 +429,42 @@ class SubmittedTrans(Resource):
         role = tbroles.find_by_roleid(session.get('roleid'))
 
         sql = ""
-        record = []
+        
         result = []
+        result1 = []
         batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
         if batch is not None:
             
-            sql = "select t1.*,  sts.status,  sts.details, sts.icon, men.functions	from ( select cat.catid,  cat.nameen,  (case when trn.status is null then 7 else trn.status end) sts,  count(pro.prodid) cnt from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid  left join  tbtrans trn on pro.prodid = trn.productid	where trn.batchid = " + str(batch.batchid) + " or trn.batchid is null group by catid,cat.nameen, sts ) t1 inner join tbstatus sts on t1.sts = sts.statusid inner join tbmenus men on t1.catid = men.iscat where t1.sts = sts.statusid order by t1.catid"
+            sql = "	select t1.catid,  t1.nameen, sta.statusid,  t1.procnt, sta.status,  sta.details,  sta.icon,  t1.functions "\
+                  " from (select cat.catid,  cat.nameen, 7 sts ,   count(pro.prodid) procnt,men.functions "\
+                  " from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid  inner join tbmenus men on cat.catid = men.iscat "\
+                  " group by catid,cat.nameen,men.functions	) t1 inner join tbstatus sta on t1.sts = sta.statusid "
+            
             result = db.engine.execute(sql)
 
-        catlist = []
-        for record in result:
-            catlist.append(record)
+            sql1 = "select t1.*,  sts.status,  sts.details, sts.icon, men.functions	from ( select cat.catid,  cat.nameen,  (case when trn.status is null then 7 else trn.status end) sts,  count(pro.prodid) cnt from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid  left join  tbtrans trn on pro.prodid = trn.productid	where trn.batchid = " + str(batch.batchid) + " group by catid,cat.nameen, sts ) t1 inner join tbstatus sts on t1.sts = sts.statusid inner join tbmenus men on t1.catid = men.iscat where t1.sts = sts.statusid order by t1.catid"
+            
+            result1 = db.engine.execute(sql1)
 
+        catlist1 = []
+        catlist2 = []
+        for record in result:
+            catlist1.append(record)
+
+        for record in result1:
+            catlist2.append(record)
+
+        catlist = []
+        for data1 in catlist1:
+            data = []
+            for data2 in catlist2:
+                if data1[0] == data2[0]:
+                    data.append(data2)
+            if len(data) > 0:
+                catlist.append(data[0])
+            else:
+                catlist.append(data1)
+            
         products = tbproducts
 
         trans = tbtrans
@@ -464,12 +495,36 @@ class AuthorizedTrans(Resource):
         if batch is not None:
             # catlist = tbtrans.find_by_authorizecatbatchid(batch.batchid)
             trans = tbtrans
-            sql = "select t1.*,  sts.status,  sts.details, sts.icon, men.functions	from ( select cat.catid,  cat.nameen,  (case when trn.status is null then 7 else trn.status end) sts,  count(pro.prodid) cnt from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid  left join  tbtrans trn on pro.prodid = trn.productid	where trn.batchid = " + str(batch.batchid) + " or trn.batchid is null group by catid,cat.nameen, sts ) t1 inner join tbstatus sts on t1.sts = sts.statusid inner join tbmenus men on t1.catid = men.iscat where t1.sts = sts.statusid order by t1.catid"
+
+            sql = "	select t1.catid,  t1.nameen, sta.statusid,  t1.procnt, sta.status,  sta.details,  sta.icon,  t1.functions "\
+                  " from (select cat.catid,  cat.nameen, 7 sts ,   count(pro.prodid) procnt,men.functions "\
+                  " from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid  inner join tbmenus men on cat.catid = men.iscat "\
+                  " group by catid,cat.nameen,men.functions	) t1 inner join tbstatus sta on t1.sts = sta.statusid "
+            
             result = db.engine.execute(sql)
 
-        catlist = []
+            sql1 = "select t1.*,  sts.status,  sts.details, sts.icon, men.functions	from ( select cat.catid,  cat.nameen,  (case when trn.status is null then 7 else trn.status end) sts,  count(pro.prodid) cnt from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid  left join  tbtrans trn on pro.prodid = trn.productid	where trn.batchid = " + str(batch.batchid) + " group by catid,cat.nameen, sts ) t1 inner join tbstatus sts on t1.sts = sts.statusid inner join tbmenus men on t1.catid = men.iscat where t1.sts = sts.statusid order by t1.catid"
+            
+            result1 = db.engine.execute(sql1)
+
+        catlist1 = []
+        catlist2 = []
         for record in result:
-            catlist.append(record)
+            catlist1.append(record)
+
+        for record in result1:
+            catlist2.append(record)
+
+        catlist = []
+        for data1 in catlist1:
+            data = []
+            for data2 in catlist2:
+                if data1[0] == data2[0]:
+                    data.append(data2)
+            if len(data) > 0:
+                catlist.append(data[0])
+            else:
+                catlist.append(data1)
 
 
         return make_response(render_template('index.html', menus=menus, role=role, catlist=catlist, products=products, batch=batch, trans=trans, task="authorizedtrans",main=""), 200, headers)
@@ -528,12 +583,35 @@ class CheckedTransDetails(Resource):
         if batch is not None:
             # catlist = tbtrans.find_by_authorizecatbatchid(batch.batchid)
             trans = tbtrans
-            sql = "select t1.*,  sts.status,  sts.details, sts.icon, men.functions	from ( select cat.catid,  cat.nameen,  (case when trn.status is null then 7 else trn.status end) sts,  count(pro.prodid) cnt from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid  left join  tbtrans trn on pro.prodid = trn.productid	where trn.batchid = " + str(batch.batchid) + " or trn.batchid is null group by catid,cat.nameen, sts ) t1 inner join tbstatus sts on t1.sts = sts.statusid inner join tbmenus men on t1.catid = men.iscat where t1.sts = sts.statusid order by t1.catid"
+            sql = "	select t1.catid,  t1.nameen, sta.statusid,  t1.procnt, sta.status,  sta.details,  sta.icon,  t1.functions "\
+                  " from (select cat.catid,  cat.nameen, 7 sts ,   count(pro.prodid) procnt,men.functions "\
+                  " from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid  inner join tbmenus men on cat.catid = men.iscat "\
+                  " group by catid,cat.nameen,men.functions	) t1 inner join tbstatus sta on t1.sts = sta.statusid "
+            
             result = db.engine.execute(sql)
 
-        catlist = []
+            sql1 = "select t1.*,  sts.status,  sts.details, sts.icon, men.functions	from ( select cat.catid,  cat.nameen,  (case when trn.status is null then 7 else trn.status end) sts,  count(pro.prodid) cnt from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid  left join  tbtrans trn on pro.prodid = trn.productid	where trn.batchid = " + str(batch.batchid) + " group by catid,cat.nameen, sts ) t1 inner join tbstatus sts on t1.sts = sts.statusid inner join tbmenus men on t1.catid = men.iscat where t1.sts = sts.statusid order by t1.catid"
+            
+            result1 = db.engine.execute(sql1)
+
+        catlist1 = []
+        catlist2 = []
         for record in result:
-            catlist.append(record)
+            catlist1.append(record)
+
+        for record in result1:
+            catlist2.append(record)
+
+        catlist = []
+        for data1 in catlist1:
+            data = []
+            for data2 in catlist2:
+                if data1[0] == data2[0]:
+                    data.append(data2)
+            if len(data) > 0:
+                catlist.append(data[0])
+            else:
+                catlist.append(data1)
 
         return make_response(render_template('index.html', menus=menus, role=role, catlist=catlist, products=products, batch=batch, trans=trans, branchcode=branchcode, task="checkedtransdetail",main=""), 200, headers)
 
@@ -768,8 +846,6 @@ class UpdateUsers(Resource):
         tb_roles = tbroles
         tb_branches = tbbranches
 
-        pprint(user)
-
         return make_response(render_template('index.html', menus=menus, role=role,tb_roles=tb_roles, tb_branches=tb_branches, user=user, task="updateusers",main="users"), 200, headers)
 
 
@@ -786,8 +862,6 @@ class ViewUsers(Resource):
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
-        user = db.session.query(tbusers,tbroles, tbbranches).filter(tbusers.roleid == tbroles.roleid).filter(tbusers.branchcode == tbbranches.branchcode).all()
-        
-        pprint(user)
-        
+        user = db.session.query(tbusers,tbroles, tbbranches).filter(tbusers.roleid == tbroles.roleid).filter(tbusers.branchcode == tbbranches.branchcode).filter(tbusers.status == 5).all()
+                
         return make_response(render_template('index.html', menus=menus, role=role, user=user, task="viewusers",main="users"), 200, headers)

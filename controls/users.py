@@ -63,6 +63,7 @@ class UpdateUserProfile(Resource):
                     user_data.details = department
                     user_data.email = email
                     user_data.password = "P12345678"
+                    user_data.status = 5
                     
                     db.session.add(user_data)
                     db.session.commit()
@@ -90,7 +91,7 @@ class UpdateUserProfile(Resource):
                 user_data.email = email
                 
                 db.session.commit()
-                return {"msg": "User create successfully"}
+                return {"msg": "User update successfully"}
             
             elif data['userrequest'] == 'resetpassword':
                 
@@ -103,8 +104,21 @@ class UpdateUserProfile(Resource):
                 else:
                     msg = "Cannot reset password"
 
-                return {"msg": msg}               
+                return {"msg": msg}
+            
+            elif data['userrequest'] == 'deleteuser':
+                
+                msg = "User delete successfully"
+                userid = data['data']['userid']
+                user_data = tbusers.find_by_userid(userid)
+                if user_data.username is not None:
+                    user_data.status = 6
+                    db.session.commit()
+                else:
+                    msg = "Cannot delete user"
 
+                return {"msg": msg}
+        
             return {"msg": "Cannot manage user profile"}
 
         except Exception as err:

@@ -107,7 +107,28 @@
             window.location = "/updateusers/"+userid
         })
         $(".delete").click(function(e) {
-            alert('delete User');
+            
+            userid = $(this).parent().parent().find(".user_id").text()
+
+            item = {};
+            item['userid'] = userid;
+
+            $.ajax({
+                type: "POST",
+                url: "/api/updateuserprofile",
+                data: JSON.stringify({ data: item, userrequest: "deleteuser" }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                beforeSend: function () { },
+                success: function (data) {
+                    location.reload();
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+
+            })
+
         })
         
     })

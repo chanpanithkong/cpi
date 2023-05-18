@@ -18,7 +18,7 @@
                     value="{{prod.weight}}" />
                   </td>
                   <td>
-                    <input type="number" class="form-control" name="price{{prod.prodid}}" value ="{{tbtrans.find_by_batchidprodid(batch.batchid,prod.prodid).price}}" />
+                    <input type="number" onkeydown="javascript: return event.keyCode == 69 ? false : true" class="form-control" name="price{{prod.prodid}}" value ="{{tbtrans.find_by_batchidprodid(batch.batchid,prod.prodid).price}}" />
                   </td>
                   <td>
                     <input type="text" class="form-control" name="note{{prod.prodid}}" value = "{{tbtrans.find_by_batchidprodid(batch.batchid,prod.prodid).submitternote}}" />
@@ -57,23 +57,13 @@
   
         prodid = []
         $("input[name^='prodid']").each(function () {
-
-          $(this).validate({
-            rules: {
-              amount: {
-                required: true,
-                digits: true
-              }
-            }
-          });
-
           prodid.push($(this).val());
         });
   
         weight = []
         weight_condition = true;
         $("input[name^='weight']").each(function () {
-          if ($(this).val() == '') {
+          if ($(this).val() == '' || $(this).val() == '0' || $(this).val() == '0.00') {
             $("#emptymessage").modal('show');
             weight_condition = false;
             return false;

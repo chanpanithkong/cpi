@@ -11,8 +11,9 @@ class tbusers(db.Model):
     branchcode = db.Column(db.String)
     details = db.Column(db.String)
     email = db.Column(db.String)
+    status = db.Column(db.Integer)
 
-    def __init__(self, userid=None, password=None, roleid=None, username=None, gender=None, branchcode=None, details=None, email=None):
+    def __init__(self, userid=None, password=None, roleid=None, username=None, gender=None, branchcode=None, details=None, email=None, status=None):
         self.userid = userid
         self.password = password
         self.roleid = roleid
@@ -21,6 +22,7 @@ class tbusers(db.Model):
         self.branchcode = branchcode
         self.details = details
         self.email = email
+        self.status = status
 
     @classmethod
     def find_by_userid(cls, userid) -> "tbusers":
