@@ -787,14 +787,14 @@ class CreatePermission(Resource):
 
         menus = tbrolemenu
         role = tbroles.find_by_roleid(session.get('roleid'))
-        batch = tbbatches.find_by_branchbatchopen("001")
+        # batch = tbbatches.find_by_branchbatchopen("001")
 
         sql = ""
         record = []
         result = []
-        if batch is not None:
-            sql = "select * from tbmenus men where men.parentid = 0"
-            result = db.engine.execute(sql)
+        # if batch is not None:
+        sql = "select * from tbmenus men where men.parentid = 0"
+        result = db.engine.execute(sql)
 
         menulist = []
         for record in result:
