@@ -3,11 +3,11 @@ from flask_jwt_extended import (
     JWTManager
 )
 from flask_restful import Resource, request
-from config.db import db, app, api, json
+from config.db import db, app, api, json, session
 from models.products import tbproducts
 from schema.productsschema import ProductsSchema
 from pprint import pprint
-
+from config.userlogging import userlogging
 from sqlalchemy import func
 
 
@@ -22,6 +22,10 @@ class APICreateProduct(Resource):
         try:
             msg = "fail"
             data = json.loads(request.data)
+            
+            clientid = request.remote_addr
+            url = request.base_url
+            userid = session.get('userid')
             
             if data['userrequest'] == "createproduct":
             
@@ -41,6 +45,8 @@ class APICreateProduct(Resource):
             
                 db.session.add(cat)
                 db.session.commit()
+
+                userlogging.degbuglog(clientid, url, userid + " : create product id " + str(maxtid))
                 msg = "create sucessfully"
             
             elif data['userrequest'] == "updateproduct":
@@ -54,6 +60,8 @@ class APICreateProduct(Resource):
                 cat.details = data['data']['details']
                 
                 db.session.commit()
+
+                userlogging.degbuglog(clientid, url, userid + " : update product id " + str(cat.prodid))
                 msg = "update sucessfully"
 
             elif data['userrequest'] == "deleteproduct":
@@ -62,11 +70,13 @@ class APICreateProduct(Resource):
                 db.session.delete(cat)
                 db.session.commit()
 
+                userlogging.degbuglog(clientid, url, userid + " : update product id " + str(cat.prodid))
                 msg = "delete sucessfully"
 
             return {"category": msg}
         
         except Exception as err:
+            userlogging.degbuglog(clientid, url, err)
             return {"msg": err}
         
 

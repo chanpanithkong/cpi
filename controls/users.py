@@ -9,6 +9,7 @@ from config.db import app, request, json, jsonify, db
 from models.users import tbusers
 from schema.usersschema import UserSchema
 from pprint import pprint
+from config.userlogging import userlogging
 jwt = JWTManager(app)
 
 
@@ -17,9 +18,10 @@ class UpdateUserProfile(Resource):
     # @jwt_required()
     @cross_origin()
     def post(cls):
-
         try:
-
+            clientid = request.remote_addr
+            url = request.base_url
+            user_id = session.get('userid')
             data = json.loads(request.data)
             
             if data['userrequest'] == 'updateuserprofile':
@@ -30,8 +32,7 @@ class UpdateUserProfile(Resource):
                 department = data['data']['department']
                 email = data['data']['email']
 
-                userid = session.get("userid")
-                user_data = tbusers.find_by_userid(userid)
+                user_data = tbusers.find_by_userid(user_id)
 
                 user_data.username = fullname
                 user_data.gender = gender
@@ -40,6 +41,8 @@ class UpdateUserProfile(Resource):
                 user_data.email = email
 
                 db.session.commit()
+
+                userlogging.degbuglog(clientid, url, user_id + " : update profile")
                 return {"msg": "User updated successfully"}
             
             elif data['userrequest'] == 'createuser':
@@ -67,6 +70,8 @@ class UpdateUserProfile(Resource):
                     
                     db.session.add(user_data)
                     db.session.commit()
+
+                    userlogging.degbuglog(clientid, url, user_id + " : create user id : " + user_data.userid )
                     return {"msg": "User create successfully"}
                 else:
                     return {"msg": "UserID already exist"}        
@@ -91,6 +96,8 @@ class UpdateUserProfile(Resource):
                 user_data.email = email
                 
                 db.session.commit()
+
+                userlogging.degbuglog(clientid, url, user_id + " : create user id : " + userid )
                 return {"msg": "User update successfully"}
             
             elif data['userrequest'] == 'resetpassword':
@@ -100,8 +107,10 @@ class UpdateUserProfile(Resource):
                 user_data = tbusers.find_by_userid(userid)
                 if user_data.username is not None:
                     user_data.password = "P12345678"
+                    userlogging.degbuglog(clientid, url, user_id + " : reset password user id : " + userid )
                     db.session.commit()
                 else:
+                    userlogging.degbuglog(clientid, url, user_id + " : cannot reset password user id : " + userid )
                     msg = "Cannot reset password"
 
                 return {"msg": msg}
@@ -114,7 +123,9 @@ class UpdateUserProfile(Resource):
                 if user_data.username is not None:
                     user_data.status = 6
                     db.session.commit()
+                    userlogging.degbuglog(clientid, url, user_id + " : deactive : " + userid )
                 else:
+                    userlogging.degbuglog(clientid, url, user_id + " : cannot deactive : " + userid )
                     msg = "Cannot delete user"
 
                 return {"msg": msg}
@@ -122,6 +133,7 @@ class UpdateUserProfile(Resource):
             return {"msg": "Cannot manage user profile"}
 
         except Exception as err:
+            userlogging.degbuglog(clientid, url, err )
             return {"msg": err}
 
 
@@ -132,7 +144,9 @@ class ChangePasswordForUser(Resource):
     def post(cls):
 
         try:
-
+            clientid = request.remote_addr
+            url = request.base_url
+            userid = session.get('userid')
             data = json.loads(request.data)
 
             if data['userrequest'] == 'change':
@@ -148,14 +162,18 @@ class ChangePasswordForUser(Resource):
                     if user_data.password == oldpassword:
                         user_data.password = newpassword
                     else:
+                        userlogging.degbuglog(clientid, url, userid + " : Cannot change password")
                         return {"msg": "Cannot change password"}
 
                     db.session.commit()
+                    userlogging.degbuglog(clientid, url, userid + " : Password changed")
                     return {"msg": "Password changed"}
 
+            userlogging.degbuglog(clientid, url, userid + " : Cannot change password")
             return {"msg": "Cannot change password"}
 
         except Exception as err:
+            userlogging.degbuglog(clientid, url, err)
             return {"msg": err}
 
 

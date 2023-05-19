@@ -3,10 +3,11 @@ from flask_jwt_extended import (
     JWTManager
 )
 from flask_restful import Resource, request
-from config.db import db, app, api, json
+from config.db import db, app, api, json, session
 from models.roles import tbroles
 from schema.rolesschema import RoleSchema
 from sqlalchemy import func
+from config.userlogging import userlogging
 
 jwt = JWTManager(app)
 
@@ -16,9 +17,14 @@ class RoleManagement(Resource):
     # @jwt_required()
     def post(cls):
         try:  
+            
             msg = ""
             data = json.loads(request.data)
             
+            clientid = request.remote_addr
+            url = request.base_url
+            userid = session.get('userid')
+
             if data['userrequest'] == 'createrole':
             
                 rolename = data['data']['rolename']
@@ -35,33 +41,35 @@ class RoleManagement(Resource):
                 role_data.roleid = maxtid
                 role_data.rolename = rolename
                 role_data.details = details
+
                 db.session.add(role_data)
-            
                 db.session.commit()
             
+                userlogging.degbuglog(clientid, url, userid + " : create role id : " + str(maxtid))
                 msg = "Role created successfully"
+
             elif data['userrequest'] == 'updaterole':
                 
                 roleid = data['data']['roleid']
                 rolename = data['data']['rolename']
                 details = data['data']['details']
-
                 role_data = tbroles.find_by_roleid(roleid)
                 
                 if role_data is not None:
-                
                     role_data.rolename = rolename
                     role_data.details = details
 
                     db.session.commit()
-
+                    userlogging.degbuglog(clientid, url, userid + " : update role id : " + str(roleid))
                     msg = "Role updated successfully"
                 else:
+                    userlogging.degbuglog(clientid, url, userid + " : role id : " + str(roleid) + " is not exist")
                     msg = "Cannot upatet role"
 
             return {"msg":msg}
 
         except Exception as err:
+            userlogging.degbuglog(clientid, url, err)
             return {"msg":err} 
 
 class Role(Resource):

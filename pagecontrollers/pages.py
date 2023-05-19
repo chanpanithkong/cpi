@@ -24,6 +24,7 @@ import datetime
 from pprint import pprint
 from sqlalchemy import func
 
+from config.userlogging import userlogging
 
 class LoginPage(Resource):
     @classmethod
@@ -37,6 +38,8 @@ class UserLoginPage(Resource):
     def post(cls):
         headers = {'Content-Type': 'text/html'}
 
+        clientid = request.remote_addr
+        url = request.base_url
         userid = request.form.get('userid')
         password = request.form.get('password')
         try:
@@ -50,9 +53,16 @@ class UserLoginPage(Resource):
                     session['username'] = user_data.username
                     session['branchcode'] = user_data.branchcode
                     session['details'] = user_data.details
+                    userlogging.degbuglog(clientid, url,userid + " : login")
                     return redirect("/dashboard")
+                else:
+                    userlogging.degbuglog(clientid, url,userid + " : is wrong password")
+            else:
+                userlogging.degbuglog(clientid, url,userid + " : is not exist")
             return make_response(render_template('login.html', data="Wrong userid and password !!!"), 200, headers)
+            
         except Exception as err:
+            userlogging.degbuglog(clientid, url, err)
             return make_response(render_template('login.html', data=err), 200, headers)
 
 
@@ -74,10 +84,7 @@ class HomePage(Resource):
 
         menus = tbrolemenu
         role = tbroles.find_by_roleid(session.get('roleid'))
-        # batch = tbbatches.find_by_branch(session.get("branchcode"))
-
         user = tbusers.find_by_userid(session.get('userid'))
-
 
         sql = "select max(bat.batchid) maxid from tbbatches bat where bat.branch = '" + session.get('branchcode') + "'"
         batchresult = db.engine.execute(sql)
@@ -86,12 +93,9 @@ class HomePage(Resource):
         for record in batchresult:
             batches.append(record)
         
-        
         createdisable = ""
         reopendisable = ""
         closeddisable = ""
-
-        
 
         if batches[0][0] is not None:
             
@@ -104,9 +108,7 @@ class HomePage(Resource):
                 createdisable = "disabled"
                 reopendisable = "disabled"
                 closeddisable = ""
-            
-            else:
-                print(4)
+
         else:
             createdisable = ""
             reopendisable = "disabled"
@@ -121,7 +123,7 @@ class HomePage(Resource):
         transtatus = []
         
         if tbbat is not None :
-            if role.roleid == 3 or role.roleid == 2:
+            if role.roleid == 3 or role.roleid == 4:
                 sql = "select   t2.sts,   sum(cnt) procnt,  t2.status,   t2.details,   t2.icon,    count(t2.catid) catcnt from (	select t1.*,   sts.status,	   sts.details,	   sts.icon	from (	select cat.catid,   (case when trn.status is null then 7 else trn.status end) sts,   count(pro.prodid) cnt from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid   left join  tbtrans trn on pro.prodid = trn.productid	where trn.batchid = " + str(tbbat.batchid) + " group by catid, sts ) t1 inner join tbstatus sts on t1.sts = sts.statusid where t1.sts = sts.statusid ) t2 group by t2.sts,  t2.status,  t2.details, t2.icon "\
                       " union "\
                       " select '10' sts, sum(procnt) procnt, 'Total' status, 'primary' details, 'bx bxl-firebase' icon, sum(catcnt) catcnt from ( select   t2.sts,   sum(cnt) procnt,  t2.status,   t2.details,   t2.icon,    count(t2.catid) catcnt  from (	select t1.*,   sts.status,	   sts.details,	   sts.icon	from (	select cat.catid,    '10'  sts,    count(pro.prodid) cnt from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid group by catid, sts ) t1 inner join tbstatus sts on t1.sts = sts.statusid where t1.sts = sts.statusid ) t2 group by t2.sts,  t2.status,  t2.details, t2.icon ) t3 "\
@@ -136,9 +138,11 @@ class HomePage(Resource):
         for record in result:
             transtatus.append(record)
 
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        userlogging.degbuglog(clientid, url, userid + " : access Dashboard")
         
-        
-
         return make_response(render_template('index.html', menus=menus, role=role,reopendisable=reopendisable,closeddisable=closeddisable, createdisable=createdisable, user=user, transtatus=transtatus, task="dashboard",main=""), 200, headers)
 
 
@@ -156,14 +160,22 @@ class HistoryOfTrans(Resource):
 
         branchcode = session.get("branchcode")
 
-        dateformat = "'%m-%Y'"
-        sql = "select trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status, count(trn.productid) cnt, date(trn.checkerdate) checkdate from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid  where trn.branchcode = '"+ branchcode +"' and trn.status = 13 group by trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status,date(trn.checkerdate)"
+        sql = "select trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status, count(trn.productid) cnt, date(trn.checkerdate) checkdate from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid  where trn.status = 13 group by trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status,date(trn.checkerdate) order by 1"
+        
+        if role.roleid == 3 or role.roleid == 4:
+            sql = "select trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status, count(trn.productid) cnt, date(trn.checkerdate) checkdate from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid  where trn.branchcode = '"+ branchcode +"' and trn.status = 13 group by trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status,date(trn.checkerdate)"
+        
+
         result = db.engine.execute(sql)
 
         trans = []
         for record in result:
             trans.append(record)
 
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        userlogging.degbuglog(clientid, url, userid + " : access HistoryOfTrans")
 
         return make_response(render_template('index.html', menus=menus, role=role,trans=trans, task="historyoftrans",main=""), 200, headers)
 
@@ -206,6 +218,11 @@ class BeverageTobacco(Resource):
                     isbutton = True    
                     disabled = ""
 
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        userlogging.degbuglog(clientid, url, userid + " : access BeverageTobacco")
+
         return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="beveragestobacco",main=""), 200, headers)
 
 
@@ -246,6 +263,11 @@ class Restaurant(Resource):
                 else:
                     isbutton = True    
                     disabled = ""
+
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        userlogging.degbuglog(clientid, url, userid + " : access Restaurant")
 
         return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="restaurant",main=""), 200, headers)
 
@@ -289,6 +311,11 @@ class ClothShoes(Resource):
                     isbutton = True    
                     disabled = ""
 
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        userlogging.degbuglog(clientid, url, userid + " : access ClothShoes")
+
         return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="clothesshoes",main=""), 200, headers)
 
 
@@ -331,6 +358,11 @@ class Shipping(Resource):
                     isbutton = True    
                     disabled = ""
 
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        userlogging.degbuglog(clientid, url, userid + " : access Shipping")
+
         return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="shipping",main=""), 200, headers)
 
 class Medicine(Resource):
@@ -370,6 +402,11 @@ class Medicine(Resource):
                 else:
                     isbutton = True    
                     disabled = ""
+
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        userlogging.degbuglog(clientid, url, userid + " : access Medicine")
 
         return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="medicine",main=""), 200, headers)
 
@@ -412,6 +449,11 @@ class Housing(Resource):
                 else:
                     isbutton = True    
                     disabled = ""
+
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        userlogging.degbuglog(clientid, url, userid + " : access Housing")
 
         return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="housing",main=""), 200, headers)
 
@@ -466,8 +508,12 @@ class SubmittedTrans(Resource):
                 catlist.append(data1)
             
         products = tbproducts
-
         trans = tbtrans
+
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        userlogging.degbuglog(clientid, url, userid + " : access SubmittedTrans")
 
         return make_response(render_template('index.html', menus=menus, role=role, catlist=catlist, products=products, batch=batch, trans=trans, task="submittedtrans",main=""), 200, headers)
 
@@ -526,6 +572,10 @@ class AuthorizedTrans(Resource):
             else:
                 catlist.append(data1)
 
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        userlogging.degbuglog(clientid, url, userid + " : access AuthorizedTrans")
 
         return make_response(render_template('index.html', menus=menus, role=role, catlist=catlist, products=products, batch=batch, trans=trans, task="authorizedtrans",main=""), 200, headers)
 
@@ -551,6 +601,11 @@ class CheckedTrans(Resource):
         for record in result:
             transtatus.append(record)
 
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        userlogging.degbuglog(clientid, url, userid + " : access CheckedTrans")
+
         return make_response(render_template('index.html', menus=menus, role=role, branches=branches, transtatus=transtatus, task="checkedtrans",main=""), 200, headers)
 
 
@@ -562,19 +617,15 @@ class CheckedTransDetails(Resource):
             return redirect("/login")
 
         headers = {'Content-Type': 'text/html'}
+        
         menus = tbrolemenu
-
         role = tbroles.find_by_roleid(session.get('roleid'))
-
         products = tbproducts
         batch = tbbatches.find_by_branchbatchopen(branchcode)
+
+
         # catlist = []
-        # if batch is not None:
-        #     catlist = tbtrans.find_by_checkebatchid(batch.batchid)
-
-        # trans = tbtrans
-        print(batch)
-
+        
         # catlist = []
         trans = []
         sql = ""
@@ -613,6 +664,11 @@ class CheckedTransDetails(Resource):
             else:
                 catlist.append(data1)
 
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        userlogging.degbuglog(clientid, url, userid + " : access CheckedTransDetails")
+
         return make_response(render_template('index.html', menus=menus, role=role, catlist=catlist, products=products, batch=batch, trans=trans, branchcode=branchcode, task="checkedtransdetail",main=""), 200, headers)
 
 
@@ -629,6 +685,11 @@ class CreateBatches(Resource):
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        userlogging.degbuglog(clientid, url, userid + " : access CreateBatches")
+
         return make_response(render_template('index.html', menus=menus, role=role, task="createbatch",main=""), 200, headers)
 
 
@@ -642,8 +703,12 @@ class UpdateBatches(Resource):
         headers = {'Content-Type': 'text/html'}
 
         menus = tbrolemenu
-
         role = tbroles.find_by_roleid(session.get('roleid'))
+
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        userlogging.degbuglog(clientid, url, userid + " : access UpdateBatches")
 
         return make_response(render_template('index.html', menus=menus, role=role, task="updatebatch",main=""), 200, headers)
 
@@ -658,8 +723,12 @@ class ViewBatches(Resource):
         headers = {'Content-Type': 'text/html'}
 
         menus = tbrolemenu
-
         role = tbroles.find_by_roleid(session.get('roleid'))
+
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        userlogging.degbuglog(clientid, url, userid + " : access ViewBatches")
 
         return make_response(render_template('index.html', menus=menus, role=role, task="viewbatch",main=""), 200, headers)
 
@@ -674,11 +743,13 @@ class UpdateRoles(Resource):
         headers = {'Content-Type': 'text/html'}
 
         menus = tbrolemenu
-
         role = tbroles.find_by_roleid(session.get('roleid'))
-
-
         tb_role = tbroles.find_by_roleid(roleid)
+
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        userlogging.degbuglog(clientid, url, userid + " : access UpdateRoles")
 
         return make_response(render_template('index.html', menus=menus, role=role,tb_role=tb_role, task="updateroles",main="role"), 200, headers)
 
@@ -695,8 +766,12 @@ class CreateRoles(Resource):
         headers = {'Content-Type': 'text/html'}
 
         menus = tbrolemenu
-
         role = tbroles.find_by_roleid(session.get('roleid'))
+
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        userlogging.degbuglog(clientid, url, userid + " : access CreateRoles")
 
         return make_response(render_template('index.html', menus=menus, role=role, task="createroles",main="role"), 200, headers)
 
@@ -711,23 +786,13 @@ class CreatePermission(Resource):
         headers = {'Content-Type': 'text/html'}
 
         menus = tbrolemenu
-
-        pprint(tbrolemenu.is_menuid_in_userrole(session.get('roleid'),2))
-
         role = tbroles.find_by_roleid(session.get('roleid'))
-        
-        
-        products = tbproducts
         batch = tbbatches.find_by_branchbatchopen("001")
 
-        # catlist = []
-        trans = []
         sql = ""
         record = []
         result = []
         if batch is not None:
-            # catlist = tbtrans.find_by_authorizecatbatchid(batch.batchid)
-            trans = tbtrans
             sql = "select * from tbmenus men where men.parentid = 0"
             result = db.engine.execute(sql)
 
@@ -736,9 +801,13 @@ class CreatePermission(Resource):
             menulist.append(record)
 
         tb_role = tbroles.find_by_roleid(roleid)
-
         tb_menus = tbmenus
         
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        userlogging.degbuglog(clientid, url, userid + " : access CreatePermission")
+
         return make_response(render_template('index.html', menus=menus, role=role,tb_role=tb_role,menulist=menulist,tb_menus= tb_menus,  task="createpermission",main="role"), 200, headers)
 
 
@@ -752,11 +821,13 @@ class AttachedRolePermission(Resource):
         headers = {'Content-Type': 'text/html'}
 
         menus = tbrolemenu
-
         role = tbroles.find_by_roleid(session.get('roleid'))
-
         tb_roles = tbroles
 
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        userlogging.degbuglog(clientid, url, userid + " : access AttachedRolePermission")
 
         return make_response(render_template('index.html', menus=menus, role=role,tb_role=tb_roles, task="attachedrolepermission",main="role"), 200, headers)
 
@@ -771,8 +842,12 @@ class CreateStatus(Resource):
         headers = {'Content-Type': 'text/html'}
 
         menus = tbrolemenu
-
         role = tbroles.find_by_roleid(session.get('roleid'))
+
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        userlogging.degbuglog(clientid, url, userid + " : access CreateStatus")
 
         return make_response(render_template('index.html', menus=menus, role=role, task="createstatus",main=""), 200, headers)
 
@@ -787,8 +862,12 @@ class UpdateStatus(Resource):
         headers = {'Content-Type': 'text/html'}
 
         menus = tbrolemenu
-
         role = tbroles.find_by_roleid(session.get('roleid'))
+
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        userlogging.degbuglog(clientid, url, userid + " : access UpdateStatus")
 
         return make_response(render_template('index.html', menus=menus, role=role, task="updatestatus",main=""), 200, headers)
 
@@ -803,8 +882,12 @@ class ViewStatus(Resource):
         headers = {'Content-Type': 'text/html'}
 
         menus = tbrolemenu
-
         role = tbroles.find_by_roleid(session.get('roleid'))
+
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        userlogging.degbuglog(clientid, url, userid + " : access ViewStatus")
 
         return make_response(render_template('index.html', menus=menus, role=role, task="viewstatus",main=""), 200, headers)
 
@@ -820,9 +903,13 @@ class CreateUsers(Resource):
 
         menus = tbrolemenu
         role = tbroles.find_by_roleid(session.get('roleid'))
-
         tb_roles = tbroles
         tb_branches = tbbranches
+
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        userlogging.degbuglog(clientid, url, userid + " : access CreateUsers")
 
         return make_response(render_template('index.html', menus=menus, role=role, tb_roles=tb_roles, tb_branches=tb_branches, task="createusers",main="users"), 200, headers)
 
@@ -837,14 +924,16 @@ class UpdateUsers(Resource):
         headers = {'Content-Type': 'text/html'}
 
         menus = tbrolemenu
-
         role = tbroles.find_by_roleid(session.get('roleid'))
-
         filters = (tbusers.userid == userid)
         user = db.session.query(tbusers,tbroles, tbbranches).filter(tbusers.roleid == tbroles.roleid).filter(tbusers.branchcode == tbbranches.branchcode).filter(filters).all()
-        
         tb_roles = tbroles
         tb_branches = tbbranches
+
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        userlogging.degbuglog(clientid, url, userid + " : access UpdateUsers")
 
         return make_response(render_template('index.html', menus=menus, role=role,tb_roles=tb_roles, tb_branches=tb_branches, user=user, task="updateusers",main="users"), 200, headers)
 
@@ -859,9 +948,12 @@ class ViewUsers(Resource):
         headers = {'Content-Type': 'text/html'}
 
         menus = tbrolemenu
-
         role = tbroles.find_by_roleid(session.get('roleid'))
-
         user = db.session.query(tbusers,tbroles, tbbranches).filter(tbusers.roleid == tbroles.roleid).filter(tbusers.branchcode == tbbranches.branchcode).filter(tbusers.status == 5).all()
-                
+
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        userlogging.degbuglog(clientid, url, userid + " : access ViewUsers")
+
         return make_response(render_template('index.html', menus=menus, role=role, user=user, task="viewusers",main="users"), 200, headers)

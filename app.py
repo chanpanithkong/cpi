@@ -30,13 +30,17 @@ from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_session import Session
 import logging
+import os
 from pprint import pprint
+from datetime import datetime
 
 # config file
 app = Flask(__name__, template_folder='pages')
 api = Api(app)
 
-# logging.basicConfig(filename='record.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
+log = logging.getLogger('werkzeug')
+log.disabled = True
+    
 
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
@@ -60,14 +64,13 @@ DEBUG = False
 
 db = SQLAlchemy(app)
 
-# CORS(app, resources={r"/*": {"origins": "*"}})
-
 @app.route("/")
 def index():
     if not session.get("userid"):
         return redirect("/login")
     else:
         return redirect("/dashboard")
+    
 # jwt = JWTManager(app)
 
 
@@ -123,16 +126,11 @@ api.add_resource(Medicine, "/medicine")
 # housing
 api.add_resource(Housing, "/housing")
 
-
-
-
-
 # submitted & authorized & checked trans
 api.add_resource(SubmittedTrans, "/submittedtrans")
 api.add_resource(AuthorizedTrans, "/authorizedtrans")
 api.add_resource(CheckedTrans, "/checkedtrans")
 api.add_resource(CheckedTransDetails, "/checkedtransdetail/<branchcode>")
-
 
 # historyoftrans
 api.add_resource(HistoryOfTrans, "/historyoftrans")

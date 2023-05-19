@@ -10,7 +10,7 @@ from models.rolemenus import tbrolemenu
 from models.categories import tbcategories
 from models.products import tbproducts
 from models.roles import tbroles
-
+from config.userlogging import userlogging
 from pprint import pprint
 
 
@@ -31,6 +31,11 @@ class ListProducts(Resource):
 
         category = tbcategories
 
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        userlogging.degbuglog(clientid, url, userid + " : access ListProducts/"+catid)
+
         return make_response(render_template('index.html', menus=menus, role=role, products=products, category=category, catid=catid, task="listproducts",main="product"), 200, headers)
 
 
@@ -48,6 +53,11 @@ class CreateProducts(Resource):
         role = tbroles.find_by_roleid(session.get('roleid'))
 
         category = tbcategories
+
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        userlogging.degbuglog(clientid, url, userid + " : access CreateProducts/"+catid)
 
         return make_response(render_template('index.html', menus=menus, role=role, catid=catid, category=category, task="createproducts",main="product"), 200, headers)
 
@@ -67,6 +77,11 @@ class CreateCategories(Resource):
 
         category = tbcategories
 
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        userlogging.degbuglog(clientid, url, userid + " : access CreateCategories")
+
         return make_response(render_template('index.html', menus=menus, role=role, category=category, task="createcategories",main="product"), 200, headers)
 
 
@@ -80,13 +95,15 @@ class UpdateProducts(Resource):
         headers = {'Content-Type': 'text/html'}
 
         menus = tbrolemenu
-
-        print(catid, prodid)
-
         category = tbcategories
         product = tbproducts
 
         role = tbroles.find_by_roleid(session.get('roleid'))
+
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        userlogging.degbuglog(clientid, url, userid + " : access UpdateProducts/"+catid+"/"+prodid)
 
         return make_response(render_template('index.html', menus=menus, role=role, category=category, catid=catid, product=product, prodid=prodid, task="updateproducts",main="product"), 200, headers)
 
@@ -106,6 +123,11 @@ class UpdateCategories(Resource):
 
         category = tbcategories.find_by_catid(catid)
 
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        userlogging.degbuglog(clientid, url, userid + " : access UpdateCategories/"+catid)
+
         return make_response(render_template('index.html', menus=menus, role=role, category=category, task="updatecategories",main="product"), 200, headers)
 
 
@@ -124,6 +146,11 @@ class ViewProducts(Resource):
 
         categories = tbcategories
 
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        userlogging.degbuglog(clientid, url, userid + " : access ViewProducts")
+
         return make_response(render_template('index.html', menus=menus, role=role, categories=categories, task="viewproducts",main="product"), 200, headers)
 
 
@@ -141,4 +168,10 @@ class ViewCategories(Resource):
         role = tbroles.find_by_roleid(session.get('roleid'))
 
         categories = tbcategories
+
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        userlogging.degbuglog(clientid, url, userid + " : access ViewCategories")
+
         return make_response(render_template('index.html', menus=menus, role=role, categories=categories, task="viewcategories",main="product"), 200, headers)

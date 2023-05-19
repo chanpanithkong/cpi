@@ -3,11 +3,12 @@ from flask_jwt_extended import (
     JWTManager
 )
 from flask_restful import Resource, request
-from config.db import db, app, api, json
+from config.db import db, app, api, json, session
 from models.categories import tbcategories
 from models.products import tbproducts
 from schema.categoriesschema import CategoriesSchema
 from pprint import pprint
+from config.userlogging import userlogging
 
 from sqlalchemy import func
 
@@ -19,6 +20,11 @@ class CreateCategory(Resource):
     # @jwt_required()
     def post(cls):
         try:
+
+            clientid = request.remote_addr
+            url = request.base_url
+            userid = session.get('userid')
+
             msg = "fail"
             data = json.loads(request.data)
 
@@ -39,6 +45,7 @@ class CreateCategory(Resource):
                 db.session.add(cat)
                 db.session.commit()
                 msg = "create sucessfully"
+                userlogging.degbuglog(clientid, url, userid + " create category id " + maxtid)
 
             elif data['userrequest'] == "updatecategory":
 
@@ -51,23 +58,26 @@ class CreateCategory(Resource):
 
                 db.session.commit()
                 msg = "update sucessfully"
+                userlogging.degbuglog(clientid, url, userid + " update category id " + data['data']['catid'])
 
             elif data['userrequest'] == "deletecategory":
 
                 prod = tbproducts.find_by_catid(data['data'])
-                pprint(prod)
+                
                 if len(prod) > 0:
                     msg = "This category has products, Please delete products first"
-
+                    userlogging.degbuglog(clientid, url, userid + " delete category id but " + msg)
                 else:
                     cat = tbcategories.find_by_catid(data['data'])
                     db.session.delete(cat)
                     db.session.commit()
-                    msg = "update sucessfully"
+                    msg = "delete sucessfully"
+                    userlogging.degbuglog(clientid, url, userid + " delete category id " + cat.catid)
 
             return {"msg": msg}
 
         except Exception as err:
+            userlogging.degbuglog(clientid, url, err)
             return {"msg": err}
 
 

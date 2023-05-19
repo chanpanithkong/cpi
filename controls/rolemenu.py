@@ -3,14 +3,15 @@ from flask_jwt_extended import (
     JWTManager
 )
 from flask_restful import Resource, request
-from config.db import db, app, api, json
-from flask import session
+from config.db import db, app, api, json, session
 from models.rolemenus import tbrolemenu
 from models.menus import tbmenus
 from schema.rolemenuschema import RoleMenuSchema
 from schema.menusschema import MenusSchema
 from datetime import datetime
 from pprint import pprint
+from config.userlogging import userlogging
+
 jwt = JWTManager(app)
 
 
@@ -107,6 +108,10 @@ class DeleteInsertRoleMenu(Resource):
             msg = ""
             data = json.loads(request.data)
             
+            clientid = request.remote_addr
+            url = request.base_url
+            userid = session.get('userid')
+
             if data['userrequest'] == 'deleteinsertrolemenu':
                 
                 if len(data['data']) > 0:
@@ -121,7 +126,7 @@ class DeleteInsertRoleMenu(Resource):
                     tb_rolemenu.menuid = dt['menuid']
                     tb_rolemenu.details = ""
                     tb_rolemenu.statusid = 5
-                    tb_rolemenu.createby = session.get('userid')
+                    tb_rolemenu.createby = userid
             
                     now = datetime.now()
                     currentdatetime = now.strftime("%y-%m-%dT%H:%M:%S")
@@ -129,10 +134,12 @@ class DeleteInsertRoleMenu(Resource):
             
                     db.session.add(tb_rolemenu)
                     db.session.commit()
-            
+
+                    userlogging.degbuglog(clientid, url, userid + " : update role id " + dt['roleid'] +" menuid " + dt['menuid'])
                     msg = "role menu insert successfully"
             
 
             return {"msg": msg}
         except Exception as err:
+            userlogging.degbuglog(clientid, url, err)
             return {"msg": err}

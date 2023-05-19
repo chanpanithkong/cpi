@@ -14,7 +14,7 @@ from models.users import tbusers
 from schema.transschema import TransSchema
 from sqlalchemy import func
 from datetime import datetime
-
+from config.userlogging import userlogging
 from pprint import pprint
 
 jwt = JWTManager(app)
@@ -25,9 +25,13 @@ class InsertAllProductToTrans(Resource):
     def post(cls):
         try:
             data = json.loads(request.data)
+
+            clientid = request.remote_addr
+            url = request.base_url
+            userid = session.get('userid')
+
             if data['userrequest'] == "inserttranns" :
                 
-                userid = session.get('userid')
                 batches = tbbatches.find_by_branchbatchopen(session.get('branchcode'))
                 users = tbusers.find_by_userid(userid)
             
@@ -45,8 +49,10 @@ class InsertAllProductToTrans(Resource):
                         #submitted 1
                         if data['msg'] == "submitted":
                             get_trandata.status = 1
+                            userlogging.degbuglog(clientid, url, userid + " : submitted tran id " + str(trans.tid))
                         elif data['msg'] == "saved":
                             get_trandata.status = 12
+                            userlogging.degbuglog(clientid, url, userid + " : saved tran id " + str(trans.tid))
                         
                         now = datetime.now()
                         currentdatetime = now.strftime("%y-%m-%dT%H:%M:%S")
@@ -59,7 +65,7 @@ class InsertAllProductToTrans(Resource):
                         get_trandata.countsubmitted = 0
                         
                         db.session.commit()       
-
+                        
                     else:    
                         maxtid = db.session.query(func.max(tbtrans.tid)).scalar()
                         if maxtid is None:
@@ -86,8 +92,10 @@ class InsertAllProductToTrans(Resource):
                         #submitted 1
                         if data['msg'] == "submitted":
                             get_trandata.status = 1
+                            userlogging.degbuglog(clientid, url, userid + " : submitted tran id " + str(maxtid))
                         elif data['msg'] == "saved":
                             get_trandata.status = 12
+                            userlogging.degbuglog(clientid, url, userid + " : saved tran id " + str(maxtid))
                             
                         now = datetime.now()
                         currentdatetime = now.strftime("%y-%m-%dT%H:%M:%S")
@@ -106,8 +114,10 @@ class InsertAllProductToTrans(Resource):
                 result = "insert all products of category"
                 return {"msg": result}
             
+            userlogging.degbuglog(clientid, url, userid + " : cannot insert products")
             return {"msg": "cannot insert products"}
         except Exception as err:
+            userlogging.degbuglog(clientid, url, err)
             return {"msg": err}
         
 
@@ -118,6 +128,11 @@ class InputterInsertTran(Resource):
         try:
             data = json.loads(request.data)
             maxtid = db.session.query(func.max(tbtrans.tid)).scalar()
+
+            clientid = request.remote_addr
+            url = request.base_url
+            userid = session.get('userid')
+
             if maxtid is None:
                 maxtid = 1
             else:
@@ -149,8 +164,11 @@ class InputterInsertTran(Resource):
             db.session.add(get_trandata)
             db.session.commit()
             result = "insert tid : " + str(maxtid)
+
+            userlogging.degbuglog(clientid, url, userid + " : insert tid : " + str(maxtid))
             return {"msg": result}
         except Exception as err:
+            userlogging.degbuglog(clientid, url, err)
             return {"msg": err}
 
 class InputterUpdateTran(Resource):
@@ -158,6 +176,10 @@ class InputterUpdateTran(Resource):
     # @jwt_required()
     def post(cls):
         try:
+            clientid = request.remote_addr
+            url = request.base_url
+            userid = session.get('userid')
+
             data = json.loads(request.data)
             tran_data = tbtrans.find_by_tid(data['data']['tid'])
             if (tran_data is not None):
@@ -180,11 +202,15 @@ class InputterUpdateTran(Resource):
                 tran_data.trandate = currentdatetime
                 tran_data.countsubmitted = tran_data.countsubmitted + 1
                 db.session.commit()
-                result = "insert tid : " + str(tran_data.tid)
+
+                userlogging.degbuglog(clientid, url, userid + " : update tid : " + str(tran_data.tid))
+                result = "update tid : " + str(tran_data.tid)
                 return {"msg": result}
             
+            userlogging.degbuglog(clientid, url, userid + " : cannot update tid : " + data['data']['tid'])
             return {"msg": "there is no tid : " + data['data']['tid']}
         except Exception as err:
+            userlogging.degbuglog(clientid, url, err)
             return {"msg": err}
 
 class UpdateTranByCategories(Resource):
@@ -192,10 +218,13 @@ class UpdateTranByCategories(Resource):
     # @jwt_required()
     def post(cls):
         try:
+            clientid = request.remote_addr
+            url = request.base_url
+            userid = session.get('userid')
+
             data = json.loads(request.data)
             branchcode = session.get("branchcode")
 
-            pprint(data)
             if len(data['data']) > 0:
                 for dt in data['data']:
                     batch = tbbatches.find_by_branchbatchopen(branchcode)
@@ -227,10 +256,14 @@ class UpdateTranByCategories(Resource):
                         # tran_data.countsubmitted = tran_data.countsubmitted + 1
 
                         db.session.commit()
+                        userlogging.degbuglog(clientid, url, userid + " : update tid : " + str(tran_data.tid))
+
                 return {"msg": "update list of data"}
             else:    
+                userlogging.degbuglog(clientid, url, userid + " : there is no data")
                 return {"msg": "there is no data"}
         except Exception as err:
+            userlogging.degbuglog(clientid, url, err)
             return {"msg": err}        
 
 
@@ -240,7 +273,9 @@ class CheckerUpdateTransaction(Resource):
     def post(cls):
         try:
             data = json.loads(request.data)
-            userid = session.get("userid")
+            clientid = request.remote_addr
+            url = request.base_url
+            userid = session.get('userid')
             
             batch = tbbatches.find_by_branchbatchopen(data["branchcode"])
             msg = "reject"    
@@ -260,8 +295,11 @@ class CheckerUpdateTransaction(Resource):
             
                     if data['userrequest'] == 'reject':
                         tran_data.status = 11
+                        userlogging.degbuglog(clientid, url, userid + " : reject tid : " + str(tran_data.tid))
+                        msg = "reject"
                     elif(data['userrequest'] == 'accept'):
                         tran_data.status = 13
+                        userlogging.degbuglog(clientid, url, userid + " : accept tid : " + str(tran_data.tid))
                         msg = "accept"
 
                     db.session.commit()
@@ -269,6 +307,7 @@ class CheckerUpdateTransaction(Resource):
             return {"msg": msg}
             
         except Exception as err:
+            userlogging.degbuglog(clientid, url, err)
             return {"msg": err}
 
 
@@ -279,40 +318,41 @@ class AuthorizerUpdateTransaction(Resource):
         try:
             
             data = json.loads(request.data)
-            userid = session.get("userid")
+            clientid = request.remote_addr
+            url = request.base_url
+            userid = session.get('userid')
             
             batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
             msg = "reject"    
             
             for dt in data['data']:
-                print(dt['prodid'],batch.batchid)
+                
                 tran_data = tbtrans.find_by_prodbatchid(dt['prodid'],batch.batchid)
-                print(tran_data)
-                print(1)
+                
                 if (tran_data is not None):
-                    print(1)
+                
                     tran_data.authorizer = userid
                     now = datetime.now()
                     currentdatetime = now.strftime("%y-%m-%dT%H:%M:%S")
-                    print(1)
                         
                     tran_data.authorizedate = currentdatetime
                     tran_data.authorizernote = dt['authorizernote']
-
-                    print(1)
-                    
+    
                     if data['userrequest'] == 'reject':
                         tran_data.status = 10
+                        userlogging.degbuglog(clientid, url, userid + " : reject tid : " + str(tran_data.tid))
+                        msg = "reject"
                     elif(data['userrequest'] == 'authorize'):
                         tran_data.status = 3
+                        userlogging.degbuglog(clientid, url, userid + " : authorize tid : " + str(tran_data.tid))
                         msg = "authorize"
-                        print(1)
                     
                     db.session.commit()
 
             return {"msg": msg}
             
         except Exception as err:
+            userlogging.degbuglog(clientid, url, err)
             return {"msg": err}
 
 class AuthorizerUpdateTran(Resource):
@@ -321,6 +361,10 @@ class AuthorizerUpdateTran(Resource):
     def post(cls):
         try:
             data = json.loads(request.data)
+            clientid = request.remote_addr
+            url = request.base_url
+            userid = session.get('userid')
+
             tran_data = tbtrans.find_by_tid(data['data']['tid'])
             if (tran_data is not None):
                 tran_data.authorizer = data['data']['authorizer']
@@ -331,63 +375,19 @@ class AuthorizerUpdateTran(Resource):
                 tran_data.authorizedate = currentdatetime
                 tran_data.authorizernote = data['data']['authorizernote']
                 tran_data.status = 3
-                # db.session.add(tran_data)
+                
                 db.session.commit()
+
+                userlogging.degbuglog(clientid, url, userid + " : authorize tid : " + str(tran_data.tid))
                 result = "autherize tid : " + str(tran_data.tid)
                 return {"msg": result}
+            
+            userlogging.degbuglog(clientid, url, userid + " : there is no tid : " + data['data']['tid'])
             return {"msg": "there is no tid : " + data['data']['tid']}
+        
         except Exception as err:
+            userlogging.degbuglog(clientid, url, err)
             return {"msg": err}
-
-# class UpdateCitizen(Resource):
-#     @classmethod
-#     # @jwt_required()
-#     def post(cls):
-#         try:
-#             data = request.get_json()
-
-#             citizen_data = tbcitizens.find_by_cid(data['data']['cid'])
-
-#             if (citizen_data is not None):
-
-#                 # get_statusdata = tbcitizens()
-#                 # get_statusdata.cid = data['data']['cid']
-#                 citizen_data.lastname = data['data']['lastname']
-#                 citizen_data.middlename = data['data']['middlename']
-#                 citizen_data.firstname = data['data']['firstname']
-#                 citizen_data.gender = data['data']['gender']
-#                 citizen_data.dob = data['data']['dob']
-#                 citizen_data.placeofbirth = data['data']['placeofbirth']
-#                 citizen_data.address = data['data']['address']
-#                 citizen_data.electioncenter = data['data']['electioncenter']
-#                 citizen_data.party = data['data']['party']
-#                 citizen_data.updatedby = data['data']['updatedby']
-#                 citizen_data.updateddate = data['data']['updateddate']
-
-#                 db.session.commit()
-#                 result = "update cid : " + data['data']['cid']
-#                 return {"msg": result}
-#             return {"msg": "there is no cid : " + data['data']['cid']}
-
-#         except Exception as err:
-#             return {"msg":err}
-
-# class DeleteCitizen(Resource):
-#     @classmethod
-#     # @jwt_required()
-#     def post(cls):
-#         try:
-
-#             data = request.get_json()
-#             userid = data['data']['cid']
-#             get_statusdata = tbcitizens.find_by_cid(userid)
-#             db.session.delete(get_statusdata)
-#             db.session.commit()
-#             return {"msg":  "delete cid : "+data['data']['cid']}
-
-#         except Exception as err:
-#             return {"msg":err}
-
 
 class Tran(Resource):
     @classmethod
@@ -463,20 +463,3 @@ class TransWithBatchCategoryWherePriceAndWeightIsEmpty(Resource):
             return {"tran": json_data}
         except Exception as err:
             return {"msg": err}       
-
-# class TransListDetails(Resource):
-#     @classmethod
-#     # @jwt_required()
-#     def get(cls):
-#         try:
-#             # data = tbtrans.query.all()
-            
-#             data = db.session.query(tbtrans, tbbatches).join(tbbatches).all()
-#             schema = TransSchema(many=True)
-#             json_data = {}
-#             for dt in data:
-#                 _data = schema.dump(dt)
-#                 json_data.append(_data)
-#             return {"trans": json_data}
-#         except Exception as err:
-#             return {"msg": err}

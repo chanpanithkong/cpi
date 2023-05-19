@@ -6,7 +6,7 @@ from flask_restful import Resource
 from config.db import app, request, json, db
 from models.batches import tbbatches
 from schema.batchesschema import BatchSchema
-
+from config.userlogging import userlogging
 from flask import session
 from sqlalchemy import func
 from datetime import datetime
@@ -46,18 +46,22 @@ class ReopenBatch(Resource):
     def post(cls):
         try:
             data = json.loads(request.data)
-            if data['data'] == "closebatch":
+            clientid = request.remote_addr
+            url = request.base_url
+            userid = session.get('userid')
+
+            if data['data'] == "reopenbatch":
                 batch = tbbatches.find_by_branchbatchclose(session.get('branchcode'))
                 if batch is not None:
                     batch.statusid = 9
 
                     db.session.commit()
-                    result = "no batch"
-                result = "close batch"
-
-                return {"msg": result}
-            return {"msg": "cannot create batch"}
+                    result = "reopen batch"
+                    userlogging.degbuglog(clientid, url, userid + " : reopen batch id " + str(batch.batchid))
+                    return {"msg": result}
+            return {"msg": "cannot reopen batch"}
         except Exception as err:
+            userlogging.degbuglog(clientid, url, err)
             return {"msg": err}
         
 class CloseBatch(Resource):
@@ -66,18 +70,23 @@ class CloseBatch(Resource):
     def post(cls):
         try:
             data = json.loads(request.data)
+            clientid = request.remote_addr
+            url = request.base_url
+            userid = session.get('userid')
+
             if data['data'] == "closebatch":
                 batch = tbbatches.find_by_branchbatchopen(session.get('branchcode'))
                 if batch is not None:
                     batch.statusid = 8
-
                     db.session.commit()
-                    result = "no batch"
-                result = "close batch"
-
-                return {"msg": result}
+                    result = "close batch"
+                    userlogging.degbuglog(clientid, url, userid + " : close batch id " + str(batch.batchid))
+                    return {"msg": result}
+                
+            userlogging.degbuglog(clientid, url, userid + " : cannot create batch ")
             return {"msg": "cannot create batch"}
         except Exception as err:
+            userlogging.degbuglog(clientid, url, err)
             return {"msg": err}
 
 
@@ -87,7 +96,10 @@ class CreateBatch(Resource):
     def post(cls):
         try:
             data = json.loads(request.data)
-            
+            clientid = request.remote_addr
+            url = request.base_url
+            userid = session.get('userid')
+
             if data['data'] == "createbatch":
                 
                 maxtid = db.session.query(func.max(tbbatches.batchid)).scalar()
@@ -111,9 +123,14 @@ class CreateBatch(Resource):
                 
                 db.session.add(batchobject)
                 db.session.commit()
+
+                userlogging.degbuglog(clientid, url, userid + " : create batch id " + str(maxtid))
                 result = {"batchid:": str(maxtid)}
 
                 return {"msg": result}
+            
+            userlogging.degbuglog(clientid, url, userid + " : cannot create batch")
             return {"msg": "cannot create batch"}
         except Exception as err:
+            userlogging.degbuglog(clientid, url, err)
             return {"msg": err}

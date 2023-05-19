@@ -14,7 +14,7 @@ from models.products import tbproducts
 from models.batches import tbbatches
 from models.trans import tbtrans
 from models.categories import tbcategories
-
+from config.userlogging import userlogging
 from pprint import pprint
 
 class Rice(Resource):
@@ -56,6 +56,11 @@ class Rice(Resource):
                     isbutton = True    
                     disabled = ""
 
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        userlogging.degbuglog(clientid, url, userid + " : access Rice")
+
         return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="rice",main="food"), 200, headers)
 
 
@@ -95,6 +100,11 @@ class Ingredient(Resource):
                 else:
                     isbutton = True    
                     disabled = ""
+
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        userlogging.degbuglog(clientid, url, userid + " : access Ingredient")
 
         return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="ingredients",main="food"), 200, headers)
 
@@ -136,6 +146,11 @@ class Meat(Resource):
                     isbutton = True    
                     disabled = ""
 
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        userlogging.degbuglog(clientid, url, userid + " : access Meat")
+
         return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="meat",main="food"), 200, headers)
 
 class FishSeaFood(Resource):
@@ -174,6 +189,11 @@ class FishSeaFood(Resource):
                 else:
                     isbutton = True    
                     disabled = ""
+
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        userlogging.degbuglog(clientid, url, userid + " : access FishSeaFood")
 
         return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="fishandseafood",main="food"), 200, headers)
 
@@ -214,6 +234,11 @@ class Fruit(Resource):
                     isbutton = True    
                     disabled = ""
 
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        userlogging.degbuglog(clientid, url, userid + " : access Fruit")
+
         return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="fruit",main="food"), 200, headers)
 
 
@@ -253,5 +278,10 @@ class Vegetables(Resource):
                 else:
                     isbutton = True    
                     disabled = ""
+
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        userlogging.degbuglog(clientid, url, userid + " : access Vegetables")
 
         return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="vegetables",main="food"), 200, headers)
