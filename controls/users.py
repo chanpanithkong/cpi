@@ -9,6 +9,8 @@ from config.db import app, request, json, jsonify, db
 from models.users import tbusers
 from schema.usersschema import UserSchema
 from pprint import pprint
+from config.cypertext import cypertext
+from config.cypertext import cypertext
 from config.userlogging import userlogging
 jwt = JWTManager(app)
 
@@ -65,7 +67,12 @@ class UpdateUserProfile(Resource):
                     user_data.branchcode = branchcode
                     user_data.details = department
                     user_data.email = email
-                    user_data.password = "P12345678"
+                    
+                    cyper = cypertext()
+                    key ,password = cyper.encrypt("cpi")
+                    user_data.key = key 
+                    user_data.password = password
+                    
                     user_data.status = 5
                     
                     db.session.add(user_data)
@@ -106,7 +113,12 @@ class UpdateUserProfile(Resource):
                 userid = data['data']['userid']
                 user_data = tbusers.find_by_userid(userid)
                 if user_data.username is not None:
-                    user_data.password = "P12345678"
+                    
+                    cyper = cypertext()
+                    key ,password = cyper.encrypt("cpi")
+                    user_data.key = key 
+                    user_data.password = password
+
                     userlogging.degbuglog(clientid, url, user_id + " : reset password user id : " + userid )
                     db.session.commit()
                 else:
@@ -159,8 +171,15 @@ class ChangePasswordForUser(Resource):
 
                     userid = session.get("userid")
                     user_data = tbusers.find_by_userid(userid)
-                    if user_data.password == oldpassword:
+                    
+                    cyper = cypertext()
+                    
+                    if cyper.issame(oldpassword,user_data.key,user_data.password):
+
+                        key , newpassword = cyper.encrypt(newpassword)
+                        user_data.key = key
                         user_data.password = newpassword
+                        
                     else:
                         userlogging.degbuglog(clientid, url, userid + " : Cannot change password")
                         return {"msg": "Cannot change password"}

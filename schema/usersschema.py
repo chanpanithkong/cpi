@@ -10,6 +10,7 @@ class UserSchema(SQLAlchemyAutoSchema):
 
     userid = auto_field()
     password = auto_field()
+    key = auto_field()
     roleid = auto_field()
     username = auto_field()
     gender = auto_field()

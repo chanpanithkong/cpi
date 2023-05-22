@@ -16,7 +16,7 @@ from models.batches import tbbatches
 from models.trans import tbtrans
 from models.categories import tbcategories
 from models.branches import tbbranches
-
+from config.cypertext import cypertext
 from schema.usersschema import UserSchema
 from sqlalchemy import func
 
@@ -37,17 +37,15 @@ class UserLoginPage(Resource):
     @classmethod
     def post(cls):
         headers = {'Content-Type': 'text/html'}
-
+        cyper= cypertext()
         clientid = request.remote_addr
         url = request.base_url
         userid = request.form.get('userid')
         password = request.form.get('password')
         try:
             user_data = tbusers.find_by_userid(userid)
-            schema = UserSchema(many=False)
-            _data = schema.dump(user_data)
             if user_data is not None:
-                if _data['password'] == password:
+                if cyper.issame(password,user_data.key,user_data.password):
                     session['userid'] = user_data.userid
                     session['roleid'] = user_data.roleid
                     session['username'] = user_data.username

@@ -5,6 +5,7 @@ class tbusers(db.Model):
 
     userid = db.Column("userid", db.String, primary_key=True)
     password = db.Column(db.String)
+    key = db.Column(db.String)
     roleid = db.Column(db.Integer)
     username = db.Column(db.String)
     gender = db.Column(db.String)
@@ -13,9 +14,10 @@ class tbusers(db.Model):
     email = db.Column(db.String)
     status = db.Column(db.Integer)
 
-    def __init__(self, userid=None, password=None, roleid=None, username=None, gender=None, branchcode=None, details=None, email=None, status=None):
+    def __init__(self, userid=None, password=None, key=None, roleid=None, username=None, gender=None, branchcode=None, details=None, email=None, status=None):
         self.userid = userid
         self.password = password
+        self.key = key
         self.roleid = roleid
         self.username = username
         self.gender = gender
