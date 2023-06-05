@@ -56,7 +56,7 @@
               </button>
             </li>
 
-            <!-- <li class="nav-item" role="presentation">
+            <li class="nav-item" role="presentation">
               <button
                 class="nav-link"
                 data-bs-toggle="tab"
@@ -67,7 +67,7 @@
               >
                 Localization
               </button>
-            </li> -->
+            </li>
 
           </ul>
           <div class="tab-content pt-2">
@@ -99,6 +99,11 @@
               <div class="row">
                 <div class="col-lg-3 col-md-4 label">Department</div>
                 <div class="col-lg-9 col-md-8">{{user.details}}</div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-3 col-md-4 label">Position</div>
+                <div class="col-lg-9 col-md-8">{{user.position}}</div>
               </div>
 
               <div class="row">
@@ -184,6 +189,21 @@
                 </div>
 
                 <div class="row mb-3">
+                  <label for="Country" class="col-md-4 col-lg-3 col-form-label"
+                    >Position</label
+                  >
+                  <div class="col-md-8 col-lg-9">
+                    <input
+                      name="country"
+                      type="text"
+                      class="form-control"
+                      id="position"
+                      value="{{user.position}}"
+                    />
+                  </div>
+                </div>
+
+                <div class="row mb-3">
                   <label for="Address" class="col-md-4 col-lg-3 col-form-label"
                     >Email</label
                   >
@@ -207,14 +227,14 @@
               <!-- End Profile Edit Form -->
             </div>
 
-            <!-- <div
+            <div
               class="tab-pane fade pt-3"
               id="profile-settings"
               role="tabpanel"
-            > -->
+            >
               <!-- Settings Form -->
               
-                <!-- <div class="row mb-3">
+                <div class="row mb-3">
                   <label for="fullName" class="col-md-4 col-lg-3 col-form-label"
                     >Changes Languages</label
                   >
@@ -249,10 +269,10 @@
                   <button class="btn btn-primary" id="savelanguage">
                     Save Changes
                   </button>
-                </div> -->
+                </div>
               
               <!-- End settings Form -->
-            <!-- </div> -->
+            </div>
 
          
               
@@ -274,6 +294,7 @@
       gender = $("#gender").val();
       branchcode = $("#branchcode").val();
       department = $("#department").val();
+      position = $("#position").val();
       email = $("#email").val();
 
           item = {};
@@ -281,6 +302,7 @@
           item['gender'] = gender;
           item['branchcode'] = branchcode
           item['department'] = department;
+          item['position'] = position;
           item['email'] = email;
       
       $.ajax({

@@ -51,6 +51,21 @@
                         <div class="row">
                             <div class="col-md-2"></div>
                             <div class="col-md-4">
+                                <label for="inputEmail5" class="form-label">Unit in Englis</label>
+                                <input type="text" class="form-control" id="uniten"
+                                    placeholder="Please fill unit in english" name="uniten" value="{{product.find_by_prodid(prodid).uniten}}">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="inputPassword5" class="form-label">Unit in Khmer</label>
+                                <input type="text" class="form-control" id="unitkh"
+                                    placeholder="Please fill unit in khmer" name="unitkh" value="{{product.find_by_prodid(prodid).unitkh}}">
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-4">
                                 <label for="inputEmail5" class="form-label">Weight</label>
                                 <input type="text" class="form-control" id="weight"
                                     placeholder="Please fill weight" name="weight" value="{{product.find_by_prodid(prodid).weight}}">
@@ -124,6 +139,8 @@
             productcode = $("#productcode").val()
             nameen = $("#nameen").val()
             namekh = $("#namekh").val()
+            unitkh = $("#unitkh").val()
+            uniten = $("#uniten").val()
             weight = $("#weight").val()
             catid = $("#catid").val()
             details = $("#details").val()
@@ -133,6 +150,8 @@
             item['productcode'] = productcode;
             item['nameen'] = nameen;
             item['namekh'] = namekh;
+            item['unitkh'] = unitkh;
+            item['uniten'] = uniten;
             item['weight'] = weight;
             item['catid'] = catid;
             item['details'] = details;
@@ -159,6 +178,8 @@
             $("#productcode").val("")
             $("#nameen").val("")
             $("#namekh").val("")
+            $("#unitkh").val("")
+            $("#uniten").val("")
             $("#weight").val(0)
             $("#catid").val(1)
             $("#details").val("")

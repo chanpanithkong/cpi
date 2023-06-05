@@ -95,7 +95,12 @@
           <br />
           <div class="row">
             <div class="col-md-2"></div>
-            <div class="col-md-8">
+            <div class="col-md-4">
+              <label for="inputPassword5" class="form-label">Position</label>
+              <input type="text" class="form-control" id="position" placeholder="Please fill Position" name="position"
+                value="{{user[0].position}}">
+            </div>
+            <div class="col-md-4">
               <label for="inputEmail5" class="form-label">Email</label>
               <input type="text" class="form-control" id="email" placeholder="Please fill Email"
                 name="email" value="{{user[0].email}}">
@@ -137,6 +142,7 @@
       gender = $("#gender").val();
       branchcode = $("#branchcode").val();
       department = $("#department").val();
+      position = $("#position").val();
       email = $("#email").val();
 
 
@@ -147,6 +153,7 @@
       item['gender'] = gender;
       item['branchcode'] = branchcode;
       item['department'] = department;
+      item['position'] = position;
       item['email'] = email;
 
       $.ajax({

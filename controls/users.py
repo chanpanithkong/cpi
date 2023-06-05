@@ -32,6 +32,7 @@ class UpdateUserProfile(Resource):
                 gender = data['data']['gender']
                 branchcode = data['data']['branchcode']
                 department = data['data']['department']
+                position = data['data']['position']
                 email = data['data']['email']
 
                 user_data = tbusers.find_by_userid(user_id)
@@ -40,6 +41,7 @@ class UpdateUserProfile(Resource):
                 user_data.gender = gender
                 user_data.branchcode = branchcode
                 user_data.details = department
+                user_data.position = position
                 user_data.email = email
 
                 db.session.commit()
@@ -54,6 +56,7 @@ class UpdateUserProfile(Resource):
                 gender = data['data']['gender']
                 branchcode = data['data']['branchcode']
                 department = data['data']['department']
+                position = data['data']['position']
                 email = data['data']['email']
                 roleid = data['data']['roleid']
                 
@@ -66,7 +69,9 @@ class UpdateUserProfile(Resource):
                     user_data.roleid = roleid
                     user_data.branchcode = branchcode
                     user_data.details = department
+                    user_data.position = position
                     user_data.email = email
+                    user_data.lang = "EN"
                     
                     cyper = cypertext()
                     key ,password = cyper.encrypt("cpi")
@@ -91,6 +96,7 @@ class UpdateUserProfile(Resource):
                 gender = data['data']['gender']
                 branchcode = data['data']['branchcode']
                 department = data['data']['department']
+                position = data['data']['position']
                 email = data['data']['email']
                 roleid = data['data']['roleid']
 
@@ -100,6 +106,7 @@ class UpdateUserProfile(Resource):
                 user_data.roleid = roleid
                 user_data.branchcode = branchcode
                 user_data.details = department
+                user_data.position = position
                 user_data.email = email
                 
                 db.session.commit()

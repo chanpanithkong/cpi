@@ -16,6 +16,8 @@ class UserSchema(SQLAlchemyAutoSchema):
     gender = auto_field()
     branchcode = auto_field()
     details = auto_field()
+    position = auto_field()
     email = auto_field()
     status = auto_field()
+    lang = auto_field()
 
