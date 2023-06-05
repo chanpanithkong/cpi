@@ -15,6 +15,8 @@ class ProductsSchema(SQLAlchemyAutoSchema):
     weight = auto_field()
     catid = auto_field()
     details = auto_field()
+    uniten = auto_field()
+    unitkh = auto_field()
     # tbcategories = fields.Nested("CategoriesSchema")
     
 

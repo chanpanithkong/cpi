@@ -64,7 +64,7 @@
               <select id="branchcode" class="form-select" name="branchcode">
                 {% for branch in tb_branches.query.all() %}
                 
-                    <option value="{{branch.branchcode}}">{{branch.nameen}}</option>
+                    <option value="{{branch.branchcode}}">{{branch.branchcode}} - {{branch.nameen}}</option>
               
                 {% endfor %}
                 </select>
@@ -97,6 +97,10 @@
               <button type="button" class="btn btn-danger" id="clear">
                 Clear
               </button>
+              &nbsp;
+              <button type="button" class="btn btn-success" id="userlist">
+                User List
+              </button>
             </div>
         </div>
         <br/>
@@ -109,9 +113,6 @@
           </div>
         </div>
       </div>
-
-
-
     </div>
   </div>
 </section>
@@ -119,6 +120,10 @@
 <script>
 
   $(document).ready(function () {
+
+    $("#userlist").click(function () {
+      window.location = "/viewusers";
+    })
 
     $("#save").click(function () {
 

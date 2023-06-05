@@ -1,7 +1,4 @@
-Include/
-Lib/
-Scripts/
-__pycache__/
-controls/__pycache__/
-models/__pycache__/
-pyvenv.cfg
+__pycache__
+logging
+excel.py
+flask_session

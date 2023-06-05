@@ -955,3 +955,24 @@ class ViewUsers(Resource):
         userlogging.degbuglog(clientid, url, userid + " : access ViewUsers")
 
         return make_response(render_template('index.html', menus=menus, role=role, user=user, task="viewusers",main="users"), 200, headers)
+    
+
+class ViewDeleteUsers(Resource):
+    @classmethod
+    def get(cls):
+
+        if not session.get("userid"):
+            return redirect("/login")
+
+        headers = {'Content-Type': 'text/html'}
+
+        menus = tbrolemenu
+        role = tbroles.find_by_roleid(session.get('roleid'))
+        user = db.session.query(tbusers,tbroles, tbbranches).filter(tbusers.roleid == tbroles.roleid).filter(tbusers.branchcode == tbbranches.branchcode).filter(tbusers.status == 6).all()
+
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        userlogging.degbuglog(clientid, url, userid + " : access ViewUsers")
+
+        return make_response(render_template('index.html', menus=menus, role=role, user=user, task="viewdeleteusers",main="users"), 200, headers)

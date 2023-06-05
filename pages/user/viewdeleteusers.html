@@ -1,0 +1,75 @@
+<div class="pagetitle">
+    <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+          <li class="breadcrumb-item active">Deleted Users Management</li>
+        </ol>
+    </nav>
+</div>
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <center>
+                        <h5 class="card-title">Deleted Users Management</h5>
+                    </center>
+
+                    <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">User ID</th>
+                            <th scope="col">User Name</th>
+                            <th scope="col">Branch Name</th>
+                            <th scope="col">Role</th>
+                            <th scope="col">Department</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in user %}
+                            <tr>
+                                <td>{{loop.index}}</td>
+                                <td class="user_id">{{ user[0].userid }}</td>
+                                <td>{{ user[0].username }}</td>
+                                <td>{{ user[2].nameen }}</td>
+                                <td>{{ user[1].rolename }}</td>
+                                <td>{{ user[0].details }}</td>
+                                <td>{{ user[0].email }}</td>
+                                <td>
+                                    <button type="button" class="btn btn-primary btn-sm restore" data-toggle="tooltip" data-placement="top" title="Restore User">
+                                        <i class="bx bxs-analyse"></i>
+                                    </button>
+                                    
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                      </table>
+                      <div>
+                        <div style="text-align: Center">
+                          <button type="button" class="btn btn-primary" id="userlist">
+                            Users List
+                          </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    $(document).ready(function() {
+        $('[data-toggle="tooltip"]').tooltip();
+
+        $("#userlist").click(function(e) {
+            window.location = "/viewusers"
+        })
+        $(".restore").click(function(e) {
+            alert("Restore User")
+        })
+        
+    })
+</script>

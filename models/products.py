@@ -8,11 +8,13 @@ class tbproducts(db.Model):
     namekh = db.Column(db.String)
     weight = db.Column(db.String)
     details = db.Column(db.String)
-    catid = db.Column(db.Integer, db.ForeignKey('tbcategories.catid'))
+    catid = db.Column(db.Integer)
+    unitkh = db.Column(db.String)
+    uniten = db.Column(db.String)
     # tbcategories = db.relationship("tbcategories")
     
     
-    def __init__(self, prodid = None, productcode = None, nameen = None, namekh = None, weight = None, catid = None, details = None, tbcategories = None):
+    def __init__(self, prodid = None, productcode = None, nameen = None, namekh = None, weight = None, catid = None, details = None, tbcategories = None, unitkh = None, uniten = None):
         self.prodid = prodid
         self.productcode = productcode
         self.nameen = nameen
@@ -21,6 +23,8 @@ class tbproducts(db.Model):
         self.catid = catid
         self.details = details
         self.tbcategories = tbcategories
+        self.uniten = uniten
+        self.unitkh = unitkh
         
     @classmethod
     def find_by_prodid(cls, prodid) -> "tbproducts":
@@ -33,3 +37,7 @@ class tbproducts(db.Model):
     @classmethod
     def find_by_catid(cls, catid) -> "tbproducts":
         return cls.query.filter_by(catid=catid).all()
+    
+    @classmethod
+    def find_by_prodcode(cls, productcode) -> "tbproducts":
+        return cls.query.filter_by(productcode=productcode).first()

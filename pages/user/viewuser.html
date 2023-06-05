@@ -65,6 +65,10 @@
                           <button type="button" class="btn btn-success" id="refresh">
                             Refresh
                           </button>
+                          &nbsp;
+                            <button type="button" class="btn btn-warning" id="deleteusers">
+                                User Deleted
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -80,6 +84,14 @@
             window.location = "/createusers"
         })
         
+        $("#deleteusers").click(function(e) {
+            window.location = "/viewdeleteusers";
+        })
+
+        $("#refresh").click(function(e) {
+            location.reload();
+        })
+
         $(".reset").click(function(e) {
             userid = $(this).parent().parent().find(".user_id").text()
 

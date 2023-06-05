@@ -1,7 +1,0 @@
-2023-05-22 13:34:19,761 : DEBUG : root : 127.0.0.1 : http://localhost:5000/userloginpage : test : login
-2023-05-22 13:34:19,783 : DEBUG : root : 127.0.0.1 : http://localhost:5000/dashboard : test : access Dashboard
-2023-05-22 13:34:26,451 : DEBUG : root : 127.0.0.1 : http://localhost:5000/changepassword : test : access ChangePassword
-2023-05-22 13:34:32,815 : DEBUG : root : 127.0.0.1 : http://localhost:5000/api/changepasswordforuser : test : Password changed
-2023-05-22 13:34:34,081 : DEBUG : root : 127.0.0.1 : http://localhost:5000/changepassword : test : access ChangePassword
-2023-05-22 13:34:40,478 : DEBUG : root : 127.0.0.1 : http://localhost:5000/userloginpage : test : login
-2023-05-22 13:34:40,505 : DEBUG : root : 127.0.0.1 : http://localhost:5000/dashboard : test : access Dashboard

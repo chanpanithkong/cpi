@@ -8,10 +8,10 @@ class tbtrans(db.Model):
 
     tid = db.Column("tid", db.Integer, primary_key=True)
 
-    branchcode = db.Column(db.String, db.ForeignKey('tbbranches.branchcode'))
+    branchcode = db.Column(db.String)
     # tbbranches = db.relationship("tbbranches")
 
-    productid = db.Column(db.Integer, db.ForeignKey('tbproducts.prodid'))
+    productid = db.Column(db.Integer)
     # tbproducts = db.relationship("tbproducts")
 
     weight = db.Column(db.Float)
@@ -29,14 +29,14 @@ class tbtrans(db.Model):
     checkerdate = db.Column(db.DateTime)
     checkernote = db.Column(db.String)
 
-    status = db.Column(db.Integer, db.ForeignKey('tbstatus.statusid'))
+    status = db.Column(db.Integer)
     # tbstatus = db.relationship("tbstatus")
 
     valuedate = db.Column(db.DateTime)
     trandate = db.Column(db.DateTime)
     countsubmitted = db.Column(db.Integer)
 
-    batchid = db.Column(db.Integer, db.ForeignKey('tbbatches.batchid'))
+    batchid = db.Column(db.Integer)
     # tbbatches = db.relationship("tbbatches")
 
     def __init__(self, tid=None, branchcode=None, productid=None, weight=None, price=None, submitter=None, submitdate=None, submitternote=None, authorizer=None, authorizedate=None, authorizernote=None, checker=None, checkerdate=None, checkernote=None, status=None, valuedate=None, trandate=None, countsubmitted=None, batchid=None):
