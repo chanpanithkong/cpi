@@ -71,7 +71,6 @@ class UpdateUserProfile(Resource):
                     user_data.details = department
                     user_data.position = position
                     user_data.email = email
-                    user_data.lang = "EN"
                     
                     cyper = cypertext()
                     key ,password = cyper.encrypt("cpi")
