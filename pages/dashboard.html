@@ -1,7 +1,7 @@
 <div class="pagetitle">
   <nav>
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+      <li class="breadcrumb-item"><a href="/">{{locals.Dashboard}}</a></li>
       <!-- <li class="breadcrumb-item">Tables</li>
             <li class="breadcrumb-item active">General</li> -->
     </ol>
@@ -35,11 +35,11 @@
                 </div>
                 <div class="ps-3">
                   <h6>{{ts[5]}}</h6>
-                  <span class="text-muted small pt-2 ps-1">Category</span>
+                  <span class="text-muted small pt-2 ps-1">{{locals['Category']}}</span>
                 </div>
                 <div class="ps-3">
                   <h6>{{ts[1]}}</h6>
-                  <span class="text-muted small pt-2 ps-1">Products</span>
+                  <span class="text-muted small pt-2 ps-1">{{locals['Product']}}</span>
                 </div>
               </div>
             </div>
@@ -68,7 +68,7 @@
                   class="btn btn-primary"
                   {{createdisable}}
                 >
-                  Create Transactions
+                  {{locals['CreateTransactions']}}
                 </button>&nbsp;&nbsp;
                 <button
                   id="reopen"
@@ -76,7 +76,7 @@
                   class="btn btn-success"
                   {{reopendisable}}
                 >
-                  Reopen Transactions
+                  {{locals['ReopenTransactions']}}
                 </button>&nbsp;&nbsp;
                 <button
                   id="close"
@@ -84,7 +84,7 @@
                   class="btn btn-danger"
                   {{closeddisable}}
                 >
-                  Close Transactions
+                  {{locals['CloseTransactions']}}
                 </button>
               </div>
               <br />

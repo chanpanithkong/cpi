@@ -16,6 +16,7 @@ from models.trans import tbtrans
 from models.categories import tbcategories
 from config.userlogging import userlogging
 from pprint import pprint
+from languages import lang
 
 class Rice(Resource):
     @classmethod
@@ -59,9 +60,12 @@ class Rice(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages] 
+
         userlogging.degbuglog(clientid, url, userid + " : access Rice")
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="rice",main="food"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton ,languages=languages,locals=locals, task="rice",main="food"), 200, headers)
 
 
 class Ingredient(Resource):
@@ -104,9 +108,12 @@ class Ingredient(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages] 
+
         userlogging.degbuglog(clientid, url, userid + " : access Ingredient")
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="ingredients",main="food"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton ,languages=languages,locals=locals, task="ingredients",main="food"), 200, headers)
 
 
 class Meat(Resource):
@@ -149,9 +156,12 @@ class Meat(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages] 
+
         userlogging.degbuglog(clientid, url, userid + " : access Meat")
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="meat",main="food"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton ,languages=languages,locals=locals, task="meat",main="food"), 200, headers)
 
 class FishSeaFood(Resource):
     @classmethod
@@ -193,9 +203,12 @@ class FishSeaFood(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages] 
+
         userlogging.degbuglog(clientid, url, userid + " : access FishSeaFood")
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="fishandseafood",main="food"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton ,languages=languages,locals=locals, task="fishandseafood",main="food"), 200, headers)
 
 class Fruit(Resource):
     @classmethod
@@ -237,9 +250,12 @@ class Fruit(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages] 
+
         userlogging.degbuglog(clientid, url, userid + " : access Fruit")
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="fruit",main="food"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton ,languages=languages,locals=locals, task="fruit",main="food"), 200, headers)
 
 
 class Vegetables(Resource):
@@ -282,6 +298,9 @@ class Vegetables(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages] 
+
         userlogging.degbuglog(clientid, url, userid + " : access Vegetables")
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="vegetables",main="food"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton,languages=languages, locals=locals , task="vegetables",main="food"), 200, headers)

@@ -34,6 +34,7 @@ class UpdateUserProfile(Resource):
                 department = data['data']['department']
                 position = data['data']['position']
                 email = data['data']['email']
+                languages = data['data']['languages']
 
                 user_data = tbusers.find_by_userid(user_id)
 
@@ -43,6 +44,8 @@ class UpdateUserProfile(Resource):
                 user_data.details = department
                 user_data.position = position
                 user_data.email = email
+                user_data.languages = languages
+                session['languages'] = languages
 
                 db.session.commit()
 
@@ -71,6 +74,7 @@ class UpdateUserProfile(Resource):
                     user_data.details = department
                     user_data.position = position
                     user_data.email = email
+                    user_data.languages = 'EN'
                     
                     cyper = cypertext()
                     key ,password = cyper.encrypt("cpi")

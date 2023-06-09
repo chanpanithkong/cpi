@@ -20,6 +20,8 @@ from config.cypertext import cypertext
 from schema.usersschema import UserSchema
 from sqlalchemy import func
 
+from languages import lang
+
 import datetime
 from pprint import pprint
 from sqlalchemy import func
@@ -51,6 +53,7 @@ class UserLoginPage(Resource):
                     session['username'] = user_data.username
                     session['branchcode'] = user_data.branchcode
                     session['details'] = user_data.details
+                    session['languages'] = user_data.languages
                     userlogging.degbuglog(clientid, url,userid + " : login")
                     return redirect("/dashboard")
                 else:
@@ -139,9 +142,13 @@ class HomePage(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+
+        languages = session.get('languages')
+        locals = lang[languages]
+
         userlogging.degbuglog(clientid, url, userid + " : access Dashboard")
         
-        return make_response(render_template('index.html', menus=menus, role=role,reopendisable=reopendisable,closeddisable=closeddisable, createdisable=createdisable, user=user, transtatus=transtatus, task="dashboard",main=""), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role,reopendisable=reopendisable,closeddisable=closeddisable, createdisable=createdisable, user=user, transtatus=transtatus,languages=languages,locals=locals, task="dashboard",main=""), 200, headers)
 
 
 class HistoryOfTrans(Resource):
@@ -219,9 +226,12 @@ class BeverageTobacco(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages]
+
         userlogging.degbuglog(clientid, url, userid + " : access BeverageTobacco")
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="beveragestobacco",main=""), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton, languages=languages, locals=locals , task="beveragestobacco",main=""), 200, headers)
 
 
 class Restaurant(Resource):
@@ -265,9 +275,13 @@ class Restaurant(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+
+        languages = session.get('languages')
+        locals = lang[languages]
+
         userlogging.degbuglog(clientid, url, userid + " : access Restaurant")
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="restaurant",main=""), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton,languages=languages,locals=locals , task="restaurant",main=""), 200, headers)
 
 
 
@@ -312,9 +326,12 @@ class ClothShoes(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages]
+
         userlogging.degbuglog(clientid, url, userid + " : access ClothShoes")
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="clothesshoes",main=""), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton, languages=languages, locals=locals , task="clothesshoes",main=""), 200, headers)
 
 
 
@@ -359,9 +376,12 @@ class Shipping(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages]
+
         userlogging.degbuglog(clientid, url, userid + " : access Shipping")
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="shipping",main=""), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton, languages=languages, locals=locals , task="shipping",main=""), 200, headers)
 
 class Medicine(Resource):
     @classmethod
@@ -404,9 +424,12 @@ class Medicine(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages]
+
         userlogging.degbuglog(clientid, url, userid + " : access Medicine")
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="medicine",main=""), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton, languages=languages, locals=locals , task="medicine",main=""), 200, headers)
 
 
 
@@ -451,9 +474,12 @@ class Housing(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages] 
+
         userlogging.degbuglog(clientid, url, userid + " : access Housing")
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="housing",main=""), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton, languages=languages, locals=locals , task="housing",main=""), 200, headers)
 
 
 class SubmittedTrans(Resource):

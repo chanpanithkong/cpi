@@ -19,4 +19,5 @@ class UserSchema(SQLAlchemyAutoSchema):
     position = auto_field()
     email = auto_field()
     status = auto_field()
+    languages = auto_field()
 

@@ -9,7 +9,8 @@ class StatusSchema(SQLAlchemyAutoSchema):
         load_instance = True
 
     statusid = auto_field()
-    status = auto_field()
+    statusen = auto_field()
+    statuskh = auto_field()
     details = auto_field()
     icon = auto_field()
     
