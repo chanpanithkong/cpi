@@ -1,9 +1,9 @@
 <div class="pagetitle">
     <nav>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="/attachedrolepermission">Role Management</a></li>
-            <li class="breadcrumb-item active">Attach Permission</li>
+            <li class="breadcrumb-item"><a href="/">{{locals['Dashboard']}}</a></li>
+            <li class="breadcrumb-item"><a href="/attachedrolepermission">{{locals['Role Management']}}</a></li>
+            <li class="breadcrumb-item active">{{locals['Attach Permission']}}</li>
         </ol>
     </nav>
 </div>
@@ -13,7 +13,7 @@
             <div class="card">
                 <div class="card-body">
                     <center>
-                        <h5 class="card-title">Permission of Role {{tb_role.rolename}} Management</h5>
+                        <h5 class="card-title">{{locals['Permission of Role']}} {{locals[tb_role.rolename]}} {{locals['Management']}}</h5>
                     </center>
                     <div id="row">
                         <div class="col-lg-12">
@@ -21,11 +21,11 @@
                             <table class="table table-hover">
                                 <thead>
                                     <th width="10%">#</th>
-                                    <th width="30%">Menu Name</th>
-                                    <th width="20%">Link</th>
-                                    <th width="20%">Details</th>
-                                    <th width="10%">Parent</th>
-                                    <th width="10%">Action</th>
+                                    <th width="30%">{{locals['Menu Name']}}</th>
+                                    <th width="20%">{{locals['Link']}}</th>
+                                    <th width="20%">{{locals['Details']}}</th>
+                                    <th width="10%">{{locals['Parent']}}</th>
+                                    <th width="10%">{{locals['Action']}}</th>
                                 </thead>
                                 <tbody>
                                 {% for tbmenu in menulist %}
@@ -37,7 +37,13 @@
                                     
                                     <tr class="table-info">
                                         <td>{{loop.index}}</td>
-                                        <td>{{tbmenu[1]}}</td>
+                                        <td>
+                                            {% if languages == "EN" %}
+                                            {{tbmenu[1]}}
+                                            {% else %}
+                                            {{tbmenu[2]}}
+                                            {% endif %}    
+                                        </td>
                                         <td>{{tbmenu[5]}}</td>
                                         <td>{{tbmenu[6]}}</td>
                                         <td>Yes</td>
@@ -66,7 +72,13 @@
 
                                                 <tr class="table-warning">
                                                     <td><i class="ri-arrow-right-line"></i></td>
-                                                    <td>{{men.nameen}}</td>
+                                                    <td>
+                                                        {% if languages == "EN" %}
+                                                        {{men.nameen}}
+                                                        {% else %}
+                                                        {{men.namekh}}
+                                                        {% endif %}
+                                                    </td>
                                                     <td>{{men.functions}}</td>
                                                     <td>{{men.details}}</td>
                                                     <td>{{tbmenu[1]}}</td>
@@ -95,11 +107,11 @@
                         <div class="col-lg-12">
                             <div style="text-align: Center">
                                 <button type="button" class="btn btn-primary" id="save">
-                                    Save
+                                    {{locals['Save']}}
                                 </button>
                                 &nbsp;
                                 <button type="button" class="btn btn-success" id="back">
-                                    Role List
+                                    {{locals['Role List']}}
                                 </button>
                             </div>
                         </div>

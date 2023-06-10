@@ -1,9 +1,9 @@
 <div class="pagetitle">
   <nav>
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-      <li class="breadcrumb-item"><a href="/viewusers">Users List</a></li>
-      <li class="breadcrumb-item active">Create Users</li>
+      <li class="breadcrumb-item"><a href="/">{{locals['Dashboard']}}</a></li>
+      <li class="breadcrumb-item"><a href="/viewusers">{{locals['Users List']}}</a></li>
+      <li class="breadcrumb-item active">{{locals['Create Users']}}</li>
     </ol>
   </nav>
 </div><!-- End Page Title -->
@@ -15,20 +15,20 @@
       <div class="card">
         <div class="card-body">
           <center>
-            <h5 class="card-title">User Management</h5>
+            <h5 class="card-title">{{locals['User Management']}}</h5>
           </center>
           <br />
 
           <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-4">
-              <label for="inputEmail5" class="form-label">User ID</label>
-              <input type="text" class="form-control" id="user_id" placeholder="Please fill UserID"
+              <label for="inputEmail5" class="form-label">{{locals['User ID']}}</label>
+              <input type="text" class="form-control" id="user_id" placeholder="{{locals['Please fill here']}}"
                 name="user_id" value="">
             </div>
             <div class="col-md-4">
-              <label for="inputPassword5" class="form-label">Full Name</label>
-              <input type="text" class="form-control" id="username" placeholder="Please fill Full Name" name="usernmae"
+              <label for="inputPassword5" class="form-label">{{locals['Full Name']}}</label>
+              <input type="text" class="form-control" id="username" placeholder="{{locals['Please fill here']}}" name="usernmae"
                 value="">
             </div>
             <div class="col-md-2"></div>
@@ -37,18 +37,18 @@
           <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-4">
-              <label for="inputEmail5" class="form-label">Gender</label>
+              <label for="inputEmail5" class="form-label">{{locals['Gender']}}</label>
               <select id="gender" class="form-select" name="gender">
-                <option value="Female">Female</option>
-                <option value="Male">Male</option>
+                <option value="Female">{{locals['Female']}}</option>
+                <option value="Male">{{locals['Male']}}</option>
               </select>
             </div>
             <div class="col-md-4">
-              <label for="inputPassword5" class="form-label">Role</label>
+              <label for="inputPassword5" class="form-label">{{locals['Role']}}</label>
               <select id="roleid" class="form-select" name="roleid">
                 {% for role in tb_roles.query.all() %}
                 
-                    <option value="{{role.roleid}}">{{role.rolename}}</option>
+                    <option value="{{role.roleid}}">{{locals[role.rolename]}}</option>
               
                 {% endfor %}
             </select>
@@ -60,18 +60,24 @@
           <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-4">
-              <label for="inputEmail5" class="form-label">Branch Code</label>
+              <label for="inputEmail5" class="form-label">{{locals['BranchCode']}}</label>
               <select id="branchcode" class="form-select" name="branchcode">
                 {% for branch in tb_branches.query.all() %}
                 
-                    <option value="{{branch.branchcode}}">{{branch.branchcode}} - {{branch.nameen}}</option>
+                    <option value="{{branch.branchcode}}">{{branch.branchcode}} - 
+                      {% if languages == "EN" %}
+                      {{branch.nameen}}
+                      {% else %}
+                      {{branch.namekh}}
+                      {% endif %}
+                    </option>
               
                 {% endfor %}
                 </select>
             </div>
             <div class="col-md-4">
-              <label for="inputPassword5" class="form-label">Department</label>
-              <input type="text" class="form-control" id="department" placeholder="Please fill Department" name="department"
+              <label for="inputPassword5" class="form-label">{{locals['Department']}}</label>
+              <input type="text" class="form-control" id="department" placeholder="{{locals['Please fill here']}}" name="department"
                 value="">
             </div>
             <div class="col-md-2"></div>
@@ -80,13 +86,13 @@
           <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-4">
-              <label for="inputPassword5" class="form-label">Position</label>
-              <input type="text" class="form-control" id="position" placeholder="Please fill Position" name="position"
+              <label for="inputPassword5" class="form-label">{{locals['Position']}}</label>
+              <input type="text" class="form-control" id="position" placeholder="{{locals['Please fill here']}}" name="position"
                 value="">
             </div>
             <div class="col-md-4">
-              <label for="inputEmail5" class="form-label">Email</label>
-              <input type="text" class="form-control" id="email" placeholder="Please fill Email"
+              <label for="inputEmail5" class="form-label">{{locals['Email']}}</label>
+              <input type="text" class="form-control" id="email" placeholder="{{locals['Please fill here']}}"
                 name="email" value="">
             </div>
             <div class="col-md-2"></div>
@@ -96,15 +102,15 @@
           <div>
             <div style="text-align: Center">
               <button type="button" class="btn btn-primary" id="save">
-                Add New User
+                {{locals['Add New User']}}
               </button>
               &nbsp;
               <button type="button" class="btn btn-danger" id="clear">
-                Clear
+                {{locals['Clear']}}
               </button>
               &nbsp;
               <button type="button" class="btn btn-success" id="userlist">
-                User List
+                {{locals['Users List']}}
               </button>
             </div>
         </div>
@@ -112,7 +118,7 @@
           <div class="row">
             <div class="col-md-12">
               <div class="alert alert-primary" role="alert">
-                User Default Password is "cpi"
+                {{locals['User Default Password is']}} "cpi"
               </div>
             </div>
           </div>
