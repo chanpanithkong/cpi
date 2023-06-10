@@ -40,7 +40,7 @@ CREATE TABLE `tbbatches` (
 
 LOCK TABLES `tbbatches` WRITE;
 /*!40000 ALTER TABLE `tbbatches` DISABLE KEYS */;
-INSERT INTO `tbbatches` VALUES (1,'batch1','001001','2023-06-05 16:57:06','001','001',9);
+INSERT INTO `tbbatches` VALUES (1,'batch1','0001001','2023-06-10 15:18:33','0001','001',9);
 /*!40000 ALTER TABLE `tbbatches` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -55,7 +55,8 @@ CREATE TABLE `tbbranches` (
   `branchcode` varchar(10) NOT NULL,
   `nameen` varchar(45) DEFAULT NULL,
   `namekh` varchar(100) DEFAULT NULL,
-  `address` varchar(255) DEFAULT NULL,
+  `addressen` varchar(255) DEFAULT NULL,
+  `addresskh` varchar(255) DEFAULT NULL,
   `details` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`branchcode`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='		';
@@ -67,7 +68,7 @@ CREATE TABLE `tbbranches` (
 
 LOCK TABLES `tbbranches` WRITE;
 /*!40000 ALTER TABLE `tbbranches` DISABLE KEYS */;
-INSERT INTO `tbbranches` VALUES ('001','HEAD OFFICE','ទីស្នាក់ការកណ្តាល','P.O. Box 25, Norodm Blvd.',' '),('002','KANDAL','កណ្តាល','Street 104, Phum Takmao, Khum-Srok Takhmao',' '),('003','KAMPONG CHAM','កំពង់ចាម','Street Preah Monivong, Khum-Srok Kampong Cham',' '),('004','BATTAMBONG','បាត់ដំបង','Street 3, Phum Kampong Krorbey, Khum Svaypor, Srok Battambong',' '),('005','PREY VENG','ព្រៃវែង','Street Matonlei, Phum 3, Khum-Srok Kampong Leav',' '),('006','SIEM REAP','សៀមរាប','Street 9-10, Mondul 1, Khum Svay Dangkum Srok',' '),('007','KAMPONG THOM','កំពង់ធំ','Street Stung Sen, Phum 1, Khum Kampong Thom, Srok Stung Sen',' '),('008','TAKEO','តាកែវ','Street 11, Phum 1, Khum Rokarknong, Srok Donkeo ',' '),('009','SVAY REANG','ស្វាយរៀង','Phum Suon Thmey, Khum Prek Chhlak, Srok Svay Rieng',' '),('010','PURSAT','ពោធិ៍សាត់','Street 1, Phum Popeal Nhek 2, Khum Ptas Prey, Srok Sampeuvmeas',' '),('011','KAMPONG CHHNANG','កំពង់ឆ្នាំង','Street Norodom, Phum Klang Prak, Khum Phaei, Srok Kampong Chhnang',' '),('012','KAMPONG SPUE','កំពង់ស្ពឺ','National Road No 4, Phum Peanichkam, Khum Rokarthom, Srok Chbar Mon',' '),('013','KAMPOT','កំពត','Street Matprek, Phum 1 Ousaphea, Khum Kampong Kandal, Srok Kampong Bay',' '),('014','SIHANOUK VILLE','ក្រុងព្រះសីហនុ','Street Pokambor, Sangkat 3, Khan Mitapheap',' '),('015','KOH KONG','កោះកុង','Street Matprek, Phum 1, Khum-Srok Smach Meanchey',' '),('017','KRATIE BRANCH','ក្រចេះ','Street Kosamak, Phum Kratie, Srok Kratie',' '),('018','RATTANAKIRI','រតនៈគីរី','Street 19, Phum 1, Khum Labanseak, Srok Banlung',' '),('020','STUNG TRENG','ស្ទឹងត្រែង','Street 2, Phum Prek, Khum-Srok Stung Treng',' '),('021','BANTEAY MEANCHEY','បន្ទាយមានជ័យ','Blok Uy, Phum 3, Khum Preah Punlear, Srok Serei Sophoan',' '),('023','PHNOM PENH','ភ្នំពេញ','#273, Street 110-67, Sangkat Wat Phnom, Khan Daun Penh',' ');
+INSERT INTO `tbbranches` VALUES ('001','HEAD OFFICE','ទីស្នាក់ការកណ្តាល','P.O. Box 25, Norodm Blvd.','P.O. ប្រអប់លេខ ២៥ មហាវិថីនរោត្តម',' '),('002','KANDAL','កណ្តាល','Street 104, Phum Takmao, Khum-Srok Takhmao','ផ្លូវ 104 ប៉ាហុនតាខ្មៅ ឃុំ-ស្រុកតាខ្មៅ',' '),('003','KAMPONG CHAM','កំពង់ចាម','Street Preah Monivong, Khum-Srok Kampong Cham','ផ្លូវព្រះមុនីវង្ស, កាយូ-ស្ត្រូកំពង់ចាម',' '),('004','BATTAMBONG','បាត់ដំបង','Street 3, Phum Kampong Krorbey, Khum Svaypor, Srok Battambong','ផ្លូវលេខ៣ អាហារកំពង់ក្របី ឃុំសំបួរ ផ្លូវបាត់ដំបង',' '),('005','PREY VENG','ព្រៃវែង','Street Matonlei, Phum 3, Khum-Srok Kampong Leav','ផ្លូវ Matonlei, Pahun 3, Kayu-Strok កំពង់លាវ',' '),('006','SIEM REAP','សៀមរាប','Street 9-10, Mondul 1, Khum Svay Dangkum Srok','ផ្លូវ I-10, មណ្ឌល 1, ភូមិ ស្វាយដង្គុំ ស្រុក',' '),('007','KAMPONG THOM','កំពង់ធំ','Street Stung Sen, Phum 1, Khum Kampong Thom, Srok Stung Sen','ផ្លូវ Satung Sen, Pahun 1, ឃុំកំពង់ធំ, Saok Satung Sen',' '),('008','TAKEO','តាកែវ','Street 11, Phum 1, Khum Rokarknong, Srok Donkeo ','ផ្លូវលេខ១១ ប៉ាហុន១ សាយរកាកោង ស្តុបដូនកែវ',' '),('009','SVAY REANG','ស្វាយរៀង','Phum Suon Thmey, Khum Prek Chhlak, Srok Svay Rieng','ភូមិសួនថ្មី ភូមិព្រែកឆ្លាក់ ខេត្តស្វាយរៀង',' '),('010','PURSAT','ពោធិ៍សាត់','Street 1, Phum Popeal Nhek 2, Khum Ptas Prey, Srok Sampeuvmeas','ផ្លូវលេខ១ ភូមិពពាលញែក២ ឃុំត្រពាំងព្រៃ ស្រុកសំពៅមាស',' '),('011','KAMPONG CHHNANG','កំពង់ឆ្នាំង','Street Norodom, Phum Klang Prak, Khum Phaei, Srok Kampong Chhnang','ផ្លូវនរោត្តម ភូមិប៉ាហុន កាឡាំងប្រក់ កុយហ្វៃ ក្រុងកំពង់ឆ្នាំង',' '),('012','KAMPONG SPUE','កំពង់ស្ពឺ','National Road No 4, Phum Peanichkam, Khum Rokarthom, Srok Chbar Mon','ផ្លូវជាតិលេខ៤ ភោជនីយដ្ធាន ឃុំរការធម្ម ផ្លូវច្បារមន',' '),('013','KAMPOT','កំពត','Street Matprek, Phum 1 Ousaphea, Khum Kampong Kandal, Srok Kampong Bay','ផ្លូវ ម៉ាត់ព្រិច ភូមិ១ ឧស្សាហ៍ ឃុំកំពង់កណ្តាល ស្រុកកំពង់បាយ',' '),('014','SIHANOUK VILLE','ក្រុងព្រះសីហនុ','Street Pokambor, Sangkat 3, Khan Mitapheap','ផ្លូវពោធិកំបោរ សង្កាត់៣ ខណ្ឌមិត្តភាព',' '),('015','KOH KONG','កោះកុង','Street Matprek, Phum 1, Khum-Srok Smach Meanchey','សម្រាប់​ផ្លូវ​ប៉ា​ហ៊ូ​១ និយាយ​ថា​-​ផ្លូវ​សំរោង​មាន​ជ័យ​',' '),('017','KRATIE BRANCH','ក្រចេះ','Street Kosamak, Phum Kratie, Srok Kratie','ផ្លូវកុសមៈ ភូមិក្រចេះ ស្រុកក្រចេះ',' '),('018','RATTANAKIRI','រតនៈគីរី','Street 19, Phum 1, Khum Labanseak, Srok Banlung','ផ្លូវ 19, ប៉ាហុន 1, ឃុំ Labansek, Sarok Banglung',' '),('020','STUNG TRENG','ស្ទឹងត្រែង','Street 2, Phum Prek, Khum-Srok Stung Treng','ផ្លូវលេខ២ ភូមិប៉ាហុនព្រែក ឃុំ-សារគរ សត្យារាម',' '),('021','BANTEAY MEANCHEY','បន្ទាយមានជ័យ','Blok Uy, Phum 3, Khum Preah Punlear, Srok Serei Sophoan','Block Duy, Ph.3, Khum Prah Punalar, Sarok​សិរីសោភ័ណ',' '),('023','PHNOM PENH','ភ្នំពេញ','#273, Street 110-67, Sangkat Wat Phnom, Khan Daun Penh','ផ្ទះលេខ២៧៣ ផ្លូវ១១០-៦៧ សង្កាត់វត្តភ្នំ ខណ្ឌដូនពេញ',' ');
 /*!40000 ALTER TABLE `tbbranches` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -95,7 +96,7 @@ CREATE TABLE `tbcategories` (
 
 LOCK TABLES `tbcategories` WRITE;
 /*!40000 ALTER TABLE `tbcategories` DISABLE KEYS */;
-INSERT INTO `tbcategories` VALUES (1,'1','Food','ម្ហូបអាហារ',0,' '),(2,'1.1','Rice','អង្ករ',1,' '),(3,'1.2','Ingredients','គ្រឿងទេស',1,' '),(4,'1.3','Meat','សាច់',1,' '),(5,'1.4','Fish and Seafood','ត្រី​ និង​គ្រឿងសមុទ្រ',1,' '),(6,'1.5','Fruit','ផ្លែឈើ',1,' '),(7,'1.6','Vegetables','បន្លែ',1,' '),(8,'2','Beverages and tobacco','ភេសជ្ជៈ​ និងថ្នាំជក់',0,' '),(9,'3','Restaurant','ភោជនីយដ្ឋាន',0,' '),(10,'4','Clothes and shoes','សំលៀកបំពាក់ និងស្បែកជើង',0,' '),(11,'5','Shipping','ការដឹកជញ្ជូន',0,' '),(12,'6','Medicine','ថ្នាំពេទ្យ',0,' '),(13,'7','Housing','ផ្ទះសម្បែង',0,' ');
+INSERT INTO `tbcategories` VALUES (1,'1','Food','ម្ហូបអាហារ',0,' '),(2,'1.1','Rice','អង្ករ',1,' '),(3,'1.2','Ingredients','គ្រឿងទេស',1,' '),(4,'1.3','Meat','សាច់',1,' '),(5,'1.4','Fish and Seafood','ត្រី​ និង​គ្រឿងសមុទ្រ',1,' '),(6,'1.5','Fruit','ផ្លែឈើ',1,' '),(7,'1.6','Vegetables','បន្លែ',1,' '),(8,'2','Beverages and Tobacco','ភេសជ្ជៈ​ និងថ្នាំជក់',0,' '),(9,'3','Restaurant','ភោជនីយដ្ឋាន',0,' '),(10,'4','Clothes and Shoes','សំលៀកបំពាក់ និងស្បែកជើង',0,' '),(11,'5','Shipping','ការដឹកជញ្ជូន',0,' '),(12,'6','Medicine','ថ្នាំពេទ្យ',0,' '),(13,'7','Housing','ផ្ទះសម្បែង',0,' ');
 /*!40000 ALTER TABLE `tbcategories` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -150,7 +151,7 @@ CREATE TABLE `tbmenus` (
 
 LOCK TABLES `tbmenus` WRITE;
 /*!40000 ALTER TABLE `tbmenus` DISABLE KEYS */;
-INSERT INTO `tbmenus` VALUES (1,'Dashboard','ផ្ទាំងគ្រប់គ្រង','bx-clipboard',0,'/dashboard',NULL,0),(2,'Food','អាហារ','bxs-food-menu',0,'/food','foods',1),(3,'Rice','អង្ករ',NULL,2,'/rice',NULL,2),(4,'Ingredients','គ្រឿងផ្សំ',NULL,2,'/ingredients',NULL,3),(5,'Meat','សាច់',NULL,2,'/meat',NULL,4),(6,'Fish and Seafood','ត្រី និងអាហារសមុទ្រ',NULL,2,'/fishandseafood',NULL,5),(7,'Fruit','ផ្លែឈើ',NULL,2,'/fruit',NULL,6),(8,'Vegetables','បន្លែ',NULL,2,'/vegetables',NULL,7),(9,'Beverages and Tobacco','ភេសជ្ជៈ និងថ្នាំជក់','bxs-drink',0,'/beveragestobacco',NULL,8),(10,'Restaurant','ភោជនីយដ្ឋាន','bxs-data',0,'/restaurant',NULL,9),(11,'Clothes and Shoes','សម្លៀកបំពាក់ និងស្បែកជើង','bx-male',0,'/clothesshoes',NULL,10),(12,'Shipping','ការដឹកជញ្ជូន','bx-shopping-bag',0,'/shipping',NULL,11),(13,'Medicine','ថ្នាំ','bx-plus-medical',0,'/medicine',NULL,12),(14,'Housing','លំនៅដ្ឋាន','bxs-building-house',0,'/housing',NULL,13),(15,'Submitted Trans','ប្រតិបត្តិការដែលបានដាក់ស្នើ','bxs-paper-plane',0,'/submittedtrans',NULL,0),(16,'Authorized Trans','ប្រតិបត្តិការដែលមានការអនុញ្ញាត','bxs-notification',0,'/authorizedtrans',NULL,0),(17,'Checked Trans','បានពិនិត្យប្រតិបត្តិការ','bxs-badge-check',0,'/checkedtrans',NULL,0),(18,'History of Trans','ប្រវត្តិប្រតិបត្តិការ','bx-history',0,'/historyoftrans',NULL,0),(19,'Users Setting','ការកំណត់អ្នកប្រើប្រាស់','bx-slider-alt',0,'/user','usersetting',0),(20,'User Profile','កម្រងព័ត៌មានអ្នកប្រើប្រាស់',NULL,19,'/userprofile',NULL,0),(21,'Change Password','ផ្លាស់ប្តូរពាក្យសម្ងាត់',NULL,19,'/changepassword',NULL,0),(22,'Logout','ចាកចេញ',NULL,19,'/login',NULL,0),(23,'Users Management','ការគ្រប់គ្រងអ្នកប្រើប្រាស់','bxs-user-account',0,'/users','usersmanagement',0),(24,'Create Users','បង្កើតអ្នកប្រើប្រាស់',NULL,23,'/createusers',NULL,0),(25,'Update Users','ធ្វើបច្ចុប្បន្នភាពអ្នកប្រើប្រាស់',NULL,23,'/updateusers',NULL,0),(26,'View Users','មើលអ្នកប្រើប្រាស់',NULL,23,'/viewusers',NULL,0),(27,'Roles Management','ការគ្រប់គ្រងតួនាទី','bx bxs-user-detail',0,'/role','rolesmangement',0),(28,'Create Role','បង្កើតតួនាទី',NULL,27,'/createroles',NULL,0),(29,'Create Permission','បង្កើតការអនុញ្ញាត',NULL,27,'/createpermission',NULL,0),(30,'View Roles','មើលតួនាទី',NULL,27,'/attachedrolepermission',NULL,0),(31,'Products Management','ការគ្រប់គ្រងផលិតផល','bx bx-category',0,'/product','productsmanagement',0),(32,'Categories','ប្រភេទ',NULL,31,'/createcategories',NULL,0),(36,'Products','ផលិតផល',NULL,31,'/viewproducts',NULL,0);
+INSERT INTO `tbmenus` VALUES (1,'Dashboard','ផ្ទាំងគ្រប់គ្រង','bx-clipboard',0,'/dashboard',' ',0),(2,'Food','អាហារ','bxs-food-menu',0,'/food','foods',1),(3,'Rice','អង្ករ',' ',2,'/rice',' ',2),(4,'Ingredients','គ្រឿងផ្សំ',' ',2,'/ingredients',' ',3),(5,'Meat','សាច់',' ',2,'/meat',' ',4),(6,'Fish and Seafood','ត្រី និងអាហារសមុទ្រ',' ',2,'/fishandseafood',' ',5),(7,'Fruit','ផ្លែឈើ',' ',2,'/fruit',' ',6),(8,'Vegetables','បន្លែ',' ',2,'/vegetables',' ',7),(9,'Beverages and Tobacco','ភេសជ្ជៈ និងថ្នាំជក់','bxs-drink',0,'/beveragestobacco',' ',8),(10,'Restaurant','ភោជនីយដ្ឋាន','bxs-data',0,'/restaurant',' ',9),(11,'Clothes and Shoes','សម្លៀកបំពាក់ និងស្បែកជើង','bx-male',0,'/clothesshoes',' ',10),(12,'Shipping','ការដឹកជញ្ជូន','bx-shopping-bag',0,'/shipping',' ',11),(13,'Medicine','ថ្នាំ','bx-plus-medical',0,'/medicine',' ',12),(14,'Housing','លំនៅដ្ឋាន','bxs-building-house',0,'/housing',' ',13),(15,'Submitted Trans','ប្រតិបត្តិការដែលបានដាក់ស្នើ','bxs-paper-plane',0,'/submittedtrans',' ',0),(16,'Authorized Trans','ប្រតិបត្តិការដែលមានការអនុញ្ញាត','bxs-notification',0,'/authorizedtrans',' ',0),(17,'Checked Trans','បានពិនិត្យប្រតិបត្តិការ','bxs-badge-check',0,'/checkedtrans',' ',0),(18,'History of Trans','ប្រវត្តិប្រតិបត្តិការ','bx-history',0,'/historyoftrans',' ',0),(19,'Users Setting','ការកំណត់អ្នកប្រើប្រាស់','bx-slider-alt',0,'/user','usersetting',0),(20,'User Profile','កម្រងព័ត៌មានអ្នកប្រើប្រាស់',' ',19,'/userprofile',' ',0),(21,'Change Password','ផ្លាស់ប្តូរពាក្យសម្ងាត់',' ',19,'/changepassword',' ',0),(22,'Logout','ចាកចេញ',' ',19,'/login',' ',0),(23,'Users Management','ការគ្រប់គ្រងអ្នកប្រើប្រាស់','bxs-user-account',0,'/users','usersmanagement',0),(24,'Create Users','បង្កើតអ្នកប្រើប្រាស់',' ',23,'/createusers',' ',0),(25,'Update Users','ធ្វើបច្ចុប្បន្នភាពអ្នកប្រើប្រាស់',' ',23,'/updateusers',' ',0),(26,'View Users','មើលអ្នកប្រើប្រាស់',' ',23,'/viewusers',' ',0),(27,'Roles Management','ការគ្រប់គ្រងតួនាទី','bx bxs-user-detail',0,'/role','rolesmangement',0),(28,'Create Role','បង្កើតតួនាទី',' ',27,'/createroles',' ',0),(29,'Create Permission','បង្កើតការអនុញ្ញាត',' ',27,'/createpermission',' ',0),(30,'View Roles','មើលតួនាទី',' ',27,'/attachedrolepermission',' ',0),(31,'Products Management','ការគ្រប់គ្រងផលិតផល','bx bx-category',0,'/product','productsmanagement',0),(32,'Categories','ប្រភេទ',' ',31,'/createcategories',' ',0),(36,'Products','ផលិតផល',' ',31,'/viewproducts',' ',0);
 /*!40000 ALTER TABLE `tbmenus` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -234,7 +235,7 @@ CREATE TABLE `tbroles` (
 
 LOCK TABLES `tbroles` WRITE;
 /*!40000 ALTER TABLE `tbroles` DISABLE KEYS */;
-INSERT INTO `tbroles` VALUES (1,'Administrator',' '),(2,'Auditor',' '),(3,'Inputter',' '),(4,'Authorizer',' '),(5,'Checker',' ');
+INSERT INTO `tbroles` VALUES (1,'Administrator',' '),(3,'Inputter',' '),(4,'Authorizer',' '),(5,'Checker',' ');
 /*!40000 ALTER TABLE `tbroles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -247,8 +248,7 @@ DROP TABLE IF EXISTS `tbstatus`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tbstatus` (
   `statusid` int NOT NULL,
-  `statusen` varchar(100) DEFAULT NULL,
-  `statuskh` varchar(150) DEFAULT NULL,
+  `status` varchar(100) DEFAULT NULL,
   `details` varchar(150) DEFAULT NULL,
   `icon` varchar(145) DEFAULT NULL,
   PRIMARY KEY (`statusid`)
@@ -261,7 +261,7 @@ CREATE TABLE `tbstatus` (
 
 LOCK TABLES `tbstatus` WRITE;
 /*!40000 ALTER TABLE `tbstatus` DISABLE KEYS */;
-INSERT INTO `tbstatus` VALUES (1,'Submitted','បានដាក់ស្នើ','primary','bx bxs-coin-stack'),(2,'Rejected','បដិសេធ',NULL,NULL),(3,'Authorized','អនុញ្ញាត','success','bx bxs-dashboard'),(4,'Reopen','បើកឡើងវិញ',NULL,NULL),(5,'Active','សកម្ម',NULL,NULL),(6,'Deactivated','បិទដំណើរការ',NULL,NULL),(7,'Pending','កំពុងរង់ចាំ','warning','bx bx-grid-alt'),(8,'Closed','បិទ',NULL,NULL),(9,'Open','បើក',NULL,NULL),(10,'Rejected By Authorizer','បដិសេធដោយអ្នកផ្តល់សិទ្ធិ','danger','bx bxs-grid-alt'),(11,'Rejected By Checker','ច្រានចោលដោយអ្នកពិនិត្យ','danger','bx bxl-trello'),(12,'Saved','បានរក្សាទុក','secondary','bx bx-coin-stack'),(13,'Accepted','ទទួលយក','info','bx bx-list-check');
+INSERT INTO `tbstatus` VALUES (1,'Submitted','primary','bx bxs-coin-stack'),(2,'Rejected',NULL,NULL),(3,'Authorized','success','bx bxs-dashboard'),(4,'Reopen',NULL,NULL),(5,'Active',NULL,NULL),(6,'Deactivated',NULL,NULL),(7,'Pending','warning','bx bx-grid-alt'),(8,'Closed',NULL,NULL),(9,'Open',NULL,NULL),(10,'Rejected By Authorizer','danger','bx bxs-grid-alt'),(11,'Rejected By Checker','danger','bx bxl-trello'),(12,'Saved','secondary','bx bx-coin-stack'),(13,'Accepted','info','bx bx-list-check');
 /*!40000 ALTER TABLE `tbstatus` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -302,6 +302,7 @@ CREATE TABLE `tbtrans` (
 
 LOCK TABLES `tbtrans` WRITE;
 /*!40000 ALTER TABLE `tbtrans` DISABLE KEYS */;
+INSERT INTO `tbtrans` VALUES (1,'001',70,1.00,1.10,'0001','2023-06-10 15:19:01','1','0002','2023-06-10 15:40:45','1','0003','2023-06-10 15:45:15','',13,'2023-06-10 15:19:01','2023-06-10 15:19:01',0,1),(2,'001',71,1.00,1.70,'0001','2023-06-10 15:19:01','1','0002','2023-06-10 15:40:45','1','0003','2023-06-10 15:45:15','',13,'2023-06-10 15:19:01','2023-06-10 15:19:01',0,1),(3,'001',72,1.00,4.00,'0001','2023-06-10 15:19:01','1','0002','2023-06-10 15:40:45','1','0003','2023-06-10 15:45:15','',13,'2023-06-10 15:19:01','2023-06-10 15:19:01',0,1),(4,'001',73,1.00,3.00,'0001','2023-06-10 15:19:01','1','0002','2023-06-10 15:40:45','1','0003','2023-06-10 15:45:15','',13,'2023-06-10 15:19:01','2023-06-10 15:19:01',0,1),(5,'001',51,1.00,1.00,'0001','2023-06-10 15:19:23','1','','2023-06-10 15:19:23','','','2023-06-10 15:19:23','',12,'2023-06-10 15:19:23','2023-06-10 15:19:23',0,1),(6,'001',52,1.00,0.80,'0001','2023-06-10 15:19:23','1','','2023-06-10 15:19:23','','','2023-06-10 15:19:23','',12,'2023-06-10 15:19:23','2023-06-10 15:19:23',0,1),(7,'001',53,1.00,0.70,'0001','2023-06-10 15:19:23','11','','2023-06-10 15:19:23','','','2023-06-10 15:19:23','',12,'2023-06-10 15:19:23','2023-06-10 15:19:23',0,1),(8,'001',54,1.00,0.50,'0001','2023-06-10 15:19:23','1','','2023-06-10 15:19:23','','','2023-06-10 15:19:23','',12,'2023-06-10 15:19:23','2023-06-10 15:19:23',0,1),(9,'001',55,1.00,0.50,'0001','2023-06-10 15:19:23','1','','2023-06-10 15:19:23','','','2023-06-10 15:19:23','',12,'2023-06-10 15:19:23','2023-06-10 15:19:23',0,1),(10,'001',56,1.00,0.10,'0001','2023-06-10 15:19:23','1','','2023-06-10 15:19:23','','','2023-06-10 15:19:23','',12,'2023-06-10 15:19:23','2023-06-10 15:19:23',0,1),(11,'001',57,1.00,0.80,'0001','2023-06-10 15:19:23','1','','2023-06-10 15:19:23','','','2023-06-10 15:19:23','',12,'2023-06-10 15:19:23','2023-06-10 15:19:23',0,1),(12,'001',58,1.00,0.40,'0001','2023-06-10 15:19:23','1','','2023-06-10 15:19:23','','','2023-06-10 15:19:23','',12,'2023-06-10 15:19:23','2023-06-10 15:19:23',0,1);
 /*!40000 ALTER TABLE `tbtrans` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -336,7 +337,7 @@ CREATE TABLE `tbusers` (
 
 LOCK TABLES `tbusers` WRITE;
 /*!40000 ALTER TABLE `tbusers` DISABLE KEYS */;
-INSERT INTO `tbusers` VALUES ('0001','gAAAAABkguuZO4yYxX8tQwKyW_-8Utq7pvMnUzaKMmzjlyxigAsrbhAezHY1s7q8tIjj-vZSvmcIeOGBKI3Gt-VK7z4K_r4b3Q==','RfffSGQPI1fP5jS8RnUKEPaQ5uSWxTKzzefPP0EGtwg=',3,'0001','Female','001','0001','0001','0001',5,'EN'),('admin','gAAAAABkawroLag12cpFEBd-lCL37WKAYRO2uNLoqYi7dC3ekYElCV72-7Ks4aQRszwsuh363XdNeTHSP_tzi39lHGrJvlwcLA==','e_VrNdrMv--3qRk1LS9bAeQsnud8Cy0QKqMLCE6L6aE=',1,'admin','Male','001','administrator','admin','admin@nbc.gov.org',5,'EN');
+INSERT INTO `tbusers` VALUES ('0001','gAAAAABkguuZO4yYxX8tQwKyW_-8Utq7pvMnUzaKMmzjlyxigAsrbhAezHY1s7q8tIjj-vZSvmcIeOGBKI3Gt-VK7z4K_r4b3Q==','RfffSGQPI1fP5jS8RnUKEPaQ5uSWxTKzzefPP0EGtwg=',3,'0001','Female','001','0001','0001','0001',5,'KH'),('0002','gAAAAABkhB5B_UEIHKdQR9JCYx-iVPb1T2NM1CQU-G5jeJEpdE1clZR_ZO--NQEkiBVZC9DdEMo2S72wQBZANFMH5NFOCTkcbA==','m0vQPsTtCzwr0MNDsC2coZbR2x9hvXUuYAqqT9vHDqo=',4,'0002','Female','001','0002','0002','0002',5,'KH'),('0003','gAAAAABkhB5NAbzTmgnJIFtfzaWqQPQUFh53EFWGkeSUE7aIGh1ZBsUGWtdSL4suJAVL6hcRP02BWnYWPR7rR4D8YSW3ATQVVw==','ALaMFCgEAbO_2ileMjVtLdUjGzjMLzfdRedbWazR1e0=',5,'0003','Female','001','0003','0003','0003',5,'KH'),('admin','gAAAAABkawroLag12cpFEBd-lCL37WKAYRO2uNLoqYi7dC3ekYElCV72-7Ks4aQRszwsuh363XdNeTHSP_tzi39lHGrJvlwcLA==','e_VrNdrMv--3qRk1LS9bAeQsnud8Cy0QKqMLCE6L6aE=',1,'admin','Male','001','administrator','admin','admin@nbc.gov.org',5,'KH');
 /*!40000 ALTER TABLE `tbusers` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -349,4 +350,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-09 17:30:36
+-- Dump completed on 2023-06-10 20:24:30
