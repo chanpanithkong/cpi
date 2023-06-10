@@ -1,9 +1,9 @@
 <div class="pagetitle">
     <nav>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="/viewproducts">View Products</a></li>
-            <li class="breadcrumb-item active">Update Product</li>
+            <li class="breadcrumb-item"><a href="/">{{locals['Dashboard']}}</a></li>
+            <li class="breadcrumb-item"><a href="/viewproducts">{{locals['View Products']}}</a></li>
+            <li class="breadcrumb-item active">{{locals['Update Product']}}</li>
         </ol>
     </nav>
 </div>
@@ -14,21 +14,21 @@
             <div class="card">
                 <div class="card-body">
                     <center>
-                        <h5 class="card-title">Update Products of {{category.find_by_catid(catid).nameen}} Category</h5>
+                        <h5 class="card-title">{{locals['Update Products of']}} {{locals[category.find_by_catid(catid).nameen]}} {{locals['Category']}}</h5>
                     </center>
                         <br/>
                         <div class="row">
                             <div class="col-md-2"></div>
                             <div class="col-md-4">
-                                <label for="inputEmail5" class="form-label">Product ID</label>
+                                <label for="inputEmail5" class="form-label">{{locals['Product ID']}}</label>
                                 <input type="hidden" id="prodid" name="prodid" value="{{prodid}}" />
                                 <input type="text" class="form-control" id="productid"
-                                    placeholder="Product ID cannot update" name="productid" value="" disabled>
+                                    placeholder="{{locals['cannot update']}}" name="productid" value="" disabled>
                             </div>
                             <div class="col-md-4">
-                                <label for="inputPassword5" class="form-label">Product Code</label>
+                                <label for="inputPassword5" class="form-label">{{locals['Product Code']}}</label>
                                 <input type="text" class="form-control" id="productcode"
-                                    placeholder="Please fill product code" name="productcode" value="{{product.find_by_prodid(prodid).productcode}}">
+                                    placeholder="{{locals['Please fill here']}}" name="productcode" value="{{product.find_by_prodid(prodid).productcode}}">
                             </div>
                             <div class="col-md-2"></div>
                         </div>
@@ -36,14 +36,14 @@
                         <div class="row">
                             <div class="col-md-2"></div>
                             <div class="col-md-4">
-                                <label for="inputEmail5" class="form-label">Englis Name</label>
+                                <label for="inputEmail5" class="form-label">{{locals['English Name']}}</label>
                                 <input type="text" class="form-control" id="nameen"
-                                    placeholder="Please fill english name" name="nameen" value="{{product.find_by_prodid(prodid).nameen}}">
+                                    placeholder="{{locals['Please fill here']}}" name="nameen" value="{{product.find_by_prodid(prodid).nameen}}">
                             </div>
                             <div class="col-md-4">
-                                <label for="inputPassword5" class="form-label">Khmer Name</label>
+                                <label for="inputPassword5" class="form-label">{{locals['Khmer Name']}}</label>
                                 <input type="text" class="form-control" id="namekh"
-                                    placeholder="Please fill khmer name" name="namekh" value="{{product.find_by_prodid(prodid).namekh}}">
+                                    placeholder="{{locals['Please fill here']}}" name="namekh" value="{{product.find_by_prodid(prodid).namekh}}">
                             </div>
                             <div class="col-md-2"></div>
                         </div>
@@ -51,14 +51,14 @@
                         <div class="row">
                             <div class="col-md-2"></div>
                             <div class="col-md-4">
-                                <label for="inputEmail5" class="form-label">Unit in Englis</label>
+                                <label for="inputEmail5" class="form-label">{{locals['Unit in English']}}</label>
                                 <input type="text" class="form-control" id="uniten"
-                                    placeholder="Please fill unit in english" name="uniten" value="{{product.find_by_prodid(prodid).uniten}}">
+                                    placeholder="{{locals['Please fill here']}}" name="uniten" value="{{product.find_by_prodid(prodid).uniten}}">
                             </div>
                             <div class="col-md-4">
-                                <label for="inputPassword5" class="form-label">Unit in Khmer</label>
+                                <label for="inputPassword5" class="form-label">{{locals['Unit in Khmer']}}</label>
                                 <input type="text" class="form-control" id="unitkh"
-                                    placeholder="Please fill unit in khmer" name="unitkh" value="{{product.find_by_prodid(prodid).unitkh}}">
+                                    placeholder="{{locals['Please fill here']}}" name="unitkh" value="{{product.find_by_prodid(prodid).unitkh}}">
                             </div>
                             <div class="col-md-2"></div>
                         </div>
@@ -66,18 +66,30 @@
                         <div class="row">
                             <div class="col-md-2"></div>
                             <div class="col-md-4">
-                                <label for="inputEmail5" class="form-label">Weight</label>
+                                <label for="inputEmail5" class="form-label">{{locals['Weight']}}</label>
                                 <input type="text" class="form-control" id="weight"
-                                    placeholder="Please fill weight" name="weight" value="{{product.find_by_prodid(prodid).weight}}">
+                                    placeholder="{{locals['Please fill here']}}" name="weight" value="{{product.find_by_prodid(prodid).weight}}">
                             </div>
                             <div class="col-md-4">
-                                <label for="inputPassword5" class="form-label">Category</label>
+                                <label for="inputPassword5" class="form-label">{{locals['Category']}}</label>
                                 <select id="catid" class="form-select" name="catid">
                                 {% for ct in category.query.all() %}
                                 {% if ct.catid == catid|int %}
-                                    <option selected value="{{ct.catid}}">{{ct.nameen}}</option>
+                                    <option selected value="{{ct.catid}}">
+                                        {% if languages == "EN" %}
+                                        {{ct.nameen}}
+                                        {% else %}
+                                        {{ct.namekh}}
+                                        {% endif %}
+                                    </option>
                                 {% else %}
-                                    <option value="{{ct.catid}}">{{ct.nameen}}</option>
+                                    <option value="{{ct.catid}}">
+                                        {% if languages == "EN" %}
+                                        {{ct.nameen}}
+                                        {% else %}
+                                        {{ct.namekh}}
+                                        {% endif %}
+                                    </option>
                                 {% endif %}
                                 {% endfor %}
                                 </select>
@@ -88,9 +100,9 @@
                         <div class="row">
                             <div class="col-md-2"></div>
                             <div class="col-md-8">
-                                <label for="inputEmail5" class="form-label">Details</label>
+                                <label for="inputEmail5" class="form-label">{{locals['Details']}}</label>
                                 <input type="text" class="form-control" id="details"
-                                    placeholder="Please fill details" name="details" value="{{product.find_by_prodid(prodid).details}}">
+                                    placeholder="{{locals['Please fill here']}}" name="details" value="{{product.find_by_prodid(prodid).details}}">
                             </div>
                             <div class="col-md-2"></div>
                         </div>
@@ -100,16 +112,16 @@
                         <div>
                             <div style="text-align: Center">
                               <button type="button" class="btn btn-primary" id="update" >
-                                Update Product
+                                {{locals['Update Product']}}
                               </button>
                               &nbsp;
                               <button type="button" class="btn btn-danger" id="clear">
-                                Clear
+                                {{locals['Clear']}}
                               </button>
                               &nbsp;
                               <a href="/listproducts/{{catid}}" >
                               <button type="button" class="btn btn-success" id="productlist">
-                                Product List
+                                {{locals['Products List']}}
                               </button>
                               </a>
                             </div>

@@ -1,9 +1,9 @@
 <div class="pagetitle">
     <nav>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="/viewproducts">View Products</a></li>
-            <li class="breadcrumb-item active">Update Category</li>
+            <li class="breadcrumb-item"><a href="/">{{locals['Dashboard']}}</a></li>
+            <li class="breadcrumb-item"><a href="/viewproducts">{{locals['View Products']}}</a></li>
+            <li class="breadcrumb-item active">{{locals['Update Category']}}</li>
         </ol>
     </nav>
 </div>
@@ -15,21 +15,21 @@
             <div class="card">
                 <div class="card-body">
                     <center>
-                        <h5 class="card-title">{{category.nameen}} Category Management</h5>
+                        <h5 class="card-title">{{locals[category.nameen]}} {{locals['Category Management']}}</h5>
                     </center>
                         <br/>
                         <div class="row">
                             <div class="col-md-2"></div>
                             <div class="col-md-4">
-                                <label for="inputEmail5" class="form-label">Category ID</label>
+                                <label for="inputEmail5" class="form-label">{{locals['Category ID']}}</label>
                                 <input type="hidden" id="catid"  name="catid" value="{{category.catid}}" />
                                 <input type="text" class="form-control" 
-                                    placeholder="Category ID cannot update" value="" disabled>
+                                    placeholder="{{locals['Please fill here']}}" value="" disabled>
                             </div>
                             <div class="col-md-4">
-                                <label for="inputPassword5" class="form-label">Category Code</label>
+                                <label for="inputPassword5" class="form-label">{{locals['Category Code']}}</label>
                                 <input type="text" class="form-control" id="catcode"
-                                    placeholder="Please fill category code" name="catcode" value="{{category.catcode}}">
+                                    placeholder="{{locals['Please fill here']}}" name="catcode" value="{{category.catcode}}">
                             </div>
                             <div class="col-md-2"></div>
                         </div>
@@ -37,14 +37,14 @@
                         <div class="row">
                             <div class="col-md-2"></div>
                             <div class="col-md-4">
-                                <label for="inputEmail5" class="form-label">Englis Name</label>
+                                <label for="inputEmail5" class="form-label">{{locals['English Name']}}</label>
                                 <input type="text" class="form-control" id="nameen"
-                                    placeholder="Please fill english name" name="nameen" value="{{category.nameen}}">
+                                    placeholder="{{locals['Please fill here']}}" name="nameen" value="{{category.nameen}}">
                             </div>
                             <div class="col-md-4">
-                                <label for="inputPassword5" class="form-label">Khmer Name</label>
+                                <label for="inputPassword5" class="form-label">{{locals['Khmer Name']}}</label>
                                 <input type="text" class="form-control" id="namekh"
-                                    placeholder="Please fill khmer name" name="namekh" value="{{category.namekh}}">
+                                    placeholder="{{locals['Please fill here']}}" name="namekh" value="{{category.namekh}}">
                             </div>
                             <div class="col-md-2"></div>
                         </div>
@@ -52,24 +52,35 @@
                         <div class="row">
                             <div class="col-md-2"></div>
                             <div class="col-md-4">
-                                <label for="inputEmail5" class="form-label">Sub Category of</label>
-                                <label for="inputPassword5" class="form-label">Category</label>
+                                <label for="inputEmail5" class="form-label">{{locals['Sub Category of']}} {{locals['Category']}}</label>
                                 <select id="parentid" class="form-select" name="parentid">
-                                    <option value="0">No Sub Category</option>
+                                    <option value="0">{{locals['No Sub Category']}}</option>
                                 {% for ct in category.find_by_parent() %}
                                 
                                 {% if ct.catid == category.parentid %}
-                                    <option selected value="{{ct.catid}}">{{ct.nameen}}</option>
+                                    <option selected value="{{ct.catid}}">
+                                        {% if languages == "EN" %}
+                                        {{ct.nameen}}
+                                        {% else %}
+                                        {{ct.namekh}}
+                                        {% endif %}
+                                    </option>
                                 {% else %}
-                                    <option value="{{ct.catid}}">{{ct.nameen}}</option>
+                                    <option value="{{ct.catid}}">
+                                        {% if languages == "EN" %}
+                                        {{ct.nameen}}
+                                        {% else %}
+                                        {{ct.namekh}}
+                                        {% endif %}
+                                    </option>
                                 {% endif %}
                                 {% endfor %}
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <label for="inputPassword5" class="form-label">Details</label>
+                                <label for="inputPassword5" class="form-label">{{locals['Details']}}</label>
                                 <input type="text" class="form-control" id="details"
-                                    placeholder="Please fill details" name="details" value="{{category.details}}">
+                                    placeholder="{{locals['Please fill here']}}" name="details" value="{{category.details}}">
                             </div>
                             <div class="col-md-2"></div>
                         </div>
@@ -79,15 +90,15 @@
                         <div>
                             <div style="text-align: Center">
                               <button type="button" class="btn btn-primary" id="update" >
-                                Update Category
+                                {{locals['Update Category']}}
                               </button>
                               &nbsp;
                               <button type="button" class="btn btn-danger" id="clear">
-                                Clear
+                                {{locals['Clear']}}
                               </button>
                               &nbsp;
                               <button type="button" class="btn btn-success" id="back">
-                                Category List
+                                {{locals['Category List']}}
                               </button>
                             </div>
                         </div>

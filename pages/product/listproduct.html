@@ -1,9 +1,9 @@
 <div class="pagetitle">
     <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-          <li class="breadcrumb-item"><a href="/viewproducts">View Products</a></li>
-          <li class="breadcrumb-item active">Products List</li>
+          <li class="breadcrumb-item"><a href="/">{{locals['Dashboard']}}</a></li>
+          <li class="breadcrumb-item"><a href="/viewproducts">{{locals['View Products']}}</a></li>
+          <li class="breadcrumb-item active">{{locals['Products List']}}</li>
         </ol>
     </nav>
 </div>
@@ -13,20 +13,20 @@
             <div class="card">
                 <div class="card-body">
                     <center>
-                        <h5 class="card-title">List of Products in {{category.find_by_catid(catid).nameen}} Category</h5>
+                        <h5 class="card-title">{{locals['List of Products in']}} {{locals[category.find_by_catid(catid).nameen]}} {{locals['Category']}}</h5>
                     </center>
 
                     <table class="table table-hover">
                         <thead>
                           <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Product Code</th>
-                            <th scope="col">English Name</th>
-                            <th scope="col">Khmer Name</th>
-                            <th scope="col">Weight</th>
+                            <th scope="col">{{locals['Product Code']}}</th>
+                            <th scope="col">{{locals['English Name']}}</th>
+                            <th scope="col">{{locals['Khmer Name']}}</th>
+                            <th scope="col">{{locals['Weight']}}</th>
                             <!-- <th scope="col">Category</th> -->
-                            <th scope="col">Details</th>
-                            <th scope="col">Action</th>
+                            <th scope="col">{{locals['Details']}}</th>
+                            <th scope="col">{{locals['Action']}}</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -41,12 +41,12 @@
                             <td>{{pd.details}}</td>
                             <td>
                                 <a href="/updateproducts/{{pd.catid}}/{{pd.prodid}}" >
-                                <button type="button" class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="top" title="Update Product">
+                                <button type="button" class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="top" title="{{locals['Update Product']}}">
                                     <i class="bi bi-pencil-square"></i>
                                 </button>
                                 </a>
                                 &nbsp;
-                                <button type="button" class="btn btn-danger btn-sm pdelete"  data-toggle="tooltip" data-placement="top" title="Delete Product">
+                                <button type="button" class="btn btn-danger btn-sm pdelete"  data-toggle="tooltip" data-placement="top" title="{{locals['Delete Product']}}">
                                     <i class="bi bi-trash-fill"></i>
                                 </button>
                             </td>
@@ -60,12 +60,12 @@
                         <div style="text-align: Center">
                           <a href="/createproducts/{{catid}}" >
                           <button type="button" class="btn btn-primary" id="save" >
-                            Add New Product
+                            {{locals['Add New Product']}}
                           </button>
                           </a>
                           &nbsp;&nbsp;
                           <button type="button" class="btn btn-success" id="refresh">
-                            Category List
+                            {{locals['Category List']}}
                           </button>
                         </div>
                     </div>
