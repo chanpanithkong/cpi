@@ -10,7 +10,7 @@ from models.rolemenus import tbrolemenu
 from models.users import tbusers
 from models.roles import tbroles
 from models.branches import tbbranches
-
+from languages import lang
 
 class UserProfile(Resource):
     @classmethod
@@ -25,9 +25,12 @@ class UserProfile(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages]
+
         userlogging.degbuglog(clientid, url, userid + " : access UserProfile")
 
-        return make_response(render_template('index.html', menus=menus,  role=role, user=user, branch=branch, task="userprofile",main="user"), 200, headers)
+        return make_response(render_template('index.html', menus=menus,  role=role, user=user, branch=branch, task="userprofile",main="user",languages=languages,locals=locals), 200, headers)
 
 
 class ChangePassword(Resource):
@@ -42,6 +45,9 @@ class ChangePassword(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages] 
+
         userlogging.degbuglog(clientid, url, userid + " : access ChangePassword")
 
-        return make_response(render_template('index.html', menus=menus, role=role, task="changepassword",main="user"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role,languages=languages,locals=locals, task="changepassword",main="user"), 200, headers)

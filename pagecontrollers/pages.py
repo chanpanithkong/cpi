@@ -20,6 +20,8 @@ from config.cypertext import cypertext
 from schema.usersschema import UserSchema
 from sqlalchemy import func
 
+from languages import lang
+
 import datetime
 from pprint import pprint
 from sqlalchemy import func
@@ -51,6 +53,7 @@ class UserLoginPage(Resource):
                     session['username'] = user_data.username
                     session['branchcode'] = user_data.branchcode
                     session['details'] = user_data.details
+                    session['languages'] = user_data.languages
                     userlogging.degbuglog(clientid, url,userid + " : login")
                     return redirect("/dashboard")
                 else:
@@ -139,9 +142,13 @@ class HomePage(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+
+        languages = session.get('languages')
+        locals = lang[languages]
+
         userlogging.degbuglog(clientid, url, userid + " : access Dashboard")
         
-        return make_response(render_template('index.html', menus=menus, role=role,reopendisable=reopendisable,closeddisable=closeddisable, createdisable=createdisable, user=user, transtatus=transtatus, task="dashboard",main=""), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role,reopendisable=reopendisable,closeddisable=closeddisable, createdisable=createdisable, user=user, transtatus=transtatus,languages=languages,locals=locals, task="dashboard",main=""), 200, headers)
 
 
 class HistoryOfTrans(Resource):
@@ -173,9 +180,12 @@ class HistoryOfTrans(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages]
+
         userlogging.degbuglog(clientid, url, userid + " : access HistoryOfTrans")
 
-        return make_response(render_template('index.html', menus=menus, role=role,trans=trans, task="historyoftrans",main=""), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role,trans=trans,languages=languages,locals=locals, task="historyoftrans",main=""), 200, headers)
 
 
 class BeverageTobacco(Resource):
@@ -219,9 +229,12 @@ class BeverageTobacco(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages]
+
         userlogging.degbuglog(clientid, url, userid + " : access BeverageTobacco")
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="beveragestobacco",main=""), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton, languages=languages, locals=locals , task="beveragestobacco",main=""), 200, headers)
 
 
 class Restaurant(Resource):
@@ -265,9 +278,13 @@ class Restaurant(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+
+        languages = session.get('languages')
+        locals = lang[languages]
+
         userlogging.degbuglog(clientid, url, userid + " : access Restaurant")
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="restaurant",main=""), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton,languages=languages,locals=locals , task="restaurant",main=""), 200, headers)
 
 
 
@@ -312,9 +329,12 @@ class ClothShoes(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages]
+
         userlogging.degbuglog(clientid, url, userid + " : access ClothShoes")
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="clothesshoes",main=""), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton, languages=languages, locals=locals , task="clothesshoes",main=""), 200, headers)
 
 
 
@@ -359,9 +379,12 @@ class Shipping(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages]
+
         userlogging.degbuglog(clientid, url, userid + " : access Shipping")
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="shipping",main=""), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton, languages=languages, locals=locals , task="shipping",main=""), 200, headers)
 
 class Medicine(Resource):
     @classmethod
@@ -404,9 +427,12 @@ class Medicine(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages]
+
         userlogging.degbuglog(clientid, url, userid + " : access Medicine")
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="medicine",main=""), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton, languages=languages, locals=locals , task="medicine",main=""), 200, headers)
 
 
 
@@ -451,9 +477,12 @@ class Housing(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages] 
+
         userlogging.degbuglog(clientid, url, userid + " : access Housing")
 
-        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton , task="housing",main=""), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, productlist=productlist,tbtrans=tbtrans,batch=batch, disabled=disabled, isbutton=isbutton, languages=languages, locals=locals , task="housing",main=""), 200, headers)
 
 
 class SubmittedTrans(Resource):
@@ -511,9 +540,12 @@ class SubmittedTrans(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages] 
+
         userlogging.degbuglog(clientid, url, userid + " : access SubmittedTrans")
 
-        return make_response(render_template('index.html', menus=menus, role=role, catlist=catlist, products=products, batch=batch, trans=trans, task="submittedtrans",main=""), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, catlist=catlist, products=products, batch=batch, trans=trans,languages=languages,locals=locals, task="submittedtrans",main=""), 200, headers)
 
 
 class AuthorizedTrans(Resource):
@@ -573,9 +605,13 @@ class AuthorizedTrans(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages] 
+
+
         userlogging.degbuglog(clientid, url, userid + " : access AuthorizedTrans")
 
-        return make_response(render_template('index.html', menus=menus, role=role, catlist=catlist, products=products, batch=batch, trans=trans, task="authorizedtrans",main=""), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, catlist=catlist, products=products, batch=batch, trans=trans,languages=languages,locals=locals, task="authorizedtrans",main=""), 200, headers)
 
 
 class CheckedTrans(Resource):
@@ -602,9 +638,13 @@ class CheckedTrans(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages]
+
+
         userlogging.degbuglog(clientid, url, userid + " : access CheckedTrans")
 
-        return make_response(render_template('index.html', menus=menus, role=role, branches=branches, transtatus=transtatus, task="checkedtrans",main=""), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, branches=branches, transtatus=transtatus,languages=languages, locals=locals, task="checkedtrans",main=""), 200, headers)
 
 
 class CheckedTransDetails(Resource):
@@ -665,9 +705,12 @@ class CheckedTransDetails(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages]
+
         userlogging.degbuglog(clientid, url, userid + " : access CheckedTransDetails")
 
-        return make_response(render_template('index.html', menus=menus, role=role, catlist=catlist, products=products, batch=batch, trans=trans, branchcode=branchcode, task="checkedtransdetail",main=""), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, catlist=catlist, products=products, batch=batch, trans=trans, branchcode=branchcode,languages=languages,locals=locals, task="checkedtransdetail",main=""), 200, headers)
 
 
 class CreateBatches(Resource):
@@ -686,9 +729,12 @@ class CreateBatches(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages] 
+
         userlogging.degbuglog(clientid, url, userid + " : access CreateBatches")
 
-        return make_response(render_template('index.html', menus=menus, role=role, task="createbatch",main=""), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role,languages=languages,locals=locals, task="createbatch",main=""), 200, headers)
 
 
 class UpdateBatches(Resource):
@@ -706,9 +752,12 @@ class UpdateBatches(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages] 
+
         userlogging.degbuglog(clientid, url, userid + " : access UpdateBatches")
 
-        return make_response(render_template('index.html', menus=menus, role=role, task="updatebatch",main=""), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role,languages=languages,locals=locals, task="updatebatch",main=""), 200, headers)
 
 
 class ViewBatches(Resource):
@@ -726,9 +775,12 @@ class ViewBatches(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages] 
+
         userlogging.degbuglog(clientid, url, userid + " : access ViewBatches")
 
-        return make_response(render_template('index.html', menus=menus, role=role, task="viewbatch",main=""), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role,languages=languages,locals=locals, task="viewbatch",main=""), 200, headers)
 
 
 class UpdateRoles(Resource):
@@ -747,9 +799,12 @@ class UpdateRoles(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages] 
+
         userlogging.degbuglog(clientid, url, userid + " : access UpdateRoles")
 
-        return make_response(render_template('index.html', menus=menus, role=role,tb_role=tb_role, task="updateroles",main="role"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role,tb_role=tb_role,languages= languages, locals=locals, task="updateroles",main="role"), 200, headers)
 
 
 
@@ -769,9 +824,12 @@ class CreateRoles(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages] 
+
         userlogging.degbuglog(clientid, url, userid + " : access CreateRoles")
 
-        return make_response(render_template('index.html', menus=menus, role=role, task="createroles",main="role"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role,languages=languages,locals=locals, task="createroles",main="role"), 200, headers)
 
 
 class CreatePermission(Resource):
@@ -804,9 +862,12 @@ class CreatePermission(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages] 
+
         userlogging.degbuglog(clientid, url, userid + " : access CreatePermission")
 
-        return make_response(render_template('index.html', menus=menus, role=role,tb_role=tb_role,menulist=menulist,tb_menus= tb_menus,  task="createpermission",main="role"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role,tb_role=tb_role,menulist=menulist,tb_menus= tb_menus,languages=languages,locals=locals,  task="createpermission",main="role"), 200, headers)
 
 
 class AttachedRolePermission(Resource):
@@ -825,9 +886,12 @@ class AttachedRolePermission(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages] 
+
         userlogging.degbuglog(clientid, url, userid + " : access AttachedRolePermission")
 
-        return make_response(render_template('index.html', menus=menus, role=role,tb_role=tb_roles, task="attachedrolepermission",main="role"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role,tb_role=tb_roles,languages=languages,locals=locals, task="attachedrolepermission",main="role"), 200, headers)
 
 
 class CreateStatus(Resource):
@@ -845,9 +909,12 @@ class CreateStatus(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages] 
+
         userlogging.degbuglog(clientid, url, userid + " : access CreateStatus")
 
-        return make_response(render_template('index.html', menus=menus, role=role, task="createstatus",main=""), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role,languages=languages,locals=locals, task="createstatus",main=""), 200, headers)
 
 
 class UpdateStatus(Resource):
@@ -865,9 +932,12 @@ class UpdateStatus(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages] 
+
         userlogging.degbuglog(clientid, url, userid + " : access UpdateStatus")
 
-        return make_response(render_template('index.html', menus=menus, role=role, task="updatestatus",main=""), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role,languages=languages,locals=locals, task="updatestatus",main=""), 200, headers)
 
 
 class ViewStatus(Resource):
@@ -885,9 +955,12 @@ class ViewStatus(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages] 
+
         userlogging.degbuglog(clientid, url, userid + " : access ViewStatus")
 
-        return make_response(render_template('index.html', menus=menus, role=role, task="viewstatus",main=""), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role,languages=languages,locals=locals, task="viewstatus",main=""), 200, headers)
 
 
 class CreateUsers(Resource):
@@ -907,9 +980,12 @@ class CreateUsers(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages] 
+
         userlogging.degbuglog(clientid, url, userid + " : access CreateUsers")
 
-        return make_response(render_template('index.html', menus=menus, role=role, tb_roles=tb_roles, tb_branches=tb_branches, task="createusers",main="users"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, tb_roles=tb_roles, tb_branches=tb_branches,languages=languages,locals=locals, task="createusers",main="users"), 200, headers)
 
 
 class UpdateUsers(Resource):
@@ -931,9 +1007,12 @@ class UpdateUsers(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages] 
+
         userlogging.degbuglog(clientid, url, userid + " : access UpdateUsers")
 
-        return make_response(render_template('index.html', menus=menus, role=role,tb_roles=tb_roles, tb_branches=tb_branches, user=user, task="updateusers",main="users"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role,tb_roles=tb_roles, tb_branches=tb_branches, user=user,languages=languages,locals=locals, task="updateusers",main="users"), 200, headers)
 
 
 class ViewUsers(Resource):
@@ -952,9 +1031,13 @@ class ViewUsers(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages] 
+
+
         userlogging.degbuglog(clientid, url, userid + " : access ViewUsers")
 
-        return make_response(render_template('index.html', menus=menus, role=role, user=user, task="viewusers",main="users"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, user=user,languages=languages,locals=locals, task="viewusers",main="users"), 200, headers)
     
 
 class ViewDeleteUsers(Resource):
@@ -973,6 +1056,9 @@ class ViewDeleteUsers(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages] 
+
         userlogging.degbuglog(clientid, url, userid + " : access ViewUsers")
 
-        return make_response(render_template('index.html', menus=menus, role=role, user=user, task="viewdeleteusers",main="users"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, user=user,languages=languages,locals=locals, task="viewdeleteusers",main="users"), 200, headers)

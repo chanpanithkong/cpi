@@ -14,8 +14,9 @@ class tbusers(db.Model):
     position = db.Column(db.String)
     email = db.Column(db.String)
     status = db.Column(db.Integer)
+    languages = db.Column(db.String)
 
-    def __init__(self, userid=None, password=None, key=None, roleid=None, username=None, gender=None, branchcode=None, details=None,position=None, email=None, status=None):
+    def __init__(self, userid=None, password=None, key=None, roleid=None, username=None, gender=None, branchcode=None, details=None,position=None, email=None, status=None, languages = None):
         self.userid = userid
         self.password = password
         self.key = key
@@ -27,6 +28,7 @@ class tbusers(db.Model):
         self.position = position
         self.email = email
         self.status = status
+        self.languages = languages
 
     @classmethod
     def find_by_userid(cls, userid) -> "tbusers":

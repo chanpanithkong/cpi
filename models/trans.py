@@ -2,7 +2,7 @@ from config.db import db
 from sqlalchemy import or_
 from models.products import tbproducts
 from models.categories import tbcategories
-
+from pprint import pprint
 
 class tbtrans(db.Model):
 

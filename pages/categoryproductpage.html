@@ -3,17 +3,21 @@
               <thead>
                 <tr>
                   <th scope="col">#</th>
-                  <th scope="col">Product Name</th>
-                  <th scope="col">Weight</th>
-                  <th scope="col">Price</th>
-                  <th scope="col">Details</th>
+                  <th scope="col">{{locals['ProductName']}}</th>
+                  <th scope="col">{{locals['Weight']}}</th>
+                  <th scope="col">{{locals['Price']}}</th>
+                  <th scope="col">{{locals['Details']}}</th>
                 </tr>
               </thead>
               <tbody>
                 {% for prod in productlist %}
                 <tr>
                   <td>{{loop.index }} <input type="hidden" name="prodid{{prod.prodid}}" value="{{prod.prodid}}" /> </td>
+                  {% if languages == 'EN' %}
+                  <td>{{prod.nameen}}</td>
+                  {% elif languages == 'KH'%}
                   <td>{{prod.namekh}}</td>
+                  {% endif %}
                   <td><input type="text" class="form-control" name="weight{{prod.prodid}}" disabled
                     value="{{prod.weight}}" />
                   </td>
@@ -32,13 +36,13 @@
           <div>
             <div style="text-align: Center">
               <button type="button" class="btn btn-primary" id="save" {{disabled}}>
-                Save
+                {{locals['Save']}}
               </button>&nbsp;
               <button type="button" class="btn btn-success" id="submit" {{disabled}}>
-                Submit
+                {{locals['Submit']}}
               </button>&nbsp;
               <button type="button" class="btn btn-danger" id="clear" {{disabled}}>
-                Clear
+                {{locals['Clear']}}
               </button>
             </div>
             <br />

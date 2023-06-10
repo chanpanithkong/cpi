@@ -2,9 +2,9 @@ from urllib.parse import quote
 
 
 class dbconfig:
-    url = quote('172.16.1.230')
+    url = quote('localhost')
     port = quote('3306')
-    username = quote('bsg')
-    password =  quote('123')
+    username = quote('root')
+    password =  quote('$Cambodia__089$')
     mysqldb = quote('dbcpi')
 

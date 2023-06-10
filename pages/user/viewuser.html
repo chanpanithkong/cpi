@@ -1,8 +1,8 @@
 <div class="pagetitle">
     <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-          <li class="breadcrumb-item active">Users Management</li>
+          <li class="breadcrumb-item"><a href="/">{{locals['Dashboard']}}</a></li>
+          <li class="breadcrumb-item active">{{locals['User Management']}}</li>
         </ol>
     </nav>
 </div>
@@ -12,20 +12,20 @@
             <div class="card">
                 <div class="card-body">
                     <center>
-                        <h5 class="card-title">Users Management</h5>
+                        <h5 class="card-title">{{locals['User Management']}}</h5>
                     </center>
 
                     <table class="table table-hover">
                         <thead>
                           <tr>
                             <th scope="col">#</th>
-                            <th scope="col">User ID</th>
-                            <th scope="col">User Name</th>
-                            <th scope="col">Branch Name</th>
-                            <th scope="col">Role</th>
-                            <th scope="col">Department</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Action</th>
+                            <th scope="col">{{locals['User ID']}}</th>
+                            <th scope="col">{{locals['Full Name']}}</th>
+                            <th scope="col">{{locals['Branch Name']}}</th>
+                            <th scope="col">{{locals['Role']}}</th>
+                            <th scope="col">{{locals['Department']}}</th>
+                            <th scope="col">{{locals['Email']}}</th>
+                            <th scope="col">{{locals['Action']}}</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -34,20 +34,26 @@
                                 <td>{{loop.index}}</td>
                                 <td class="user_id">{{ user[0].userid }}</td>
                                 <td>{{ user[0].username }}</td>
-                                <td>{{ user[2].nameen }}</td>
-                                <td>{{ user[1].rolename }}</td>
+                                <td>
+                                    {% if languages == "EN" %}
+                                    {{ user[2].nameen }}
+                                    {% else %}
+                                    {{ user[2].namekh }}
+                                    {% endif %}
+                                </td>
+                                <td>{{ locals[user[1].rolename] }}</td>
                                 <td>{{ user[0].details }}</td>
                                 <td>{{ user[0].email }}</td>
                                 <td>
-                                    <button type="button" class="btn btn-warning btn-sm update" data-toggle="tooltip" data-placement="top" title="Update User">
+                                    <button type="button" class="btn btn-warning btn-sm update" data-toggle="tooltip" data-placement="top" title="{{locals['Update User']}}">
                                         <i class="bi bi-pencil-square"></i>
                                     </button>
                                     &nbsp;
-                                    <button type="button" class="btn btn-danger btn-sm delete"  data-toggle="tooltip" data-placement="top" title="Delete User">
+                                    <button type="button" class="btn btn-danger btn-sm delete"  data-toggle="tooltip" data-placement="top" title="{{locals['Delete User']}}">
                                         <i class="bi bi-trash-fill"></i>
                                     </button>
                                     &nbsp;
-                                    <button type="button" class="btn btn-primary btn-sm reset" data-toggle="tooltip" data-placement="top" title="Reset Password">
+                                    <button type="button" class="btn btn-primary btn-sm reset" data-toggle="tooltip" data-placement="top" title="{{locals['Reset Password']}}">
                                         <i class="bx bx-reset"></i>
                                     </button>
                                     
@@ -59,15 +65,15 @@
                       <div>
                         <div style="text-align: Center">
                           <button type="button" class="btn btn-primary" id="add">
-                            Add New User
+                            {{locals['Add New User']}}
                           </button>
                           &nbsp;
                           <button type="button" class="btn btn-success" id="refresh">
-                            Refresh
+                            {{locals['Refresh']}}
                           </button>
                           &nbsp;
                             <button type="button" class="btn btn-warning" id="deleteusers">
-                                User Deleted
+                                {{locals['User Deleted']}}
                             </button>
                         </div>
                     </div>

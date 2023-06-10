@@ -1,9 +1,9 @@
 <div class="pagetitle">
   <nav>
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-      <li class="breadcrumb-item">User Setting</li>
-      <li class="breadcrumb-item active">User Profile</li>
+      <li class="breadcrumb-item"><a href="/">{{locals['Dashboard']}}</a></li>
+      <li class="breadcrumb-item">{{locals['User Setting']}}</li>
+      <li class="breadcrumb-item active">{{locals['User Profile']}}</li>
     </ol>
   </nav>
 </div>
@@ -16,12 +16,12 @@
           class="card-body profile-card pt-4 d-flex flex-column align-items-center"
         >
           <img
-            src="static/assets/img/profile-img.jpg"
+            src="static/assets/img/nbclogo.png"
             alt="Profile"
             class="rounded-circle"
           />
-          <h2>{{user.username}}</h2>
-          <h3>{{role.rolename}}</h3>
+          <h2>{{locals['Username']}} : {{user.username}}</h2>
+          <h3>{{locals['Role']}} : {{locals[role.rolename]}}</h3>
         </div>
       </div>
     </div>
@@ -39,7 +39,7 @@
                 aria-selected="true"
                 role="tab"
               >
-                Overview
+                {{locals['Overview']}}
               </button>
             </li>
 
@@ -52,11 +52,11 @@
                 tabindex="-1"
                 role="tab"
               >
-                Edit Profile
+              {{locals['Edit Profile']}}
               </button>
             </li>
 
-            <li class="nav-item" role="presentation">
+            <!-- <li class="nav-item" role="presentation">
               <button
                 class="nav-link"
                 data-bs-toggle="tab"
@@ -67,7 +67,7 @@
               >
                 Localization
               </button>
-            </li>
+            </li> -->
 
           </ul>
           <div class="tab-content pt-2">
@@ -77,37 +77,43 @@
               role="tabpanel"
             >
 
-              <h5 class="card-title">Profile Details</h5>
+              <h5 class="card-title">{{locals['Profile Details']}}</h5>
 
               <div class="row">
-                <div class="col-lg-3 col-md-4 label">Full Name</div>
+                <div class="col-lg-3 col-md-4 label">{{locals['Full Name']}}</div>
                 <div class="col-lg-9 col-md-8">{{user.username}}</div>
               </div>
 
               <div class="row">
-                <div class="col-lg-3 col-md-4 label">Gender</div>
+                <div class="col-lg-3 col-md-4 label">{{locals['Gender']}}</div>
                 <div class="col-lg-9 col-md-8">
-                  {{user.gender}}
+                  {{locals[user.gender]}}
                 </div>
               </div>
 
               <div class="row">
-                <div class="col-lg-3 col-md-4 label">Branch Code</div>
-                <div class="col-lg-9 col-md-8">{{branch.find_by_branchcode(user.branchcode).nameen}}</div>
+                <div class="col-lg-3 col-md-4 label">{{locals['BranchCode']}}</div>
+                <div class="col-lg-9 col-md-8">
+                  {% if languages == "EN"%}
+                  {{branch.find_by_branchcode(user.branchcode).nameen}}
+                  {% else %}
+                  {{branch.find_by_branchcode(user.branchcode).namekh}}
+                  {% endif %}
+                </div>
               </div>
 
               <div class="row">
-                <div class="col-lg-3 col-md-4 label">Department</div>
+                <div class="col-lg-3 col-md-4 label">{{locals['Department']}}</div>
                 <div class="col-lg-9 col-md-8">{{user.details}}</div>
               </div>
 
               <div class="row">
-                <div class="col-lg-3 col-md-4 label">Position</div>
+                <div class="col-lg-3 col-md-4 label">{{locals['Position']}}</div>
                 <div class="col-lg-9 col-md-8">{{user.position}}</div>
               </div>
 
               <div class="row">
-                <div class="col-lg-3 col-md-4 label">Email</div>
+                <div class="col-lg-3 col-md-4 label">{{locals['Email']}}</div>
                 <div class="col-lg-9 col-md-8">{{user.email}}</div>
               </div>
 
@@ -123,7 +129,7 @@
 
                 <div class="row mb-3">
                   <label for="fullName" class="col-md-4 col-lg-3 col-form-label"
-                    >Full Name</label
+                    >{{locals['Full Name']}}</label
                   >
                   <div class="col-md-8 col-lg-9">
                     <input
@@ -138,22 +144,26 @@
 
                 <div class="row mb-3">
                   <label for="company" class="col-md-4 col-lg-3 col-form-label"
-                    >Gender</label
+                    >{{locals['Gender']}}</label
                   >
                   <div class="col-md-8 col-lg-9">
-                    <input
-                      name="company"
-                      type="text"
-                      class="form-control"
-                      id="gender"
-                      value="{{user.gender}}"
-                    />
-                  </div>
+                  <select class="form-select" aria-label="Default select example" id="gender">
+                    {% if user.gender == "Female" %}
+                    <option value="Female" selected>{{locals['Female']}}</option>  
+                    <option value="Male">{{locals['Male']}}</option>  
+                    {% else %}
+                    <option value="Female">{{locals['Female']}}</option>  
+                    <option value="Male" selected>{{locals['Male']}}</option>  
+                    {% endif %}
+
+                  </select>
+                </div>
+                  
                 </div>
 
                 <div class="row mb-3">
                   <label for="Job" class="col-md-4 col-lg-3 col-form-label"
-                    >Branch Code</label
+                    >{{locals['BranchCode']}}</label
                   >
                   <div class="col-md-8 col-lg-9">
 
@@ -161,9 +171,23 @@
 
                       {% for br in branch.getallbranches() %}
                       {% if user.branchcode == br.branchcode %}
+
+                      {% if languages == "EN"%}
                       <option value="{{br.branchcode}}" selected>{{br.nameen}}</option>
                       {% else %}
+                      <option value="{{br.branchcode}}" selected>{{br.namekh}}</option>
+                      {% endif %}  
+
+                      
+                      {% else %}
+
+                      {% if languages == "EN"%}
                       <option value="{{br.branchcode}}">{{br.nameen}}</option>
+                      {% else %}
+                      <option value="{{br.branchcode}}">{{br.namekh}}</option>
+                      {% endif %}  
+
+                      
                       {% endif %}
                       
                       {% endfor %}
@@ -175,7 +199,7 @@
 
                 <div class="row mb-3">
                   <label for="Country" class="col-md-4 col-lg-3 col-form-label"
-                    >Department</label
+                    >{{locals['Department']}}</label
                   >
                   <div class="col-md-8 col-lg-9">
                     <input
@@ -190,7 +214,7 @@
 
                 <div class="row mb-3">
                   <label for="Country" class="col-md-4 col-lg-3 col-form-label"
-                    >Position</label
+                    >{{locals['Position']}}</label
                   >
                   <div class="col-md-8 col-lg-9">
                     <input
@@ -205,7 +229,7 @@
 
                 <div class="row mb-3">
                   <label for="Address" class="col-md-4 col-lg-3 col-form-label"
-                    >Email</label
+                    >{{locals['Email']}}</label
                   >
                   <div class="col-md-8 col-lg-9">
                     <input
@@ -218,6 +242,27 @@
                   </div>
                 </div>
 
+
+                {% set langen = '' %}
+                {% set langkh = '' %}
+                {% if languages == 'EN' %}
+                {% set langen = 'selected' %}
+                {% elif languages == 'KH' %}
+                {% set langkh = 'selected' %}
+                {% endif %}
+                <div class="row mb-3">
+                  <label for="Job" class="col-md-4 col-lg-3 col-form-label"
+                    >{{locals['Languages']}}</label
+                  >
+                  <div class="col-md-8 col-lg-9">
+                    <select class="form-select" aria-label="Default select example" id="languages">
+                      <option value="EN" {{langen}} >{{locals['English']}}</option>
+                      <option value="KH" {{langkh}} >{{locals['Khmer']}}</option>
+                    </select>
+                  </div>
+                </div>
+
+
                 <div class="text-center">
                   <button class="btn btn-primary" id="saveprofile">
                     Save Changes
@@ -227,25 +272,26 @@
               <!-- End Profile Edit Form -->
             </div>
 
-            <div
+            <!-- <div
               class="tab-pane fade pt-3"
               id="profile-settings"
               role="tabpanel"
-            >
+            > -->
               <!-- Settings Form -->
               
-                <div class="row mb-3">
+                <!-- <div class="row mb-3">
                   <label for="fullName" class="col-md-4 col-lg-3 col-form-label"
                     >Changes Languages</label
                   >
                   <div class="col-md-8 col-lg-9">
-                    
+
                     <div class="form-check">
                       <input
                         class="form-check-input"
                         type="radio"
                         name="language"
-                        id="english"
+                        id="langen" 
+                        
                       />
                       <label class="form-check-label" for="english">
                         Englist
@@ -256,7 +302,8 @@
                         class="form-check-input"
                         type="radio"
                         id="khmer"
-                        name="language"
+                        name="langkh" 
+                        
                     />
                       <label class="form-check-label" for="khmer">
                         Khmer
@@ -269,10 +316,10 @@
                   <button class="btn btn-primary" id="savelanguage">
                     Save Changes
                   </button>
-                </div>
+                </div> -->
               
               <!-- End settings Form -->
-            </div>
+            <!-- </div> -->
 
          
               
@@ -288,7 +335,7 @@
 
 <script>
   $(document).ready(function() {
-
+    
     $("#saveprofile").click(function() {
       fullname = $("#fullname").val();
       gender = $("#gender").val();
@@ -296,6 +343,7 @@
       department = $("#department").val();
       position = $("#position").val();
       email = $("#email").val();
+      languages = $("#languages").val();
 
           item = {};
           item['fullname'] = fullname;
@@ -304,6 +352,7 @@
           item['department'] = department;
           item['position'] = position;
           item['email'] = email;
+          item['languages'] = languages;
       
       $.ajax({
           type: "POST",
@@ -312,7 +361,6 @@
           contentType: "application/json; charset=utf-8",
           dataType: "json",
           success: function (data) {
-            alert(data.msg);
             location.reload();
           },
           error: function (errMsg) {

@@ -1,8 +1,8 @@
 <div class="pagetitle">
     <nav>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-            <li class="breadcrumb-item active">Role Management</li>
+            <li class="breadcrumb-item"><a href="/">{{locals['Dashboard']}}</a></li>
+            <li class="breadcrumb-item active">{{locals['Role Management']}}</li>
         </ol>
     </nav>
 </div>
@@ -12,7 +12,7 @@
             <div class="card">
                 <div class="card-body">
                     <center>
-                        <h5 class="card-title">Role Management</h5>
+                        <h5 class="card-title">{{locals['Role Management']}}</h5>
                     </center>
                     <br/>
                     <div class='row'>
@@ -22,9 +22,9 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">Role Name</th>
-                                        <th scope="col">Details</th>
-                                        <th scope="col"><center>Action</center></th>
+                                        <th scope="col">{{locals['Role Name']}}</th>
+                                        <th scope="col">{{locals['Details']}}</th>
+                                        <th scope="col"><center>{{locals['Action']}}</center></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -35,17 +35,17 @@
                                         <td>{{role.details}}</td>
                                         <td align="center">
                                             <button type="button" class="btn btn-warning btn-sm update"
-                                                data-toggle="tooltip" data-placement="top" title="Update Role">
+                                                data-toggle="tooltip" data-placement="top" title="{{locals['Update Role']}}">
                                                 <i class="bi bi-pencil-square"></i>
                                             </button>
                                             &nbsp;
                                             <button type="button" class="btn btn-danger btn-sm delete"
-                                                data-toggle="tooltip" data-placement="top" title="Delete Role">
+                                                data-toggle="tooltip" data-placement="top" title="{{locals['Delete Role']}}">
                                                 <i class="bi bi-trash-fill"></i>
                                             </button>
                                             &nbsp;
                                             <button type="button" class="btn btn-primary btn-sm permission"
-                                                data-toggle="tooltip" data-placement="top" title="Add Permission">
+                                                data-toggle="tooltip" data-placement="top" title="{{locals['Add Permission']}}">
                                                 <i class="bx bx-spreadsheet"></i>
                                             </button>
 
@@ -62,11 +62,11 @@
                         <div class="col-lg-12">
                             <div style="text-align: Center">
                                 <button type="button" class="btn btn-primary" id="add">
-                                  Add New Role
+                                    {{locals['Add New Role']}}
                                 </button>
                                 &nbsp;
                                 <button type="button" class="btn btn-success" id="refresh">
-                                  Refresh
+                                    {{locals['Refresh']}}
                                 </button>
                               </div>
                         </div>

@@ -1,8 +1,8 @@
 <div class="pagetitle">
     <nav>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-            <li class="breadcrumb-item active">Submitted Transactions</li>
+            <li class="breadcrumb-item"><a href="/">{{locals['Dashboard']}}</a></li>
+            <li class="breadcrumb-item active">{{locals['Submitted Transactions']}}</li>
         </ol>
     </nav>
 </div>
@@ -13,7 +13,7 @@
             <div class="card">
                 <div class="card-body">
                     <center>
-                        <h5 class="card-title">Submitted Transactions Management</h5>
+                        <h5 class="card-title">{{locals['Submitted Transactions Management']}}</h5>
                     </center>
                     <br />
                     {% if batch != None %}
@@ -25,10 +25,10 @@
                             <div class="row">
                                 <div class="card-header" id="heading{{loop.index}}" style="text-align: left; cursor: pointer; font-weight:bold;">
                                     <div class="collapsed" data-toggle="collapse" data-target="#collapse{{loop.index}}" aria-expanded="false" aria-controls="collapse{{loop.index}}">
-                                        <div style="float: left;" class="text-{{cl[5]}}">{{loop.index}}.&nbsp;{{cl[1]}}</div>
+                                        <div style="float: left;" class="text-{{cl[5]}}">{{loop.index}}.&nbsp;{{locals[cl[1]]}}</div>
                                         
                                     </div>
-                                    <div style="float: right;"><a href="{{cl[7]}}" id="statuslink"><span class="badge bg-{{cl[5]}}">{{cl[4]}}</span></a></div>
+                                    <div style="float: right;"><a href="{{cl[7]}}" id="statuslink"><span class="badge bg-{{cl[5]}}">{{locals[cl[4]]}}</span></a></div>
                                     <!-- <div style="text-align: right;"><span class="badge bg-primary">Primary</span></div> -->
                                 </div>
                                 
@@ -41,11 +41,11 @@
                                         <thead>
                                           <tr>
                                             <th scope="col">#</th>
-                                            <th scope="col">Product Name</th>
-                                            <th scope="col">Weight</th>
-                                            <th scope="col">Price</th>
-                                            <th scope="col">Inputter Noted</th>
-                                            <th scope="col">Authorizer Noted</th>
+                                            <th scope="col">{{locals['ProductName']}}</th>
+                                            <th scope="col">{{locals['Weight']}}</th>
+                                            <th scope="col">{{locals['Price']}}</th>
+                                            <th scope="col">{{locals['InputterNoted']}}</th>
+                                            <th scope="col">{{locals['AuthorizerNoted']}}</th>
                                           </tr>
                                         </thead>
                                         <tbody>

@@ -1,8 +1,8 @@
 <div class="pagetitle">
   <nav>
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-      <li class="breadcrumb-item active">Checked Transactions</li>
+      <li class="breadcrumb-item"><a href="/">{{locals['Dashboard']}}</a></li>
+      <li class="breadcrumb-item active">{{locals['Checked Transactions']}}</li>
     </ol>
   </nav>
 </div>
@@ -13,15 +13,27 @@
             {% for br in branches %}
             <td style="padding-right: 10px;vertical-align: top;">
                 <div class="card bg-light mb-3" style="max-width: 18rem;">
-                <a href="/checkedtransdetail/{{br.branchcode}}" ><div class="card-header"​ style="text-align: center; color:black;font-weight: bold;">Branch Code : {{br.branchcode}}</div></a>
+                <a href="/checkedtransdetail/{{br.branchcode}}" ><div class="card-header"​ style="text-align: center; color:black;font-weight: bold;">{{locals['BranchCode']}} : {{br.branchcode}}</div></a>
                 <div class="card-body">
-                  <h5 class="card-title">{{br.nameen}}</h5>
+                  <h5 class="card-title">
+                    {% if languages == "EN" %}
+                    {{br.nameen}}
+                    {% else %}
+                    {{br.namekh}}
+                    {% endif %}
+                  </h5>
 
-                  <p>{{br.address}}</p>
+                  <p>
+                    {% if languages == "EN" %}
+                    {{br.addressen}}
+                    {% else %}
+                    {{br.addresskh}}
+                    {% endif %}
+                  </p>
                   {% for ts in transtatus %}
                   {% if br.branchcode == ts[0] %}
                     
-                    <span class="badge bg-{{ts[4]}}"><i class="bi bi-check-circle me-1"></i> {{ts[3]}} : {{ ts[2] }}</span>
+                    <span class="badge bg-{{ts[4]}}"><i class="bi bi-check-circle me-1"></i> {{locals[ts[3]]}} : {{ ts[2] }}</span>
                     
                   {% endif %}
                   {% endfor %}

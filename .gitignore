@@ -2,3 +2,4 @@ __pycache__
 logging
 excel.py
 flask_session
+dbinfo.py

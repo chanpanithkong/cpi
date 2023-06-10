@@ -1,9 +1,9 @@
 <div class="pagetitle">
   <nav>
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-      <li class="breadcrumb-item"><a href="/viewusers">Users List</a></li>
-      <li class="breadcrumb-item active">Create Users</li>
+      <li class="breadcrumb-item"><a href="/">{{locals['Dashboard']}}</a></li>
+      <li class="breadcrumb-item"><a href="/viewusers">{{locals['Users List']}}</a></li>
+      <li class="breadcrumb-item active">{{locals['Create Users']}}</li>
     </ol>
   </nav>
 </div><!-- End Page Title -->
@@ -15,7 +15,7 @@
       <div class="card">
         <div class="card-body">
           <center>
-            <h5 class="card-title">User Management</h5>
+            <h5 class="card-title">{{locals['User Management']}}</h5>
           </center>
           <br />
           {% for user in user %}
@@ -23,12 +23,12 @@
           <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-4">
-              <label for="inputEmail5" class="form-label">User ID</label>
+              <label for="inputEmail5" class="form-label">{{locals['User ID']}}</label>
               <input type="text" class="form-control" id="user_id" placeholder="Please fill UserID" disabled="disabled"
                 name="user_id" value="{{user[0].userid}}">
             </div>
             <div class="col-md-4">
-              <label for="inputPassword5" class="form-label">Full Name</label>
+              <label for="inputPassword5" class="form-label">{{locals['Full Name']}}</label>
               <input type="text" class="form-control" id="username" placeholder="Please fill Full Name" name="usernmae"
                 value="{{user[0].username}}">
             </div>
@@ -38,27 +38,27 @@
           <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-4">
-              <label for="inputEmail5" class="form-label">Gender</label>
+              <label for="inputEmail5" class="form-label">{{locals['Gender']}}</label>
               <select id="gender" class="form-select" name="gender">
                 {% if user[0].gender == "Female" %}  
-                  <option value="Female" selected>Female</option>
-                  <option value="Male">Male</option>
+                  <option value="Female" selected>{{locals['Female']}}</option>
+                  <option value="Male">{{locals['Male']}}</option>
                 {% else %}
-                  <option value="Female">Female</option>
-                  <option value="Male" selected>Male</option>
+                  <option value="Female">{{locals['Female']}}</option>
+                  <option value="Male" selected>{{locals['Male']}}</option>
                 {% endif %}
               </select>
             </div>
             <div class="col-md-4">
-              <label for="inputPassword5" class="form-label">Role</label>
+              <label for="inputPassword5" class="form-label">{{locals['Role']}}</label>
               <select id="roleid" class="form-select" name="roleid">
 
                 {% for role in tb_roles.query.all() %}
 
                     {% if user[1].roleid == role.roleid %}
-                      <option value="{{role.roleid}}" selected>{{role.rolename}}</option>
+                      <option value="{{role.roleid}}" selected>{{locals[role.rolename]}}</option>
                     {% else %}
-                      <option value="{{role.roleid}}">{{role.rolename}}</option>
+                      <option value="{{role.roleid}}">{{locals[role.rolename]}}</option>
                     {% endif %}
                     
               
@@ -72,21 +72,31 @@
           <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-4">
-              <label for="inputEmail5" class="form-label">Branch Code</label>
+              <label for="inputEmail5" class="form-label">{{locals['BranchCode']}}</label>
               <select id="branchcode" class="form-select" name="branchcode">
                 {% for branch in tb_branches.query.all() %}
                 
                   {% if user[2].branchcode == branch.branchcode %}
-                    <option value="{{branch.branchcode}}" selected>{{branch.nameen}}</option>
+                    <option value="{{branch.branchcode}}" selected>{{branch.branchcode}} - {% if languages == "EN" %}
+                      {{branch.nameen}}
+                      {% else %}
+                      {{branch.namekh}}
+                      {% endif %}
+                    </option>
                   {% else %}
-                    <option value="{{branch.branchcode}}">{{branch.nameen}}</option>
+                    <option value="{{branch.branchcode}}">{{branch.branchcode}} - {% if languages == "EN" %}
+                      {{branch.nameen}}
+                      {% else %}
+                      {{branch.namekh}}
+                      {% endif %}
+                    </option>
                   {% endif %}
               
                 {% endfor %}
                 </select>
             </div>
             <div class="col-md-4">
-              <label for="inputPassword5" class="form-label">Department</label>
+              <label for="inputPassword5" class="form-label">{{locals['Department']}}</label>
               <input type="text" class="form-control" id="department" placeholder="Please fill Department" name="department"
                 value="{{user[0].details}}">
             </div>
@@ -96,12 +106,12 @@
           <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-4">
-              <label for="inputPassword5" class="form-label">Position</label>
+              <label for="inputPassword5" class="form-label">{{locals['Position']}}</label>
               <input type="text" class="form-control" id="position" placeholder="Please fill Position" name="position"
                 value="{{user[0].position}}">
             </div>
             <div class="col-md-4">
-              <label for="inputEmail5" class="form-label">Email</label>
+              <label for="inputEmail5" class="form-label">{{locals['Email']}}</label>
               <input type="text" class="form-control" id="email" placeholder="Please fill Email"
                 name="email" value="{{user[0].email}}">
             </div>
@@ -112,11 +122,11 @@
           <div>
             <div style="text-align: Center">
               <button type="button" class="btn btn-primary" id="update">
-                Update User
+                {{locals['Update User']}}
               </button>
               &nbsp;
               <button type="button" class="btn btn-success" id="back">
-                User List
+                {{locals['Users List']}}
               </button>
             </div>
         </div>
