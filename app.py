@@ -38,8 +38,8 @@ from datetime import datetime
 app = Flask(__name__, template_folder='pages')
 api = Api(app)
 
-# log = logging.getLogger('werkzeug')
-# log.disabled = True
+log = logging.getLogger('werkzeug')
+log.disabled = True
     
 
 app.config["SESSION_PERMANENT"] = False

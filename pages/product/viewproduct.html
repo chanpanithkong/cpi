@@ -1,8 +1,8 @@
 <div class="pagetitle">
     <nav>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-            <li class="breadcrumb-item active">View Products</li>
+            <li class="breadcrumb-item"><a href="/">{{locals['Dashboard']}}</a></li>
+            <li class="breadcrumb-item active">{{locals['View Products']}}</li>
         </ol>
     </nav>
 </div>
@@ -13,7 +13,7 @@
             <div class="card">
                 <div class="card-body">
                     <center>
-                        <h5 class="card-title">Categories and Products Management</h5>
+                        <h5 class="card-title">{{locals['Categories and Products Management']}}</h5>
                     </center>
                     <br />
                     <div id="accordion">
@@ -25,28 +25,44 @@
                                 <div class="card-header" id="heading{{loop.index}}" style="text-align: left; cursor: pointer; color: green; font-weight:bold;">
                                     {% if categories.find_by_parentid(cl.catid)|length > 0 %}
                                     <div class="collapsed" data-toggle="collapse" data-target="#collapse{{loop.index}}" aria-expanded="false" aria-controls="collapse{{loop.index}}">
-                                        {{loop.index}}.&nbsp;{{cl.nameen}}
+                                        {{loop.index}}.&nbsp;
+                                        {% if languages == "EN" %}
+                                        {{cl.nameen}}
+                                        {% else %}
+                                        {{cl.namekh}}
+                                        {% endif %}
                                     </div>
                                     {% else %}
                                     <div class="collapsed" data-toggle="collapse" data-target="#collapse{{loop.index}}" aria-expanded="false" aria-controls="collapse{{loop.index}}">
                                         <div style="float: left;" class="leftcontent">
-                                            {{loop.index}}.&nbsp;{{cl.nameen}}
+                                            {{loop.index}}.&nbsp;
+                                            {% if languages == "EN" %}
+                                            {{cl.nameen}}
+                                            {% else %}
+                                            {{cl.namekh}}
+                                            {% endif %}
                                             <input type="hidden" class="catid" value="{{cl.catid}}" />
                                         </div>
                                         <div style="float: right;">
                                             <a href="/listproducts/{{cl.catid}}">
-                                            <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Add Product to {{cl.nameen}}">
+                                            <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="{{locals['Add Product to']}} 
+                                            {% if languages == 'EN' %}
+                                            {{cl.nameen}}
+                                            {% else %}
+                                            {{cl.namekh}}
+                                            {% endif %}
+                                            ">
                                                 <i class="bi bi-save2-fill"></i>
                                             </button>
                                             </a>
                                             &nbsp;
                                             <a href="/updatecategories/{{cl.catid}}">
-                                            <button type="button" class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="top" title="Update Category">
+                                            <button type="button" class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="top" title="{{locals['Update Category']}}">
                                                 <i class="bi bi-pencil-square"></i>
                                             </button>
                                             </a>
                                             &nbsp;
-                                            <button type="button" class="btn btn-danger btn-sm cdelete"  data-toggle="tooltip" data-placement="top" title="Delete Category">
+                                            <button type="button" class="btn btn-danger btn-sm cdelete"  data-toggle="tooltip" data-placement="top" title="{{locals['Delete Category']}}">
                                                 <i class="bi bi-trash-fill"></i>
                                             </button>
                                         </div>
@@ -63,23 +79,35 @@
                                 <div class="row">
                                     <div class="card-header" style="text-align: left; cursor: pointer; color: blue; font-weight:bold;">
                                         <div style="float: left;" class="leftcontent">
-                                            &nbsp;&nbsp;&nbsp;&nbsp;{{loop.index}}.&nbsp;{{chcat.nameen}}
+                                            &nbsp;&nbsp;&nbsp;&nbsp;{{loop.index}}.&nbsp;
+                                            {{loop.index}}&nbsp;
+                                            {% if languages == "EN" %}
+                                            {{chcat.nameen}}
+                                            {% else %}
+                                            {{chcat.namekh}}
+                                            {% endif %}
                                             <input type="hidden" class="catid" value="{{chcat.catid}}" />
                                         </div>
                                         <div style="float: right;">
                                             <a href="/listproducts/{{chcat.catid}}">
-                                            <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Add Product to {{chcat.nameen}}">
+                                            <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="{{locals['Add Product to']}} 
+                                            {% if languages == 'EN' %}
+                                            {{chcat.nameen}}
+                                            {% else %}
+                                            {{chcat.namekh}}
+                                            {% endif %}
+                                            ">
                                                 <i class="bi bi-save2-fill"></i>
                                             </button>
                                             </a>
                                             &nbsp;
                                             <a href="/updatecategories/{{chcat.catid}}">
-                                            <button type="button" class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="top" title="Update Category">
+                                            <button type="button" class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="top" title="{{locals['Update Category']}}">
                                                 <i class="bi bi-pencil-square"></i>
                                             </button>
                                             </a>
                                             &nbsp;
-                                            <button type="button" class="btn btn-danger btn-sm cdelete"  data-toggle="tooltip" data-placement="top" title="Delete Category">
+                                            <button type="button" class="btn btn-danger btn-sm cdelete"  data-toggle="tooltip" data-placement="top" title="{{locals['Delete Category']}}">
                                                 <i class="bi bi-trash-fill"></i>
                                             </button>
                                         </div>
@@ -100,12 +128,12 @@
                         <div style="text-align: Center">
                           <a href="/createcategories">
                           <button type="button" class="btn btn-primary" id="newcategory" >
-                            New Category
+                            {{locals['Add New Category']}}
                           </button>
                           </a>
                           &nbsp;
                           <button type="button" class="btn btn-success" id="refresh">
-                            Refresh
+                            {{locals['Refresh']}}
                           </button>
                         </div>
                     </div>

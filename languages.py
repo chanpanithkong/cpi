@@ -143,7 +143,11 @@ lang = {
         "Category List":"Category List",
         "Sub Category of":"Sub Category of",
         "Category":"Category",
-        "No Sub Category":"No Sub Category"
+        "No Sub Category":"No Sub Category",
+        "Categories and Products Management":"Categories and Products Management",
+        "Update Category":"Update Category",
+        "Delete Category":"Delete Category",
+        "Add Product to":"Add Product to",
 
     },
     "KH":{
@@ -290,6 +294,10 @@ lang = {
         "Category List":"បញ្ជីប្រភេទ",
         "Sub Category of":"ប្រភេទរងនៃ",
         "Category":"ប្រភេទ",
-        "No Sub Category":"មិនមានប្រភេទរងទេ"
+        "No Sub Category":"មិនមានប្រភេទរងទេ",
+        "Categories and Products Management":"ប្រភេទ និងការគ្រប់គ្រងផលិតផល",
+        "Update Category":"ធ្វើបច្ចុប្បន្នភាពប្រភេទ",
+        "Delete Category":"លុប​ប្រភេទ",
+        "Add Product to":"បន្ថែមផលិតផលទៅ",
     }
 }
