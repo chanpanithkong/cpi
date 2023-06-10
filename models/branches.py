@@ -5,15 +5,17 @@ class tbbranches(db.Model):
     branchcode = db.Column("branchcode", db.String, primary_key = True)
     nameen = db.Column(db.String)
     namekh = db.Column(db.String)
-    address = db.Column(db.String)
+    addressen = db.Column(db.String)
+    addresskh = db.Column(db.String)
     details = db.Column(db.String)
     
     
-    def __init__(self, branchcode, nameen, namekh, address, details):
+    def __init__(self, branchcode, nameen, namekh, addressen,addresskh, details):
         self.branchcode = branchcode
         self.nameen = nameen
         self.namekh = namekh
-        self.address = address
+        self.addressen = addressen
+        self.addresskh = addresskh
         self.details = details
         
         

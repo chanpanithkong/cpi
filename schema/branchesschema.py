@@ -11,7 +11,8 @@ class BranchesSchema(SQLAlchemyAutoSchema):
     branchcode = auto_field()
     nameen = auto_field()
     namekh = auto_field()
-    address = auto_field()
+    addressen = auto_field()
+    addresskh = auto_field()
     details = auto_field()
     
 

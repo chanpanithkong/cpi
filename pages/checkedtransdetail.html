@@ -2,9 +2,9 @@
   <input type="hidden" value="{{ branchcode }}" id="branchcode" name="branchcode" />
     <nav>
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-        <li class="breadcrumb-item"><a href="/checkedtrans">Checked Transactions</a></li>
-        <li class="breadcrumb-item active">Checked Transactions Details</li>
+        <li class="breadcrumb-item"><a href="/">{{locals['Dashboard']}}</a></li>
+        <li class="breadcrumb-item"><a href="/checkedtrans">{{locals['Checked Transactions']}}</a></li>
+        <li class="breadcrumb-item active">{{locals['Checked Transactions Details']}}</li>
       </ol>
     </nav>
   </div>
@@ -15,7 +15,7 @@
             <div class="card">
                 <div class="card-body">
                     <center>
-                        <h5 class="card-title">Checked Transactions Details</h5>
+                        <h5 class="card-title">{{locals['Checked Transactions Details']}}</h5>
                     </center>
                     <br />
 
@@ -39,10 +39,10 @@
                         <div class="card">
                             <div class="card-header" id="heading{{loop.index}}" style="text-align: left; cursor: pointer; font-weight:bold;">
                                 <div class="collapsed" data-toggle="collapse" data-target="#collapse{{loop.index}}" aria-expanded="false" aria-controls="collapse{{loop.index}}">
-                                    <div style="float: left;" class="text-{{cl[5]}}">{{loop.index}}.&nbsp;{{cl[1]}}</div>
+                                    <div style="float: left;" class="text-{{cl[5]}}">{{loop.index}}.&nbsp;{{locals[cl[1]]}}</div>
                                     
                                 </div>
-                                <div style="float: right;"><span class="badge bg-{{cl[5]}}">{{cl[4]}}</span></div>
+                                <div style="float: right;"><span class="badge bg-{{cl[5]}}">{{locals[cl[4]]}}</span></div>
                             </div>
 
                             <div id="collapse{{loop.index}}" class="collapse1 show" aria-labelledby="heading{{loop.index}}" data-parent="#accordion">
@@ -52,12 +52,12 @@
                                         <thead>
                                           <tr>
                                             <th scope="col">#</th>
-                                            <th scope="col">Product Name</th>
-                                            <th scope="col">Weight</th>
-                                            <th scope="col">Price</th>
-                                            <th scope="col">Inputter Noted</th>
-                                            <th scope="col">Authorizer Noted</th>
-                                            <th scope="col">Checker Noted</th>
+                                            <th scope="col">{{locals['ProductName']}}</th>
+                                            <th scope="col">{{locals['Weight']}}</th>
+                                            <th scope="col">{{locals['Price']}}</th>
+                                            <th scope="col">{{locals['InputterNoted']}}</th>
+                                            <th scope="col">{{locals['AuthorizerNoted']}}</th>
+                                            <th scope="col">{{locals['CheckerNoted']}}</th>
                                           </tr>
                                         </thead>
                                         <tbody>
@@ -85,13 +85,13 @@
                                                 <td colspan="7">
                                                     <div style="text-align: Center">
                                                       <button type="button" class="btn btn-danger aureject" {{disabled}}>
-                                                        Rejected
+                                                        {{locals['Rejected']}}
                                                       </button>&nbsp;&nbsp;&nbsp;
                                                       <button type="button" class="btn btn-success auauthorizer" {{disabled}}>
-                                                        Accepted
+                                                        {{locals['Accepted']}}
                                                       </button>&nbsp;&nbsp;&nbsp;
                                                       <button type="button" class="btn btn-primary auclear" {{disabled}}>
-                                                        Clear
+                                                        {{locals['Clear']}}
                                                       </button>
                                                     </div>
                                                    </td>

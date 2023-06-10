@@ -12,7 +12,7 @@ from models.products import tbproducts
 from models.roles import tbroles
 from config.userlogging import userlogging
 from pprint import pprint
-
+from languages import lang
 
 class ListProducts(Resource):
     @classmethod
@@ -34,9 +34,12 @@ class ListProducts(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages] 
+
         userlogging.degbuglog(clientid, url, userid + " : access ListProducts/"+catid)
 
-        return make_response(render_template('index.html', menus=menus, role=role, products=products, category=category, catid=catid, task="listproducts",main="product"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, products=products, category=category, catid=catid,languages=languages,locals=locals, task="listproducts",main="product"), 200, headers)
 
 
 class CreateProducts(Resource):
@@ -57,9 +60,12 @@ class CreateProducts(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages] 
+
         userlogging.degbuglog(clientid, url, userid + " : access CreateProducts/"+catid)
 
-        return make_response(render_template('index.html', menus=menus, role=role, catid=catid, category=category, task="createproducts",main="product"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, catid=catid, category=category,languages=languages,locals=locals, task="createproducts",main="product"), 200, headers)
 
 
 class CreateCategories(Resource):
@@ -80,9 +86,12 @@ class CreateCategories(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages] 
+
         userlogging.degbuglog(clientid, url, userid + " : access CreateCategories")
 
-        return make_response(render_template('index.html', menus=menus, role=role, category=category, task="createcategories",main="product"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, category=category,languages=languages,locals=locals, task="createcategories",main="product"), 200, headers)
 
 
 class UpdateProducts(Resource):
@@ -103,9 +112,12 @@ class UpdateProducts(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages] 
+
         userlogging.degbuglog(clientid, url, userid + " : access UpdateProducts/"+catid+"/"+prodid)
 
-        return make_response(render_template('index.html', menus=menus, role=role, category=category, catid=catid, product=product, prodid=prodid, task="updateproducts",main="product"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, category=category, catid=catid, product=product, prodid=prodid,languages=languages,locals=locals, task="updateproducts",main="product"), 200, headers)
 
 
 class UpdateCategories(Resource):
@@ -126,9 +138,12 @@ class UpdateCategories(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages] 
+
         userlogging.degbuglog(clientid, url, userid + " : access UpdateCategories/"+catid)
 
-        return make_response(render_template('index.html', menus=menus, role=role, category=category, task="updatecategories",main="product"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, category=category,languages=languages,locals=locals, task="updatecategories",main="product"), 200, headers)
 
 
 class ViewProducts(Resource):
@@ -149,9 +164,12 @@ class ViewProducts(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages] 
+
         userlogging.degbuglog(clientid, url, userid + " : access ViewProducts")
 
-        return make_response(render_template('index.html', menus=menus, role=role, categories=categories, task="viewproducts",main="product"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, categories=categories,languages=languages,locals=locals, task="viewproducts",main="product"), 200, headers)
 
 
 class ViewCategories(Resource):
@@ -172,6 +190,9 @@ class ViewCategories(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages] 
+
         userlogging.degbuglog(clientid, url, userid + " : access ViewCategories")
 
-        return make_response(render_template('index.html', menus=menus, role=role, categories=categories, task="viewcategories",main="product"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, categories=categories,languages=languages,locals=locals, task="viewcategories",main="product"), 200, headers)

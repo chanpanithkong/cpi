@@ -1,9 +1,9 @@
 <div class="pagetitle">
     <nav>
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-        <li class="breadcrumb-item">Food</li>
-        <li class="breadcrumb-item active">Rice</li>
+        <li class="breadcrumb-item"><a href="/">{{locals['Dashboard']}}</a></li>
+        <li class="breadcrumb-item">{{locals['Food']}}</li>
+        <li class="breadcrumb-item active">{{locals['Rice']}}</li>
       </ol>
     </nav>
   </div>
@@ -15,7 +15,7 @@
         <div class="card">
           <div class="card-body">
             <center>
-              <h5 class="card-title">Rice Details</h5>
+              <h5 class="card-title">{{locals['Rice Details']}}</h5>
             </center>
 
 {% include 'categoryproductpage.html' %}

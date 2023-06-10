@@ -45,6 +45,9 @@ class ChangePassword(Resource):
         clientid = request.remote_addr
         url = request.base_url
         userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages] 
+
         userlogging.degbuglog(clientid, url, userid + " : access ChangePassword")
 
-        return make_response(render_template('index.html', menus=menus, role=role, task="changepassword",main="user"), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role,languages=languages,locals=locals, task="changepassword",main="user"), 200, headers)
