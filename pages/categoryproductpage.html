@@ -82,7 +82,7 @@
         price = []
         price_condition = true;
         $("input[name^='price']").each(function () {
-          if ($(this).val() == '' || $(this).val() == '0' || $(this).val() == '0.00') {
+          if ($(this).val() == '' || $(this).val() == '0' || $(this).val() == '0.00' || $(this).val() == '0.0') {
             $("#emptymessage").modal('show');
             price_condition = false;
             return false;
@@ -164,18 +164,20 @@
         }
   
         price = []
-        price_condition = true;
+        // price_condition = true;
         $("input[name^='price']").each(function () {
-          if ($(this).val() == '' || $(this).val() == '0' || $(this).val() == '0.00') {
-            $("#emptymessage").modal('show');
-            price_condition = false;
-            return false;
+          if ($(this).val() == '' || $(this).val() == '0' || $(this).val() == '0.00' || $(this).val() == '0.0') {
+            // $("#emptymessage").modal('show');
+            price.push(0);
+            // return false;
+          }else{
+            price.push($(this).val());
           }
-          price.push($(this).val());
+
         });
-        if (price_condition == false) {
-          return 0;
-        }
+        // if (price_condition == false) {
+        //   return 0;
+        // }
   
   
         note = []

@@ -68,7 +68,28 @@
             window.location = "/viewusers"
         })
         $(".restore").click(function(e) {
-            alert("Restore User")
+
+            userid = $(this).parent().parent().find(".user_id").text()
+            
+            item = {};
+            item['userid'] = userid;
+
+            $.ajax({
+                type: "POST",
+                url: "/api/updateuserprofile",
+                data: JSON.stringify({ data: item, userrequest: "restoreuser" }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                beforeSend: function () { },
+                success: function (data) {
+                    location.reload();
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+
+            })
+
         })
         
     })

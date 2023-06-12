@@ -151,7 +151,21 @@ class UpdateUserProfile(Resource):
                     msg = "Cannot delete user"
 
                 return {"msg": msg}
-        
+            elif data['userrequest'] == 'restoreuser':
+                
+                msg = "User delete successfully"
+                userid = data['data']['userid']
+                user_data = tbusers.find_by_userid(userid)
+                if user_data.username is not None:
+                    user_data.status = 5
+                    db.session.commit()
+                    userlogging.degbuglog(clientid, url, user_id + " : activate : " + userid )
+                else:
+                    userlogging.degbuglog(clientid, url, user_id + " : cannot activate : " + userid )
+                    msg = "Cannot delete user"
+
+                return {"msg": msg}
+
             return {"msg": "Cannot manage user profile"}
 
         except Exception as err:

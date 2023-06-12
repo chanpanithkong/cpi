@@ -160,6 +160,8 @@ lang = {
         "cannot update":"Cannot Update",
         "Create Product":"Create Product",
         "Create Products of":"Create Products of",
+        "Product ID":"Product ID",
+        "User Profile":"User Profile",
 
     },
     "KH":{
@@ -323,6 +325,7 @@ lang = {
         "cannot update":"មិនអាចធ្វើបច្ចុប្បន្នភាពបានទេ",
         "Create Product":"បង្កើតផលិតផល",
         "Create Products of":"បង្កើតផលិតផលរបស់",
+        "Product ID":"លេខសម្គាល់ផលិតផល",
 
     }
 }
