@@ -99,7 +99,7 @@
                                             {% endif %}
                                         </tbody>
                                       </table>
-
+                                      
                                 </div>
                             </div>
                         </div>
@@ -109,9 +109,17 @@
 
                 </div>
             </div>
+
         </div>
+        
     </div>
+    <br/>
+    <div style="text-align: center;">
+        <button type="button" class="btn btn-success" name="AcceptedAllTransactions" id="AcceptedAllTransactions">{{locals['Accepted All Transactions']}}</button>
+    </div>
+    <br/>
 </section>
+
 <style>
     .card {
         margin-bottom: 10px;
@@ -128,6 +136,29 @@
         $('#loading').modal({backdrop: 'static', keyboard: false})
 
         $('[data-toggle="tooltip"]').tooltip();
+
+        $("#AcceptedAllTransactions").click(function () {
+            
+            branchcode = $("#branchcode").val();
+            $.ajax({
+                type: "POST",
+                url: "/api/checkerupdatetransactions",
+                data: JSON.stringify({  userrequest: 'acceptall', branchcode:branchcode }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                beforeSend: function(){
+                    $("#loading").modal('show');
+                },
+                success: function (data) {
+                    
+                    location.reload();
+                },
+                error: function (errMsg) {
+                console.log(errMsg);
+                }
+            });
+
+        })
 
         $(".aureject").click(function(){
             
@@ -162,8 +193,11 @@
                 data: JSON.stringify({ data: result, userrequest: 'reject',branchcode:branchcode }),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                success: function (data) {
+                beforeSend: function(){
                     $("#loading").modal('show');
+                },
+                success: function (data) {
+                   
                     location.reload();
                 },
                 error: function (errMsg) {

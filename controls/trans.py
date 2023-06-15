@@ -276,33 +276,42 @@ class CheckerUpdateTransaction(Resource):
             clientid = request.remote_addr
             url = request.base_url
             userid = session.get('userid')
-            
             batch = tbbatches.find_by_branchbatchopen(data["branchcode"])
-            msg = "reject"    
-            
-            for dt in data['data']:
-            
-                tran_data = tbtrans.find_by_prodbatchidforchecker(dt['prodid'],batch.batchid)
-            
-                if (tran_data is not None):
-            
-                    tran_data.checker = userid
-                    now = datetime.now()
-                    currentdatetime = now.strftime("%y-%m-%dT%H:%M:%S")
-            
-                    tran_data.checkerdate = currentdatetime
-                    tran_data.checkernote = dt['checkernoted']
-            
-                    if data['userrequest'] == 'reject':
-                        tran_data.status = 11
-                        userlogging.degbuglog(clientid, url, userid + " : reject tid : " + str(tran_data.tid))
-                        msg = "reject"
-                    elif(data['userrequest'] == 'accept'):
-                        tran_data.status = 13
-                        userlogging.degbuglog(clientid, url, userid + " : accept tid : " + str(tran_data.tid))
-                        msg = "accept"
 
-                    db.session.commit()
+            if data['userrequest'] == 'acceptall':
+                tran_data = tbtrans.findbybatchid(batch.batchid)
+                for tran in tran_data:
+                    if tran.status == 3:
+                        tran.status = 13
+                        db.session.commit()
+                msg = "accept all"    
+            else:
+                
+                msg = "reject"    
+                
+                for dt in data['data']:
+                
+                    tran_data = tbtrans.find_by_prodbatchidforchecker(dt['prodid'],batch.batchid)
+                
+                    if (tran_data is not None):
+                
+                        tran_data.checker = userid
+                        now = datetime.now()
+                        currentdatetime = now.strftime("%y-%m-%dT%H:%M:%S")
+                
+                        tran_data.checkerdate = currentdatetime
+                        tran_data.checkernote = dt['checkernoted']
+                
+                        if data['userrequest'] == 'reject':
+                            tran_data.status = 11
+                            userlogging.degbuglog(clientid, url, userid + " : reject tid : " + str(tran_data.tid))
+                            msg = "reject"
+                        elif(data['userrequest'] == 'accept'):
+                            tran_data.status = 13
+                            userlogging.degbuglog(clientid, url, userid + " : accept tid : " + str(tran_data.tid))
+                            msg = "accept"
+                        
+                        db.session.commit()
 
             return {"msg": msg}
             

@@ -92,6 +92,10 @@ class tbtrans(db.Model):
         return db.session.query( tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filters).all()
     
     @classmethod
+    def findbybatchid(cls, batchid) -> "tbtrans":
+        return cls.query.filter_by(batchid=batchid).all()
+
+    @classmethod
     def find_by_batchid(cls, batchid) -> "tbtrans":
         filters = (db.Column("status") == 7)  & (
             db.Column("batchid") == batchid)

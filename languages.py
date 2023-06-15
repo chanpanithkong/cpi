@@ -162,6 +162,7 @@ lang = {
         "Create Products of":"Create Products of",
         "Product ID":"Product ID",
         "User Profile":"User Profile",
+        "Accepted All Transactions":"Accepted All Transactions",
 
     },
     "KH":{
@@ -326,6 +327,7 @@ lang = {
         "Create Product":"បង្កើតផលិតផល",
         "Create Products of":"បង្កើតផលិតផលរបស់",
         "Product ID":"លេខសម្គាល់ផលិតផល",
+        "Accepted All Transactions":"ទទួលយករាល់ប្រតិបត្តិការទាំងអស់",
 
     }
 }
