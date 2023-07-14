@@ -61,6 +61,8 @@ class UpdateUserProfile(Resource):
                 department = data['data']['department']
                 position = data['data']['position']
                 email = data['data']['email']
+                phonenumber = data['data']['phonenumber']
+                telegram = data['data']['telegram']
                 roleid = data['data']['roleid']
                 
                 if tbusers.find_by_userid(userid) is None:
@@ -74,6 +76,8 @@ class UpdateUserProfile(Resource):
                     user_data.details = department
                     user_data.position = position
                     user_data.email = email
+                    user_data.phonenumber = phonenumber
+                    user_data.telegram = telegram
                     user_data.languages = 'EN'
                     
                     cyper = cypertext()
@@ -101,6 +105,8 @@ class UpdateUserProfile(Resource):
                 department = data['data']['department']
                 position = data['data']['position']
                 email = data['data']['email']
+                phonenumber = data['data']['phonenumber']
+                telegram = data['data']['telegram']
                 roleid = data['data']['roleid']
 
                 user_data = tbusers.find_by_userid(userid)
@@ -111,6 +117,8 @@ class UpdateUserProfile(Resource):
                 user_data.details = department
                 user_data.position = position
                 user_data.email = email
+                user_data.phonenumber = phonenumber
+                user_data.telegram = telegram
                 
                 db.session.commit()
 

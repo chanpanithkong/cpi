@@ -37,7 +37,11 @@
                         <div class="card">
                             <div class="card-header" id="heading{{loop.index}}" style="text-align: left; cursor: pointer; font-weight:bold;">
                                 <div class="collapsed" data-toggle="collapse" data-target="#collapse{{loop.index}}" aria-expanded="false" aria-controls="collapse{{loop.index}}">
-                                    <div style="float: left;" class="text-{{cl[5]}}">{{loop.index}}.&nbsp;{{locals[cl[1]]}}</div>
+                                    <div style="float: left;" class="text-{{cl[5]}}">{{loop.index}}.&nbsp;
+                                    
+                                        {{cl['name' + languages.lower()]}}
+                                        
+                                    </div>
                                     
                                 </div>
                                 <div style="float: right;"><span class="badge bg-{{cl[5]}}">{{locals[cl[4]]}}</span></div>
@@ -52,6 +56,7 @@
                                             <th scope="col">#</th>
                                             <th scope="col">{{locals['ProductName']}}</th>
                                             <th scope="col">{{locals['Weight']}}</th>
+                                            <th scope="col">{{locals['Unit']}}</th>
                                             <th scope="col">{{locals['Price']}}</th>
                                             <th scope="col">{{locals['InputterNoted']}}</th>
                                             <th scope="col">{{locals['AuthorizerNoted']}}</th>
@@ -63,8 +68,9 @@
                                             {% for prod in products.find_by_catid(cl[0]) %}
                                             <tr  data-toggle="tooltip" title="{{trans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,prod.prodid).checkernote}}">
                                               <td scope="row">{{loop.index}}</td>
-                                              <td>{{prod.namekh}}<input type="hidden" name="prodid{{prod.prodid}}" value="{{prod.prodid}}"/> </td>
-                                              <td>{{trans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,prod.prodid).weight}}</td>
+                                              <td>{{prod['name' + languages.lower() ]}}<input type="hidden" name="prodid{{prod.prodid}}" value="{{prod.prodid}}"/> </td>
+                                              <td>{{prod.weight}}</td>
+                                              <td>{{prod['unit' + languages.lower() ]}}</td>
                                               <td>{{trans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,prod.prodid).price}}</td>
                                               <td>{{trans.find_by_submitterbatchidprodid(batch.createby,batch.batchid,prod.prodid).submitternote}}</td>
                                               <td>

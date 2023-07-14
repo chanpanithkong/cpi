@@ -16,19 +16,10 @@
                 <a href="/checkedtransdetail/{{br.branchcode}}" ><div class="card-header"​ style="text-align: center; color:black;font-weight: bold;">{{locals['BranchCode']}} : {{br.branchcode}}</div></a>
                 <div class="card-body">
                   <h5 class="card-title">
-                    {% if languages == "EN" %}
-                    {{br.nameen}}
-                    {% else %}
-                    {{br.namekh}}
-                    {% endif %}
+                    {{br['name' + languages.lower()]}}
                   </h5>
-
                   <p>
-                    {% if languages == "EN" %}
-                    {{br.addressen}}
-                    {% else %}
-                    {{br.addresskh}}
-                    {% endif %}
+                    {{br['address' + languages.lower()]}}
                   </p>
                   {% for ts in transtatus %}
                   {% if br.branchcode == ts[0] %}

@@ -38,11 +38,7 @@
                                     <tr class="table-info">
                                         <td>{{loop.index}}</td>
                                         <td>
-                                            {% if languages == "EN" %}
-                                            {{tbmenu[1]}}
-                                            {% else %}
-                                            {{tbmenu[2]}}
-                                            {% endif %}    
+                                            {{tbmenu['name' + languages.lower()]}}
                                         </td>
                                         <td>{{tbmenu[5]}}</td>
                                         <td>{{tbmenu[6]}}</td>
@@ -73,11 +69,7 @@
                                                 <tr class="table-warning">
                                                     <td><i class="ri-arrow-right-line"></i></td>
                                                     <td>
-                                                        {% if languages == "EN" %}
-                                                        {{men.nameen}}
-                                                        {% else %}
-                                                        {{men.namekh}}
-                                                        {% endif %}
+                                                        {{men['name' + languages.lower()]}}
                                                     </td>
                                                     <td>{{men.functions}}</td>
                                                     <td>{{men.details}}</td>

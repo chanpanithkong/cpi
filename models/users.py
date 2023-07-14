@@ -14,9 +14,11 @@ class tbusers(db.Model):
     position = db.Column(db.String)
     email = db.Column(db.String)
     status = db.Column(db.Integer)
+    phonenumber = db.Column(db.String)
+    telegram = db.Column(db.String)
     languages = db.Column(db.String)
 
-    def __init__(self, userid=None, password=None, key=None, roleid=None, username=None, gender=None, branchcode=None, details=None,position=None, email=None, status=None, languages = None):
+    def __init__(self, userid=None, password=None, key=None, roleid=None, username=None, gender=None, branchcode=None, details=None,position=None, email=None, status=None,phonenumber = None, telegram = None, languages = None):
         self.userid = userid
         self.password = password
         self.key = key
@@ -28,7 +30,10 @@ class tbusers(db.Model):
         self.position = position
         self.email = email
         self.status = status
+        self.phonenumber = phonenumber
+        self.telegram = telegram
         self.languages = languages
+
 
     @classmethod
     def find_by_userid(cls, userid) -> "tbusers":

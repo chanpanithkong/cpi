@@ -26,21 +26,13 @@
                                     {% if categories.find_by_parentid(cl.catid)|length > 0 %}
                                     <div class="collapsed" data-toggle="collapse" data-target="#collapse{{loop.index}}" aria-expanded="false" aria-controls="collapse{{loop.index}}">
                                         {{loop.index}}.&nbsp;
-                                        {% if languages == "EN" %}
-                                        {{cl.nameen}}
-                                        {% else %}
-                                        {{cl.namekh}}
-                                        {% endif %}
+                                        {{cl['name' + languages.lower()]}}
                                     </div>
                                     {% else %}
                                     <div class="collapsed" data-toggle="collapse" data-target="#collapse{{loop.index}}" aria-expanded="false" aria-controls="collapse{{loop.index}}">
                                         <div style="float: left;" class="leftcontent">
                                             {{loop.index}}.&nbsp;
-                                            {% if languages == "EN" %}
-                                            {{cl.nameen}}
-                                            {% else %}
-                                            {{cl.namekh}}
-                                            {% endif %}
+                                            {{cl['name' + languages.lower()]}}
                                             <input type="hidden" class="catid" value="{{cl.catid}}" />
                                         </div>
                                         <div style="float: right;">
@@ -81,11 +73,7 @@
                                         <div style="float: left;" class="leftcontent">
                                             &nbsp;&nbsp;&nbsp;&nbsp;{{loop.index}}.&nbsp;
                                             {{loop.index}}&nbsp;
-                                            {% if languages == "EN" %}
-                                            {{chcat.nameen}}
-                                            {% else %}
-                                            {{chcat.namekh}}
-                                            {% endif %}
+                                            {{chcat['name' + languages.lower()]}}
                                             <input type="hidden" class="catid" value="{{chcat.catid}}" />
                                         </div>
                                         <div style="float: right;">

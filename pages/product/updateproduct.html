@@ -74,23 +74,21 @@
                                 <label for="inputPassword5" class="form-label">{{locals['Category']}}</label>
                                 <select id="catid" class="form-select" name="catid">
                                 {% for ct in category.query.all() %}
-                                {% if ct.catid == catid|int %}
-                                    <option selected value="{{ct.catid}}">
-                                        {% if languages == "EN" %}
-                                        {{ct.nameen}}
-                                        {% else %}
-                                        {{ct.namekh}}
-                                        {% endif %}
-                                    </option>
-                                {% else %}
-                                    <option value="{{ct.catid}}">
-                                        {% if languages == "EN" %}
-                                        {{ct.nameen}}
-                                        {% else %}
-                                        {{ct.namekh}}
-                                        {% endif %}
-                                    </option>
+                                
+                                {% if category.find_by_countparentid(ct.catid) <= 0 %}
+
+                                    {% if ct.catid == catid|int %}    
+                                        <option selected value="{{ct.catid}}">
+                                        {{ct['name' + languages.lower()]}}
+                                        </option>
+                                    {% else %}
+                                        <option value="{{ct.catid}}">
+                                        {{ct['name' + languages.lower()]}}
+                                        </option>
+                                    {% endif %}
+
                                 {% endif %}
+
                                 {% endfor %}
                                 </select>
                             </div>

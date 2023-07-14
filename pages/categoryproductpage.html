@@ -5,6 +5,7 @@
                   <th scope="col">#</th>
                   <th scope="col">{{locals['ProductName']}}</th>
                   <th scope="col">{{locals['Weight']}}</th>
+                  <th scope="col">{{locals['Unit']}}</th>
                   <th scope="col">{{locals['Price']}}</th>
                   <th scope="col">{{locals['Details']}}</th>
                 </tr>
@@ -13,13 +14,12 @@
                 {% for prod in productlist %}
                 <tr>
                   <td>{{loop.index }} <input type="hidden" name="prodid{{prod.prodid}}" value="{{prod.prodid}}" /> </td>
-                  {% if languages == 'EN' %}
-                  <td>{{prod.nameen}}</td>
-                  {% elif languages == 'KH'%}
-                  <td>{{prod.namekh}}</td>
-                  {% endif %}
+                  <td>{{prod['name' + languages.lower()]}}</td>
                   <td><input type="text" class="form-control" name="weight{{prod.prodid}}" disabled
                     value="{{prod.weight}}" />
+                  </td>
+                  <td><input type="text" class="form-control" name="weight{{prod.prodid}}" disabled
+                    value="{{prod['unit' + languages.lower()]}}" />
                   </td>
                   <td>
                     <input type="number" onkeydown="javascript: return event.keyCode == 69 ? false : true" class="form-control" name="price{{prod.prodid}}" value ="{{tbtrans.find_by_batchidprodid(batch.batchid,prod.prodid).price}}" />

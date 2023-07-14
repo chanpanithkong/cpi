@@ -38,6 +38,7 @@ lang = {
         "CheckerNoted":"Checker Noted",
         "Rice":"Rice", 
         "Shipping":"Shipping", 
+        "Transportation":"Transportation", 
         "Ingredients":"Ingredients", 
         "Meat":"Meat", 
         "Fish and Seafood":"Fish and Seafood", 
@@ -49,7 +50,8 @@ lang = {
         "Medicine":"Medicine", 
         "Housing":"Housing", 
         "Rice Details":"Rice Details", 
-        "Shipping Details":"Shipping Details", 
+        "Shipping Details":"Shipping Details",
+        "Transportation Details":"Transportation Details", 
         "Ingredients Details":"Ingredients Details", 
         "Meat Details":"Meat Details", 
         "Fish and Seafood Details":"Fish and Seafood Details", 
@@ -71,6 +73,7 @@ lang = {
         "Change Password":"Change Password",
         "Username":"User Name",
         "Role":"Role",
+        "Unit":"Unit",
         "Inputter":"Inputter",
         "Authorizer":"Authorizer",
         "Checker":"Checker",
@@ -163,7 +166,8 @@ lang = {
         "Product ID":"Product ID",
         "User Profile":"User Profile",
         "Accepted All Transactions":"Accepted All Transactions",
-
+        "PhoneNumber":"Phone Number",
+        "Telegram":"Telegram",
     },
     "KH":{
         "home":"ផ្ទះ",
@@ -204,6 +208,7 @@ lang = {
         "CheckerNoted":"ព័ត៌មានអ្នកពិនិត្យ",
         "Rice":"អង្ករ", 
         "Shipping":"ការដឹកជញ្ជូន", 
+        "Transportation":"ការដឹកជញ្ជូន",
         "Ingredients":"គ្រឿងផ្សំ", 
         "Meat":"សាច់", 
         "Fish and Seafood":"ត្រី និងអាហារសមុទ្រ", 
@@ -216,6 +221,7 @@ lang = {
         "Housing":"លំនៅដ្ឋាន",
         "Rice Details":"ព័ត៌មានលម្អិតអង្ករ", 
         "Shipping Details":"ព័ត៌មានលម្អិតការដឹកជញ្ជូន", 
+        "Transportation Details":"ព័ត៌មានលម្អិតការដឹកជញ្ជូន", 
         "Ingredients Details":"ព័ត៌មានលម្អិតគ្រឿងផ្សំ", 
         "Meat Details":"ព័ត៌មានលម្អិតសាច់", 
         "Fish and Seafood Details":"ព័ត៌មានលម្អិតត្រី និងអាហារសមុទ្រ", 
@@ -238,6 +244,7 @@ lang = {
         "User Profile":"កម្រងព័ត៌មានអ្នកប្រើប្រាស់",
         "Username":"ឈ្មោះ​អ្នកប្រើប្រាស់",
         "Role":"តួនាទី",
+        "Unit":"ឯកតា",
         "Inputter":"អ្នកបញ្ចូល",
         "Authorizer":"អ្នកអនុញ្ញាត",
         "Checker":"អ្នកត្រួតពិនិត្យ",
@@ -328,6 +335,7 @@ lang = {
         "Create Products of":"បង្កើតផលិតផលរបស់",
         "Product ID":"លេខសម្គាល់ផលិតផល",
         "Accepted All Transactions":"ទទួលយករាល់ប្រតិបត្តិការទាំងអស់",
-
+        "PhoneNumber":"លេខទូរសព្ទ",
+        "Telegram":"តេឡេក្រាម",
     }
 }

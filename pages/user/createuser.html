@@ -65,11 +65,7 @@
                 {% for branch in tb_branches.query.all() %}
                 
                     <option value="{{branch.branchcode}}">{{branch.branchcode}} - 
-                      {% if languages == "EN" %}
-                      {{branch.nameen}}
-                      {% else %}
-                      {{branch.namekh}}
-                      {% endif %}
+                      {{branch['name' + languages.lower()]}}
                     </option>
               
                 {% endfor %}
@@ -97,7 +93,23 @@
             </div>
             <div class="col-md-2"></div>
           </div>
-                   
+                  
+          <br/>
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-4">
+              <label for="inputPassword5" class="form-label">{{locals['PhoneNumber']}}</label>
+              <input type="text" class="form-control" id="phonenumber" placeholder="{{locals['Please fill here']}}" name="phonenumber"
+                value="">
+            </div>
+            <div class="col-md-4">
+              <label for="inputEmail5" class="form-label">{{locals['Telegram']}}</label>
+              <input type="text" class="form-control" id="telegram" placeholder="{{locals['Please fill here']}}"
+                name="telegram" value="">
+            </div>
+            <div class="col-md-2"></div>
+          </div>
+
           <br/>
           <div>
             <div style="text-align: Center">
@@ -146,7 +158,8 @@
       department = $("#department").val();
       position = $("#position").val();
       email = $("#email").val();
-
+      phonenumber = $("#phonenumber").val();
+      telegram = $("#telegram").val();
 
       item = {};
       item['userid'] = userid;
@@ -157,6 +170,8 @@
       item['department'] = department;
       item['position'] = position;
       item['email'] = email;
+      item['phonenumber'] = phonenumber;
+      item['telegram'] = telegram;
 
       if( userid == ''){
         $("#useridnull").modal('show');

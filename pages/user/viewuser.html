@@ -25,6 +25,8 @@
                             <th scope="col">{{locals['Role']}}</th>
                             <th scope="col">{{locals['Department']}}</th>
                             <th scope="col">{{locals['Email']}}</th>
+                            <th scope="col">{{locals['PhoneNumber']}}</th>
+                            <th scope="col">{{locals['Telegram']}}</th>
                             <th scope="col">{{locals['Action']}}</th>
                           </tr>
                         </thead>
@@ -35,15 +37,13 @@
                                 <td class="user_id">{{ user[0].userid }}</td>
                                 <td>{{ user[0].username }}</td>
                                 <td>
-                                    {% if languages == "EN" %}
-                                    {{ user[2].nameen }}
-                                    {% else %}
-                                    {{ user[2].namekh }}
-                                    {% endif %}
+                                    {{user[2]['name' + languages.lower()]}}
                                 </td>
                                 <td>{{ locals[user[1].rolename] }}</td>
                                 <td>{{ user[0].details }}</td>
                                 <td>{{ user[0].email }}</td>
+                                <td>{{ user[0].phonenumber }}</td>
+                                <td>{{ user[0].telegram }}</td>
                                 <td>
                                     <button type="button" class="btn btn-warning btn-sm update" data-toggle="tooltip" data-placement="top" title="{{locals['Update User']}}">
                                         <i class="bi bi-pencil-square"></i>

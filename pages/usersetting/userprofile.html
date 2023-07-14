@@ -94,11 +94,7 @@
               <div class="row">
                 <div class="col-lg-3 col-md-4 label">{{locals['BranchCode']}}</div>
                 <div class="col-lg-9 col-md-8">
-                  {% if languages == "EN"%}
-                  {{branch.find_by_branchcode(user.branchcode).nameen}}
-                  {% else %}
-                  {{branch.find_by_branchcode(user.branchcode).namekh}}
-                  {% endif %}
+                  {{branch.find_by_branchcode(user.branchcode)['name' + languages.lower() ]}}
                 </div>
               </div>
 
@@ -115,6 +111,16 @@
               <div class="row">
                 <div class="col-lg-3 col-md-4 label">{{locals['Email']}}</div>
                 <div class="col-lg-9 col-md-8">{{user.email}}</div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-3 col-md-4 label">{{locals['PhoneNumber']}}</div>
+                <div class="col-lg-9 col-md-8">{{user.phonenumber}}</div>
+              </div>
+              
+              <div class="row">
+                <div class="col-lg-3 col-md-4 label">{{locals['Telegram']}}</div>
+                <div class="col-lg-9 col-md-8">{{user.telegram}}</div>
               </div>
 
             </div>
@@ -171,23 +177,13 @@
 
                       {% for br in branch.getallbranches() %}
                       {% if user.branchcode == br.branchcode %}
-
-                      {% if languages == "EN"%}
-                      <option value="{{br.branchcode}}" selected>{{br.nameen}}</option>
-                      {% else %}
-                      <option value="{{br.branchcode}}" selected>{{br.namekh}}</option>
-                      {% endif %}  
-
                       
+                      <option value="{{br.branchcode}}" selected>{{br['name' + languages.lower()]}}</option>
+
                       {% else %}
 
-                      {% if languages == "EN"%}
-                      <option value="{{br.branchcode}}">{{br.nameen}}</option>
-                      {% else %}
-                      <option value="{{br.branchcode}}">{{br.namekh}}</option>
-                      {% endif %}  
-
-                      
+                      <option value="{{br.branchcode}}">{{br['name' + languages.lower()]}}</option>  
+                     
                       {% endif %}
                       
                       {% endfor %}
@@ -238,6 +234,34 @@
                       class="form-control"
                       id="email"
                       value="{{user.email}}"
+                    />
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="Address" class="col-md-4 col-lg-3 col-form-label"
+                    >{{locals['PhoneNumber']}}</label
+                  >
+                  <div class="col-md-8 col-lg-9">
+                    <input
+                      name="address"
+                      type="text"
+                      class="form-control"
+                      id="email"
+                      value="{{user.phonenumber}}"
+                    />
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="Address" class="col-md-4 col-lg-3 col-form-label"
+                    >{{locals['Telegram']}}</label
+                  >
+                  <div class="col-md-8 col-lg-9">
+                    <input
+                      name="address"
+                      type="text"
+                      class="form-control"
+                      id="email"
+                      value="{{user.telegram}}"
                     />
                   </div>
                 </div>

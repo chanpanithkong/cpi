@@ -80,19 +80,11 @@
                                 {% for ct in category.query.all() %}
                                 {% if ct.catid == catid|int %}
                                     <option selected value="{{ct.catid}}">
-                                        {% if languages == "EN" %}
-                                        {{ct.nameen}}
-                                        {% else %}
-                                        {{ct.namekh}}
-                                        {% endif %}
+                                        {{ct['name' + languages.lower()]}}
                                     </option>
                                 {% else %}
                                     <option value="{{ct.catid}}">
-                                        {% if languages == "EN" %}
-                                        {{ct.nameen}}
-                                        {% else %}
-                                        {{ct.namekh}}
-                                        {% endif %}
+                                        {{ct['name' + languages.lower()]}}
                                     </option>
                                 {% endif %}
                                 {% endfor %}

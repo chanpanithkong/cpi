@@ -77,18 +77,10 @@
                 {% for branch in tb_branches.query.all() %}
                 
                   {% if user[2].branchcode == branch.branchcode %}
-                    <option value="{{branch.branchcode}}" selected>{{branch.branchcode}} - {% if languages == "EN" %}
-                      {{branch.nameen}}
-                      {% else %}
-                      {{branch.namekh}}
-                      {% endif %}
+                    <option value="{{branch.branchcode}}" selected>{{branch.branchcode}} - {{branch['name' + languages.lower()]}}
                     </option>
                   {% else %}
-                    <option value="{{branch.branchcode}}">{{branch.branchcode}} - {% if languages == "EN" %}
-                      {{branch.nameen}}
-                      {% else %}
-                      {{branch.namekh}}
-                      {% endif %}
+                    <option value="{{branch.branchcode}}">{{branch.branchcode}} - {{branch['name' + languages.lower()]}}
                     </option>
                   {% endif %}
               
@@ -117,7 +109,23 @@
             </div>
             <div class="col-md-2"></div>
           </div>
-                   
+                
+          <br />
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-4">
+              <label for="inputPassword5" class="form-label">{{locals['PhoneNumber']}}</label>
+              <input type="text" class="form-control" id="phonenumber" placeholder="Please fill Position" name="phonenumber"
+                value="{{user[0].phonenumber}}">
+            </div>
+            <div class="col-md-4">
+              <label for="inputEmail5" class="form-label">{{locals['Telegram']}}</label>
+              <input type="text" class="form-control" id="telegram" placeholder="Please fill Email"
+                name="telegram" value="{{user[0].telegram}}">
+            </div>
+            <div class="col-md-2"></div>
+          </div>
+
           <br/>
           <div>
             <div style="text-align: Center">
@@ -154,7 +162,8 @@
       department = $("#department").val();
       position = $("#position").val();
       email = $("#email").val();
-
+      phonenumber = $("#phonenumber").val();
+      telegram = $("#telegram").val();
 
       item = {};
       item['userid'] = userid;
@@ -165,6 +174,8 @@
       item['department'] = department;
       item['position'] = position;
       item['email'] = email;
+      item['phonenumber'] = phonenumber;
+      item['telegram'] = telegram;
 
       $.ajax({
         type: "POST",
