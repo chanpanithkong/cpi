@@ -27,6 +27,7 @@
                   <th scope="col">{{locals['Status']}}</th>
                   <th scope="col">{{locals['Number of Products']}}</th>
                   <th scope="col">{{locals['Date']}}</th>
+                  <th scope="col" style="text-align: center;">{{locals['Action']}}</th>
                 </tr>
               </thead>
               <tbody>
@@ -40,10 +41,57 @@
                   <td>{{trn[4]}}</td>
                   <td>{{trn[5]}}</td>
                   <td>{{trn[6]}}</td>
+                  <td>
+                    <a class="page-link" href="/transactiondetails/{{trn[7]}}" style="text-align: center;">
+                      <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="{{locals['Transaction Details']}}">
+                        <i class="bx bx-spreadsheet"></i>
+                    </button>
+                    </a>
+                  </td>
                 </tr>
                 {% endfor %}
               </tbody>
             </table>
+
+            <nav aria-label="Page navigation example">
+              <ul class="pagination justify-content-end">
+                <li class="page-item">
+                  {% set previous = page - 1 %}
+                  {% set disable = "disabled" %}
+                  {% if page > 1 %}
+                  {% set disable = "" %}
+                  {% endif %}
+                  <a class="page-link {{disable}}" href="/historyoftrans/{{previous}}" aria-label="Next">
+                    <span aria-hidden="true">Previous</span>
+                    <span class="sr-only"></span>
+                  </a>
+                </li>
+                {% for pageindex in pagelist %}
+                {% if pageindex < page + 3 and pageindex > page - 3 %}
+                {% if pageindex == page %}
+                <li class="page-item"><a class="page-link active" href="/historyoftrans/{{pageindex}}">{{pageindex}}</a></li>
+                {% else %}
+                <li class="page-item"><a class="page-link" href="/historyoftrans/{{pageindex}}">{{pageindex}}</a></li>
+                {% endif %}
+                
+                {% endif %}
+                
+                {% endfor %}
+                <li class="page-item">
+                  {% set next = page + 1 %}
+                  {% set disable = "disabled" %}
+                  {% if page < pagelist|length %}
+                  {% set disable = "" %}
+                  {% endif %}
+                  <a class="page-link {{disable}}" href="/historyoftrans/{{next}}" aria-label="Previous">
+                    <span aria-hidden="true">Next</span>
+                    <span class="sr-only"></span>
+                  </a>
+                </li>
+
+              </ul>
+            </nav>  
+
           </div>
           {% if isbutton == True %}
           <div>

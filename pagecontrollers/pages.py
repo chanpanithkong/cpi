@@ -127,13 +127,14 @@ class HomePage(Resource):
             if role.roleid == 3 or role.roleid == 4:
                 sql = "select   t2.sts,   sum(cnt) procnt,  t2.status,   t2.details,   t2.icon,    count(t2.catid) catcnt from (	select t1.*,   sts.status,	   sts.details,	   sts.icon	from (	select cat.catid,   (case when trn.status is null then 7 else trn.status end) sts,   count(pro.prodid) cnt from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid   left join  tbtrans trn on pro.prodid = trn.productid	where trn.batchid = " + str(tbbat.batchid) + " group by catid, sts ) t1 inner join tbstatus sts on t1.sts = sts.statusid where t1.sts = sts.statusid ) t2 group by t2.sts,  t2.status,  t2.details, t2.icon "\
                       " union "\
-                      " select '10' sts, sum(procnt) procnt, 'Total' status, 'primary' details, 'bx bxl-firebase' icon, sum(catcnt) catcnt from ( select   t2.sts,   sum(cnt) procnt,  t2.status,   t2.details,   t2.icon,    count(t2.catid) catcnt  from (	select t1.*,   sts.status,	   sts.details,	   sts.icon	from (	select cat.catid,    '10'  sts,    count(pro.prodid) cnt from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid group by catid, sts ) t1 inner join tbstatus sts on t1.sts = sts.statusid where t1.sts = sts.statusid ) t2 group by t2.sts,  t2.status,  t2.details, t2.icon ) t3 "\
-                      " union "\
-                      " select '7' sts, (case when ttt1.procnt is null then 80 else (ttt2.procnt - ttt1.procnt) end)  procnt, 'Pending' status, 'warning' details, 'bx bx-grid-alt' icon, (case when ttt1.procnt is null then 12 else (ttt2.catcnt - ttt1.catcnt) end) catcnt "\
-                      " from (select sum(tt1.procnt) procnt ,sum(tt1.catcnt) catcnt from( select   t2.sts,   sum(cnt) procnt,  t2.status,   t2.details,   t2.icon,    count(t2.catid) catcnt from (	select t1.*,   sts.status,	   sts.details,	   sts.icon	from (	select cat.catid,   (case when trn.status is null then 7 else trn.status end) sts,   count(pro.prodid) cnt from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid   left join  tbtrans trn on pro.prodid = trn.productid	where trn.batchid = " + str(tbbat.batchid) + " group by catid, sts ) t1 inner join tbstatus sts on t1.sts = sts.statusid where t1.sts = sts.statusid ) t2 group by t2.sts,  t2.status,  t2.details, t2.icon  ) tt1 ) ttt1 "\
-                      " , (select '10' sts, sum(procnt) procnt, 'Total' status, 'primary' details, 'bx bxl-firebase' icon, sum(catcnt) catcnt from ( select   t2.sts,   sum(cnt) procnt,  t2.status,   t2.details,   t2.icon,    count(t2.catid) catcnt  from (	select t1.*,   sts.status,	   sts.details,	   sts.icon	from (	select cat.catid,    '10'  sts,    count(pro.prodid) cnt from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid group by catid, sts ) t1 inner join tbstatus sts on t1.sts = sts.statusid where t1.sts = sts.statusid ) t2 group by t2.sts,  t2.status,  t2.details, t2.icon ) t3) ttt2 "
+                      " select '10' sts, (select count(pro.prodid) from tbproducts pro) procnt, 'Total' status, 'primary' details, 'bx bxl-firebase' icon, (select count(*) from tbcategories cat where cat.parentid = 0) catcnt from ( select   t2.sts,   sum(cnt) procnt,  t2.status,   t2.details,   t2.icon,    count(t2.catid) catcnt  from (	select t1.*,   sts.status,	   sts.details,	   sts.icon	from (	select cat.catid,    '10'  sts,    count(pro.prodid) cnt from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid where cat.parentid = 0 group by catid, sts ) t1 inner join tbstatus sts on t1.sts = sts.statusid where t1.sts = sts.statusid ) t2 group by t2.sts,  t2.status,  t2.details, t2.icon ) t3 "\
+                    #   " union "
+                      
+                    #   " select '7' sts, (case when ttt1.procnt is null then (select count(*) from tbproducts) else (ttt2.procnt - ttt1.procnt) end)  procnt, 'Pending' status, 'warning' details, 'bx bx-grid-alt' icon, (case when ttt1.procnt is null then 12 else (ttt2.catcnt - ttt1.catcnt) end) catcnt "\
+                    #   " from (select sum(tt1.procnt) procnt ,sum(tt1.catcnt) catcnt from( select   t2.sts,   sum(cnt) procnt,  t2.status,   t2.details,   t2.icon,    count(t2.catid) catcnt from (	select t1.*,   sts.status,	   sts.details,	   sts.icon	from (	select cat.catid,   (case when trn.status is null then 7 else trn.status end) sts,   count(pro.prodid) cnt from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid   left join  tbtrans trn on pro.prodid = trn.productid	where trn.batchid = " + str(tbbat.batchid) + " group by catid, sts ) t1 inner join tbstatus sts on t1.sts = sts.statusid where t1.sts = sts.statusid ) t2 group by t2.sts,  t2.status,  t2.details, t2.icon  ) tt1 ) ttt1 "\
+                    #   " , (select '10' sts, sum(procnt) procnt, 'Total' status, 'primary' details, 'bx bxl-firebase' icon, sum(catcnt) catcnt from ( select   t2.sts,   sum(cnt) procnt,  t2.status,   t2.details,   t2.icon,    count(t2.catid) catcnt  from (	select t1.*,   sts.status,	   sts.details,	   sts.icon	from (	select cat.catid,    '10'  sts,    count(pro.prodid) cnt from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid group by catid, sts ) t1 inner join tbstatus sts on t1.sts = sts.statusid where t1.sts = sts.statusid ) t2 group by t2.sts,  t2.status,  t2.details, t2.icon ) t3) ttt2 "
             else:
-                sql = " select '10' sts, sum(procnt) procnt, 'Total' status, 'primary' details, 'bx bxl-firebase' icon, sum(catcnt) catcnt from ( select   t2.sts,   sum(cnt) procnt,  t2.status,   t2.details,   t2.icon,    count(t2.catid) catcnt  from (	select t1.*,   sts.status,	   sts.details,	   sts.icon	from (	select cat.catid,    '10'  sts,    count(pro.prodid) cnt from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid group by catid, sts ) t1 inner join tbstatus sts on t1.sts = sts.statusid where t1.sts = sts.statusid ) t2 group by t2.sts,  t2.status,  t2.details, t2.icon ) t3 "
+                sql = " select '10' sts, sum(procnt) procnt, 'Total' status, 'primary' details, 'bx bxl-firebase' icon, (select count(*) from tbcategories cat where cat.parentid = 0) catcnt from ( select   t2.sts,   sum(cnt) procnt,  t2.status,   t2.details,   t2.icon,    count(t2.catid) catcnt  from (	select t1.*,   sts.status,	   sts.details,	   sts.icon	from (	select cat.catid,    '10'  sts,    count(pro.prodid) cnt from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid group by catid, sts ) t1 inner join tbstatus sts on t1.sts = sts.statusid where t1.sts = sts.statusid ) t2 group by t2.sts,  t2.status,  t2.details, t2.icon ) t3 "
                       
         result = db.engine.execute(sql)
         for record in result:
@@ -153,7 +154,7 @@ class HomePage(Resource):
 
 class HistoryOfTrans(Resource):
     @classmethod
-    def get(cls):
+    def get(cls, page):
 
         if not session.get("userid"):
             return redirect("/login")
@@ -166,13 +167,32 @@ class HistoryOfTrans(Resource):
         branchcode = session.get("branchcode")
 
         sql = "select trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status, count(trn.productid) cnt, date(trn.checkerdate) checkdate from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid  where trn.status = 13 group by trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status,date(trn.checkerdate) order by 1"
-        
+        sqlcount = "select count(*) as cnt from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid where trn.branchcode = '001' " 
+
+        page = int(page)
+        if page <= 1:
+            page = 1
+
+        limitpage = 2
+        rowdisplay = (page-1) * limitpage
+
         if role.roleid == 3 or role.roleid == 4:
-            sql = "select trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status, count(trn.productid) cnt, date(trn.checkerdate) checkdate from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid  where trn.branchcode = '"+ branchcode +"' and trn.status = 13 group by trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status,date(trn.checkerdate)"
+            sql = "select trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status, count(trn.productid) cnt, date(trn.checkerdate) checkdate, trn.batchid from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid  where trn.branchcode = '"+ branchcode +"' and trn.status = 1 group by trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status,date(trn.checkerdate), trn.batchid limit " + str(rowdisplay) + "," + str(limitpage) 
+            sqlcount = "select count(t1.batchid) cnt from ( select trn.batchid from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid  where trn.branchcode = '"+ branchcode +"' and trn.status = 1 group by trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status,date(trn.checkerdate), trn.batchid) t1 " 
+
+            # sql = "select trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status, 10 cnt, date(trn.checkerdate) checkdate from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid where trn.branchcode = '001' limit " + str(rowdisplay) + "," + str(limitpage) 
         
+        print(sqlcount)
 
-        result = db.engine.execute(sql)
+        resultcount = db.engine.execute(sqlcount) 
+        result = db.engine.execute(sql) 
 
+        pagelist = []        
+        for rowcount in resultcount:
+            for i in range(0,rowcount[0],limitpage):
+                pagelist.append(int(i/limitpage)+1)
+
+        
         trans = []
         for record in result:
             trans.append(record)
@@ -185,7 +205,33 @@ class HistoryOfTrans(Resource):
 
         userlogging.degbuglog(clientid, url, userid + " : access HistoryOfTrans")
 
-        return make_response(render_template('index.html', menus=menus, role=role,trans=trans,languages=languages,locals=locals, task="historyoftrans",main=""), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role,trans=trans,pagelist=pagelist,page=page,languages=languages,locals=locals, task="historyoftrans",main=""), 200, headers)
+
+
+class TransactionDetails(Resource):
+    @classmethod
+    def get(cls, batchid):
+
+        if not session.get("userid"):
+            return redirect("/login")
+
+        headers = {'Content-Type': 'text/html'}
+        menus = tbrolemenu
+        role = tbroles.find_by_roleid(session.get('roleid'))
+        branchcode = session.get("branchcode")
+        batchid = int(batchid)
+
+        sql = "select ROW_NUMBER() OVER(ORDER BY trn.branchcode) as RN, trn.branchcode,cat.nameen,cat.namekh, trn.productid,pro.nameen,pro.namekh,pro.uniten,pro.unitkh, trn.price, trn.weight, trn.submitter, trn.submitdate from tbtrans trn inner join tbproducts pro on pro.prodid = trn.productid inner join tbcategories cat on cat.catid = pro.catid where trn.batchid = 1"
+                
+        print(sql)
+
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages]
+
+        return make_response(render_template('index.html', menus=menus, role=role,batchid=batchid,languages=languages,locals=locals, task="transactiondetails",main=""), 200, headers)
 
 
 class BeverageTobacco(Resource):
@@ -536,6 +582,7 @@ class SubmittedTrans(Resource):
             
         products = tbproducts
         trans = tbtrans
+        category = tbcategories
 
         clientid = request.remote_addr
         url = request.base_url
@@ -545,7 +592,7 @@ class SubmittedTrans(Resource):
 
         userlogging.degbuglog(clientid, url, userid + " : access SubmittedTrans")
 
-        return make_response(render_template('index.html', menus=menus, role=role, catlist=catlist, products=products, batch=batch, trans=trans,languages=languages,locals=locals, task="submittedtrans",main=""), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, catlist=catlist,category=category, products=products, batch=batch, trans=trans,languages=languages,locals=locals, task="submittedtrans",main=""), 200, headers)
 
 
 class AuthorizedTrans(Resource):

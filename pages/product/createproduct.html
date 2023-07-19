@@ -27,7 +27,7 @@
                             <div class="col-md-4">
                                 <label for="inputPassword5" class="form-label">{{locals['Product Code']}}</label>
                                 <input type="text" class="form-control" id="productcode"
-                                    placeholder="Ple{{locals['Please fill here']}}" name="productcode" value="">
+                                    placeholder="{{locals['Please fill here']}}" name="productcode" value="">
                             </div>
                             <div class="col-md-2"></div>
                         </div>
@@ -78,6 +78,9 @@
                                 <label for="inputPassword5" class="form-label">{{locals['Category']}}</label>
                                 <select id="catid" class="form-select" name="catid">
                                 {% for ct in category.query.all() %}
+
+                                {% if category.find_by_countparentid(ct.catid) <= 0 %}
+                                
                                 {% if ct.catid == catid|int %}
                                     <option selected value="{{ct.catid}}">
                                         {{ct['name' + languages.lower()]}}
@@ -87,6 +90,9 @@
                                         {{ct['name' + languages.lower()]}}
                                     </option>
                                 {% endif %}
+
+                                {% endif %}    
+
                                 {% endfor %}
                                 </select>
                             </div>

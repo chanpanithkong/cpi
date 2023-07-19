@@ -47,6 +47,15 @@ class RoleManagement(Resource):
             
                 userlogging.degbuglog(clientid, url, userid + " : create role id : " + str(maxtid))
                 msg = "Role created successfully"
+            
+            elif data['userrequest'] == 'deleterole':
+                roleid = data['data']['roleid']
+                role_data = tbroles.find_by_roleid(roleid)
+                db.session.delete(role_data)
+                db.session.commit()
+
+                userlogging.degbuglog(clientid, url, userid + " : delete role id : " + str(roleid))
+                msg = "Role deleted successfully"
 
             elif data['userrequest'] == 'updaterole':
                 

@@ -92,7 +92,32 @@
         })
         $(".delete").click(function() {
             roleid = $(this).parent().parent().find(".role_id").text();
-            alert(roleid)
+            
+            item = {};
+            item['roleid'] = roleid;
+
+            $.ajax({
+                type: "POST",
+                url: "/api/rolemanagement",
+                data: JSON.stringify({ data: item, userrequest: "deleterole" }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                beforeSend: function () { },
+                success: function (data) {
+                // if(data.msg == "UserID already exist"){
+                //   $("#userexist").modal('show');
+                // }else{  
+                    location.reload();
+                // }
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+
+            })
+            
+            
+
         })
         $(".update").click(function(){
             roleid = $(this).parent().parent().find(".role_id").text();

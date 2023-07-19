@@ -20,7 +20,7 @@ from controls.status import Status, StatusList
 from controls.trans import Tran, TransList, InputterInsertTran, AuthorizerUpdateTran, InputterUpdateTran, CheckerUpdateTransaction, AuthorizerUpdateTransaction, InsertAllProductToTrans, UpdateTranByCategories, TransWithBatchWherePriceAndWeightIsEmpty, TransWithBatchCategoryWherePriceAndWeightIsEmpty, TransWithBatchCategory
 from controls.batches import Batch, BatchesList, CreateBatch, CloseBatch, ReopenBatch
 from controls.users import User, UsersList, UserLogin, ChangePasswordForUser, UpdateUserProfile
-from pagecontrollers.pages import UpdateRoles,ViewUsers,ViewDeleteUsers, UpdateUsers, CreateUsers, CreateStatus, UpdateStatus, ViewStatus, AttachedRolePermission, CreatePermission, CreateRoles, CreateBatches, ViewBatches, UpdateBatches, Logout, UserLoginPage, LoginPage, HomePage, SubmittedTrans, AuthorizedTrans, CheckedTrans, CheckedTransDetails, HistoryOfTrans, BeverageTobacco, Restaurant, ClothShoes, Shipping, Medicine, Housing
+from pagecontrollers.pages import UpdateRoles,ViewUsers,ViewDeleteUsers, UpdateUsers, CreateUsers, CreateStatus, UpdateStatus, ViewStatus, AttachedRolePermission, CreatePermission, CreateRoles, CreateBatches, ViewBatches, UpdateBatches, Logout, UserLoginPage, LoginPage, HomePage, SubmittedTrans, AuthorizedTrans, CheckedTrans, CheckedTransDetails, HistoryOfTrans, TransactionDetails, BeverageTobacco, Restaurant, ClothShoes, Shipping, Medicine, Housing
 from pagecontrollers.usersetting import UserProfile, ChangePassword
 from pagecontrollers.food import Rice, Ingredient, Meat, FishSeaFood, Fruit, Vegetables
 from pagecontrollers.categoryproduct import ListProducts, CreateProducts, CreateCategories, UpdateProducts, UpdateCategories, ViewProducts, ViewCategories
@@ -133,7 +133,8 @@ api.add_resource(CheckedTrans, "/checkedtrans")
 api.add_resource(CheckedTransDetails, "/checkedtransdetail/<branchcode>")
 
 # historyoftrans
-api.add_resource(HistoryOfTrans, "/historyoftrans")
+api.add_resource(HistoryOfTrans, "/historyoftrans/<page>")
+api.add_resource(TransactionDetails, "/transactiondetails/<batchid>")
 
 # products management
 api.add_resource(CreateProducts, "/createproducts/<catid>")

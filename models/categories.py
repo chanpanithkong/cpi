@@ -30,5 +30,9 @@ class tbcategories(db.Model):
         return cls.query.filter_by(parentid=0).all()
 
     @classmethod
+    def find_by_catidischild(cls, catid, parentid) -> "tbcategories":
+        return cls.query.filter_by(catid=catid,parentid=parentid)
+
+    @classmethod
     def find_by_countparentid(cls, parentid) -> "tbcategories":
         return cls.query.filter_by(parentid=parentid).count()
