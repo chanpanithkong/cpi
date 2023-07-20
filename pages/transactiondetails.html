@@ -16,8 +16,69 @@
                     <center>
                         <h5 class="card-title">{{locals['Transaction Details']}}</h5>
                     </center>
+                    <br/>
+                    <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">{{locals['Category']}}</th>
+                            <th scope="col">{{locals['ProductName']}}</th>
+                            <th scope="col">{{locals['Unit']}}</th>
+                            <th scope="col">{{locals['Price']}}</th>
+                            <th scope="col">{{locals['Weight']}}</th>
+                            <th scope="col">{{locals['Submitter']}}</th>
+                            <th scope="col">{{locals['Authorizer']}}</th>
+                            <th scope="col">{{locals['Checker']}}</th>
+                            <th scope="col">{{locals['Status']}}</th>
+                            
+                          </tr>
+                        </thead>
+                        <tbody>
+                            {% for trn in trans %}
+                            <tr>
+                                <td>{{loop.index}}</td>
+                                <td>{{trn["catname" + languages.lower()]}}</td>
+                                <td>{{trn["proname" + languages.lower()]}}</td>
+                                <td>{{trn["unit" + languages.lower()]}}</td>
+                                <td>{{trn[7]}}</td>
+                                <td>{{trn[8]}}</td>
+                                <td>{{trn[9]}}</td>
+                                <td>{{trn[13]}}</td>
+                                <td>{{trn[15]}}</td>
+                                <td>{{locals[trn[11]]}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+
+                    </table>
+                    <div>
+                        <div style="text-align: Center">
+                          <button type="button" class="btn btn-primary" id="export" >
+                            {{locals['Export Transaction']}}
+                          </button>
+                          &nbsp;
+                          <button type="button" class="btn btn-success" id="back">
+                            {{locals['Back to Transaction History']}}
+                          </button>
+                        </div>
+                        <br />
+                      </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+<script>
+    $(document).ready(function () {
+     
+        $("#export").click(function(){
+            
+        });
+        
+        $("#back").click(function(){
+            window.location = "/historyoftrans/1"
+        });
+        
+  
+    });
+  </script>

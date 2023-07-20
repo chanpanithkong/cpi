@@ -27,6 +27,7 @@
                   <th scope="col">{{locals['Status']}}</th>
                   <th scope="col">{{locals['Number of Products']}}</th>
                   <th scope="col">{{locals['Date']}}</th>
+                  <th scope="col">{{locals['Batch ID']}}</th>
                   <th scope="col" style="text-align: center;">{{locals['Action']}}</th>
                 </tr>
               </thead>
@@ -38,9 +39,10 @@
                   <td>{{trn[1]}}</td>
                   <td>{{trn[2]}}</td>
                   <td>{{trn[3]}}</td>
-                  <td>{{trn[4]}}</td>
+                  <td>{{locals[trn[4]]}}</td>
                   <td>{{trn[5]}}</td>
                   <td>{{trn[6]}}</td>
+                  <td>{{trn[7]}}</td>
                   <td>
                     <a class="page-link" href="/transactiondetails/{{trn[7]}}" style="text-align: center;">
                       <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="{{locals['Transaction Details']}}">
@@ -97,13 +99,13 @@
           <div>
             <div style="text-align: Center">
               <button type="button" class="btn btn-primary" id="save" {{disabled}}>
-                Save
+                {{locals['Save']}}
               </button>
               <button type="button" class="btn btn-success" id="submit" {{disabled}}>
-                Submit
+                {{locals['Submit']}}
               </button>
               <button type="button" class="btn btn-danger" id="clear" {{disabled}}>
-                Clear
+                {{locals['Clear']}}
               </button>
             </div>
             <br />

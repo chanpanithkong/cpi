@@ -166,24 +166,22 @@ class HistoryOfTrans(Resource):
 
         branchcode = session.get("branchcode")
 
-        sql = "select trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status, count(trn.productid) cnt, date(trn.checkerdate) checkdate from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid  where trn.status = 13 group by trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status,date(trn.checkerdate) order by 1"
-        sqlcount = "select count(*) as cnt from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid where trn.branchcode = '001' " 
-
         page = int(page)
         if page <= 1:
             page = 1
 
-        limitpage = 2
+        limitpage = 10
         rowdisplay = (page-1) * limitpage
 
+        sql = "select trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status, count(trn.productid) cnt, date(trn.checkerdate) checkdate, trn.batchid from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid group by trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status,date(trn.checkerdate), trn.batchid order by trn.batchid desc limit " + str(rowdisplay) + "," + str(limitpage) 
+        sqlcount = "select count(t1.batchid) cnt from ( select trn.batchid from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid group by trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status,date(trn.checkerdate), trn.batchid) t1 " 
+
         if role.roleid == 3 or role.roleid == 4:
-            sql = "select trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status, count(trn.productid) cnt, date(trn.checkerdate) checkdate, trn.batchid from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid  where trn.branchcode = '"+ branchcode +"' and trn.status = 1 group by trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status,date(trn.checkerdate), trn.batchid limit " + str(rowdisplay) + "," + str(limitpage) 
-            sqlcount = "select count(t1.batchid) cnt from ( select trn.batchid from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid  where trn.branchcode = '"+ branchcode +"' and trn.status = 1 group by trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status,date(trn.checkerdate), trn.batchid) t1 " 
+            sql = "select trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status, count(trn.productid) cnt, date(trn.checkerdate) checkdate, trn.batchid from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid  where trn.branchcode = '"+ branchcode +"' group by trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status,date(trn.checkerdate), trn.batchid order by trn.batchid desc limit " + str(rowdisplay) + "," + str(limitpage) 
+            sqlcount = "select count(t1.batchid) cnt from ( select trn.batchid from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid  where trn.branchcode = '"+ branchcode +"' group by trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status,date(trn.checkerdate), trn.batchid) t1 " 
 
             # sql = "select trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status, 10 cnt, date(trn.checkerdate) checkdate from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid where trn.branchcode = '001' limit " + str(rowdisplay) + "," + str(limitpage) 
         
-        print(sqlcount)
-
         resultcount = db.engine.execute(sqlcount) 
         result = db.engine.execute(sql) 
 
@@ -221,9 +219,13 @@ class TransactionDetails(Resource):
         branchcode = session.get("branchcode")
         batchid = int(batchid)
 
-        sql = "select ROW_NUMBER() OVER(ORDER BY trn.branchcode) as RN, trn.branchcode,cat.nameen,cat.namekh, trn.productid,pro.nameen,pro.namekh,pro.uniten,pro.unitkh, trn.price, trn.weight, trn.submitter, trn.submitdate from tbtrans trn inner join tbproducts pro on pro.prodid = trn.productid inner join tbcategories cat on cat.catid = pro.catid where trn.batchid = 1"
-                
-        print(sql)
+        sql = "select  cat.nameen catnameen, cat.namekh catnamekh, trn.productid, pro.nameen pronameen,pro.namekh pronamekh, pro.uniten,pro.unitkh, trn.price, trn.weight, trn.submitter, trn.submitdate, sts.status, trn.branchcode,trn.authorizer, trn.authorizedate, trn.checker, trn.checkerdate from tbtrans trn inner join tbproducts pro on pro.prodid = trn.productid inner join tbcategories cat on cat.catid = pro.catid inner join tbstatus sts on trn.status = sts.statusid  where trn.batchid = " + str(batchid) + " order by prodid "
+                      
+        result = db.engine.execute(sql) 
+
+        trans = []
+        for record in result:
+            trans.append(record)
 
         clientid = request.remote_addr
         url = request.base_url
@@ -231,7 +233,7 @@ class TransactionDetails(Resource):
         languages = session.get('languages')
         locals = lang[languages]
 
-        return make_response(render_template('index.html', menus=menus, role=role,batchid=batchid,languages=languages,locals=locals, task="transactiondetails",main=""), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role,batchid=batchid,trans=trans,languages=languages,locals=locals, task="transactiondetails",main=""), 200, headers)
 
 
 class BeverageTobacco(Resource):

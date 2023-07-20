@@ -74,6 +74,8 @@ lang = {
         "Username":"User Name",
         "Role":"Role",
         "Unit":"Unit",
+        "Submitter":"Submitter",
+        "Submitted Date":"Submitted Date",
         "Inputter":"Inputter",
         "Authorizer":"Authorizer",
         "Checker":"Checker",
@@ -169,6 +171,9 @@ lang = {
         "Accepted All Transactions":"Accepted All Transactions",
         "PhoneNumber":"Phone Number",
         "Telegram":"Telegram",
+        "Export Transaction":"Export Transaction",
+        "Back to Transaction History":"Back to Transaction History",
+        "Batch ID":"Batch ID",
     },
     "KH":{
         "home":"ផ្ទះ",
@@ -339,5 +344,10 @@ lang = {
         "Accepted All Transactions":"ទទួលយករាល់ប្រតិបត្តិការទាំងអស់",
         "PhoneNumber":"លេខទូរសព្ទ",
         "Telegram":"តេឡេក្រាម",
+        "Export Transaction":"ទាញយកប្រតិបត្តិ",
+        "Back to Transaction History":"ត្រឡប់ទៅ ប្រវត្តិប្រតិបត្តិការ",
+        "Batch ID":"លេខសម្គាល់បាច់",
+        "Submitter":"អ្នកដាក់ស្នើ",
+        "Submitted Date":"កាលបរិច្ឆេទដែលបានដាក់ស្នើ",
     }
 }
