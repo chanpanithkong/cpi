@@ -6,6 +6,7 @@
                   <th scope="col">{{locals['ProductName']}}</th>
                   <th scope="col">{{locals['Weight']}}</th>
                   <th scope="col">{{locals['Unit']}}</th>
+                  <th scope="col">{{locals['Base Price']}}</th>
                   <th scope="col">{{locals['Price']}}</th>
                   <th scope="col">{{locals['Details']}}</th>
                 </tr>
@@ -20,6 +21,9 @@
                   </td>
                   <td><input type="text" class="form-control" name="unit" disabled
                     value="{{prod['unit' + languages.lower()]}}" />
+                  </td>
+                  <td><input type="text" class="form-control" name="baseprice{{prod.baseprice}}" disabled
+                    value="{{prod.baseprice}}" />
                   </td>
                   <td>
                     <input type="number" onkeydown="javascript: return event.keyCode == 69 ? false : true" class="form-control" name="price{{prod.prodid}}" value ="{{tbtrans.find_by_batchidprodid(batch.batchid,prod.prodid).price}}" />
@@ -79,6 +83,22 @@
           return 0;
         }
   
+
+        baseprice = []
+        baseprice_condition = true;
+        $("input[name^='baseprice']").each(function () {
+          if ($(this).val() == '' || $(this).val() == '0' || $(this).val() == '0.00') {
+            $("#emptymessage").modal('show');
+            baseprice_condition = false;
+            return false;
+          }
+          baseprice.push($(this).val());
+        });
+  
+        if (baseprice_condition == false) {
+          return 0;
+        }
+
         price = []
         price_condition = true;
         $("input[name^='price']").each(function () {
@@ -103,6 +123,7 @@
           item = {};
           item['prodid'] = prodid[i];
           item['weight'] = weight[i];
+          item['baseprice'] = baseprice[i];
           item['price'] = price[i];
           item['note'] = note[i];
           result.push(item);
@@ -162,7 +183,24 @@
         if (weight_condition == false) {
           return 0;
         }
+
+
+        baseprice = []
+        baseprice_condition = true;
+        $("input[name^='baseprice']").each(function () {
+          if ($(this).val() == '') {
+            $("#emptymessage").modal('show');
+            baseprice_condition = false;
+            return false;
+          }
+          baseprice.push($(this).val());
+        });
   
+        if (baseprice_condition == false) {
+          return 0;
+        }
+
+        
         price = []
         // price_condition = true;
         $("input[name^='price']").each(function () {
@@ -184,11 +222,12 @@
         $("input[name^='note']").each(function () {
           note.push($(this).val());
         });
-  
+        
         for (i = 0; i < price.length; i++) {
           item = {};
           item['prodid'] = prodid[i];
           item['weight'] = weight[i];
+          item['baseprice'] = baseprice[i];
           item['price'] = price[i];
           item['note'] = note[i];
           result.push(item);

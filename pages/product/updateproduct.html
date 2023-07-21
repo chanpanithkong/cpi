@@ -97,7 +97,12 @@
                         <br/>
                         <div class="row">
                             <div class="col-md-2"></div>
-                            <div class="col-md-8">
+                            <div class="col-md-4">
+                                <label for="inputEmail5" class="form-label">{{locals['Base Price']}}</label>
+                                <input type="text" class="form-control" id="baseprice"
+                                    placeholder="{{locals['Please fill here']}}" name="baseprice" value="{{product.find_by_prodid(prodid).baseprice}}">
+                            </div>
+                            <div class="col-md-4">
                                 <label for="inputEmail5" class="form-label">{{locals['Details']}}</label>
                                 <input type="text" class="form-control" id="details"
                                     placeholder="{{locals['Please fill here']}}" name="details" value="{{product.find_by_prodid(prodid).details}}">
@@ -153,6 +158,7 @@
             uniten = $("#uniten").val()
             weight = $("#weight").val()
             catid = $("#catid").val()
+            baseprice = $("#baseprice").val()
             details = $("#details").val()
 
             item = {};
@@ -164,6 +170,7 @@
             item['uniten'] = uniten;
             item['weight'] = weight;
             item['catid'] = catid;
+            item['baseprice'] = baseprice;
             item['details'] = details;
 
             $.ajax({
@@ -192,6 +199,7 @@
             $("#uniten").val("")
             $("#weight").val(0)
             $("#catid").val(1)
+            ("#baseprice").val(0)
             $("#details").val("")
             
         })

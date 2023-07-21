@@ -13,6 +13,7 @@ class CategoriesSchema(SQLAlchemyAutoSchema):
     nameen = auto_field()
     namekh = auto_field()
     parentid = auto_field()
+    baseprice = auto_field()
     details = auto_field()
     
 

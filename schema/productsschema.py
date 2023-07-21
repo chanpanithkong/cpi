@@ -13,6 +13,7 @@ class ProductsSchema(SQLAlchemyAutoSchema):
     nameen = auto_field()
     namekh = auto_field()
     weight = auto_field()
+    baseprice = auto_field()
     catid = auto_field()
     details = auto_field()
     uniten = auto_field()

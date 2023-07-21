@@ -42,7 +42,7 @@ class InsertAllProductToTrans(Resource):
                         
                         get_trandata = tbtrans.find_by_tid(trans.tid)
                         get_trandata.price = dt['price']
-                        
+                        get_trandata.baseprice = dt['baseprice']
                         get_trandata.submitternote = dt['note']
                         
                         #saved 12
@@ -81,6 +81,8 @@ class InsertAllProductToTrans(Resource):
                 
                         get_trandata.weight = dt['weight']
                         get_trandata.price = dt['price']
+                        get_trandata.baseprice = dt['baseprice']
+
                         get_trandata.submitter = userid
                         get_trandata.submitternote = dt['note']
                         get_trandata.authorizer = ""
@@ -443,7 +445,6 @@ class TransWithBatchCategory(Resource):
         try:
             filter = (tbtrans.batchid == batchid) & (tbcategories.catid == catid) 
             data = db.session.query(tbtrans, tbproducts, tbcategories).filter(tbtrans.productid == tbproducts.prodid).filter(tbproducts.catid == tbcategories.catid).filter(filter).order_by(tbtrans.tid).all()
-            pprint(data)
             
             json_data = []
             for dt in data:

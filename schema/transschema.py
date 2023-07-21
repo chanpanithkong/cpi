@@ -13,6 +13,8 @@ class TransSchema(SQLAlchemyAutoSchema):
     productid = auto_field()
     weight = auto_field()
     price   = auto_field()
+    baseprice   = auto_field()
+    
     submitter   = auto_field()
     submitdate = auto_field()
     submitternote   = auto_field()

@@ -16,6 +16,7 @@ class tbtrans(db.Model):
 
     weight = db.Column(db.Float)
     price = db.Column(db.Float)
+    baseprice = db.Column(db.Float)
 
     submitter = db.Column(db.String)
     submitdate = db.Column(db.DateTime)
@@ -39,12 +40,13 @@ class tbtrans(db.Model):
     batchid = db.Column(db.Integer)
     # tbbatches = db.relationship("tbbatches")
 
-    def __init__(self, tid=None, branchcode=None, productid=None, weight=None, price=None, submitter=None, submitdate=None, submitternote=None, authorizer=None, authorizedate=None, authorizernote=None, checker=None, checkerdate=None, checkernote=None, status=None, valuedate=None, trandate=None, countsubmitted=None, batchid=None):
+    def __init__(self, tid=None, branchcode=None, productid=None, weight=None, price=None,baseprice=None, submitter=None, submitdate=None, submitternote=None, authorizer=None, authorizedate=None, authorizernote=None, checker=None, checkerdate=None, checkernote=None, status=None, valuedate=None, trandate=None, countsubmitted=None, batchid=None):
         self.tid = tid
         self.branchcode = branchcode
         self.productid = productid
         self.weight = weight
         self.price = price
+        self.baseprice = baseprice
         self.submitter = submitter
         self.submitdate = submitdate
         self.submitternote = submitternote

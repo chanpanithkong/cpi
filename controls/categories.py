@@ -41,7 +41,9 @@ class CreateCategory(Resource):
                 cat.nameen = data['data']['nameen']
                 cat.namekh = data['data']['namekh']
                 cat.parentid = data['data']['parentid']
-                cat.details = data['data']['details']
+                cat.baseprice = data['data']['baseprice']
+                cat.details = ""
+
                 db.session.add(cat)
                 db.session.commit()
                 msg = "create sucessfully"
@@ -54,7 +56,8 @@ class CreateCategory(Resource):
                 cat.nameen = data['data']['nameen']
                 cat.namekh = data['data']['namekh']
                 cat.parentid = data['data']['parentid']
-                cat.details = data['data']['details']
+                cat.baseprice = data['data']['baseprice']
+                cat.details = ""
 
                 db.session.commit()
                 msg = "update sucessfully"

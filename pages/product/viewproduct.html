@@ -24,9 +24,20 @@
                             <div class="row">
                                 <div class="card-header" id="heading{{loop.index}}" style="text-align: left; cursor: pointer; color: green; font-weight:bold;">
                                     {% if categories.find_by_parentid(cl.catid)|length > 0 %}
-                                    <div class="collapsed" data-toggle="collapse" data-target="#collapse{{loop.index}}" aria-expanded="false" aria-controls="collapse{{loop.index}}">
+                                    <div class="collapsed" data-toggle="collapse" style="float: left;" data-target="#collapse{{loop.index}}" aria-expanded="false" aria-controls="collapse{{loop.index}}">
                                         {{loop.index}}.&nbsp;
                                         {{cl['name' + languages.lower()]}}
+                                    </div>
+                                    <div style="float: right;">
+                                        <a href="/updatecategories/{{cl.catid}}">
+                                        <button type="button" class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="top" title="{{locals['Update Category']}}">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                        </a>
+                                        &nbsp;
+                                        <button type="button" class="btn btn-danger btn-sm cdelete"  data-toggle="tooltip" data-placement="top" title="{{locals['Delete Category']}}">
+                                            <i class="bi bi-trash-fill"></i>
+                                        </button>
                                     </div>
                                     {% else %}
                                     <div class="collapsed" data-toggle="collapse" data-target="#collapse{{loop.index}}" aria-expanded="false" aria-controls="collapse{{loop.index}}">
@@ -38,12 +49,7 @@
                                         <div style="float: right;">
                                             <a href="/listproducts/{{cl.catid}}">
                                             <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="{{locals['Add Product to']}} 
-                                            {% if languages == 'EN' %}
-                                            {{cl.nameen}}
-                                            {% else %}
-                                            {{cl.namekh}}
-                                            {% endif %}
-                                            ">
+                                            {{cl['name' + languages.lower()]}}">
                                                 <i class="bi bi-save2-fill"></i>
                                             </button>
                                             </a>
@@ -79,12 +85,7 @@
                                         <div style="float: right;">
                                             <a href="/listproducts/{{chcat.catid}}">
                                             <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="{{locals['Add Product to']}} 
-                                            {% if languages == 'EN' %}
-                                            {{chcat.nameen}}
-                                            {% else %}
-                                            {{chcat.namekh}}
-                                            {% endif %}
-                                            ">
+                                            {{chcat['name' + languages.lower()]}}">
                                                 <i class="bi bi-save2-fill"></i>
                                             </button>
                                             </a>

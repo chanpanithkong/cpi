@@ -43,6 +43,7 @@ class APICreateProduct(Resource):
                 cat.uniten = data['data']['uniten']
                 cat.weight = data['data']['weight']
                 cat.catid = data['data']['catid']
+                cat.baseprice = data['data']['baseprice']
                 cat.details = data['data']['details']
             
                 db.session.add(cat)
@@ -61,6 +62,7 @@ class APICreateProduct(Resource):
                 cat.unitkh = data['data']['unitkh']
                 cat.weight = data['data']['weight']
                 cat.catid = data['data']['catid']
+                cat.baseprice = data['data']['baseprice']
                 cat.details = data['data']['details']
                 
                 db.session.commit()

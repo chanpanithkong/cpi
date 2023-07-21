@@ -174,6 +174,7 @@ lang = {
         "Export Transaction":"Export Transaction",
         "Back to Transaction History":"Back to Transaction History",
         "Batch ID":"Batch ID",
+        "Base Price":"Base Price",
     },
     "KH":{
         "home":"ផ្ទះ",
@@ -349,5 +350,6 @@ lang = {
         "Batch ID":"លេខសម្គាល់បាច់",
         "Submitter":"អ្នកដាក់ស្នើ",
         "Submitted Date":"កាលបរិច្ឆេទដែលបានដាក់ស្នើ",
+        "Base Price":"តម្លៃមូលដ្ឋាន",
     }
 }

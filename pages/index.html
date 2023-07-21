@@ -257,11 +257,7 @@
       <li class="nav-item">
         <a class="nav-link {{active1}}" data-bs-target="#{{menu[1].details}}" data-bs-toggle="collapse" href="#">
           <i class="bx {{ menu[1].icon }}"></i><span>
-            {% if languages == 'EN' %}
-            {{ menu[1].nameen }}
-            {% else %}
-            {{ menu[1].namekh }}
-            {% endif %}
+            {{ menu[1]['name' + languages.lower()] }}
           </span><i
             class="bi bi-chevron-down ms-auto"></i>
         </a>
@@ -274,12 +270,7 @@
           {% endif %}
           <li>
             <a href="{{child[1].functions}}" {{active3}}>
-              </i><span>
-                {% if languages == 'EN' %}
-                {{ child[1].nameen }}
-                {% else %}
-                {{ child[1].namekh }}
-                {% endif %}
+              </i><span>{{ child[1]['name' + languages.lower()] }}
               </span>
             </a>
           </li>
@@ -295,11 +286,7 @@
       <li class="nav-item">
         <a class="nav-link {{active}}" href="{{menu[1].functions}}">
           <i class="bx {{menu[1].icon}}"></i>
-          <span>{% if languages == 'EN' %}
-            {{ menu[1].nameen }}
-            {% else %}
-            {{ menu[1].namekh }}
-            {% endif %}
+          <span>{{ menu[1]['name' + languages.lower()] }}
           </span>
         </a>
       </li>

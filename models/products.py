@@ -6,7 +6,8 @@ class tbproducts(db.Model):
     productcode = db.Column(db.String)
     nameen = db.Column(db.Integer)
     namekh = db.Column(db.String)
-    weight = db.Column(db.String)
+    weight = db.Column(db.Float)
+    baseprice = db.Column(db.Float)
     details = db.Column(db.String)
     catid = db.Column(db.Integer)
     unitkh = db.Column(db.String)
@@ -14,12 +15,13 @@ class tbproducts(db.Model):
     # tbcategories = db.relationship("tbcategories")
     
     
-    def __init__(self, prodid = None, productcode = None, nameen = None, namekh = None, weight = None, catid = None, details = None, tbcategories = None, unitkh = None, uniten = None):
+    def __init__(self, prodid = None, productcode = None, nameen = None, namekh = None, weight = None, baseprice =None, catid = None, details = None, tbcategories = None, unitkh = None, uniten = None):
         self.prodid = prodid
         self.productcode = productcode
         self.nameen = nameen
         self.namekh = namekh
         self.weight = weight
+        self.baseprice = baseprice
         self.catid = catid
         self.details = details
         self.tbcategories = tbcategories

@@ -63,9 +63,9 @@
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <label for="inputPassword5" class="form-label">{{locals['Details']}}</label>
-                                <input type="text" class="form-control" id="details"
-                                    placeholder="{{locals['Please fill here']}}" name="details" value="">
+                                <label for="inputPassword5" class="form-label">{{locals['Base Price']}}</label>
+                                <input type="text" class="form-control" id="baseprice"
+                                    placeholder="{{locals['Please fill here']}}" name="baseprice" value="">
                             </div>
                             <div class="col-md-2"></div>
                         </div>
@@ -74,7 +74,7 @@
 
                         <div>
                             <div style="text-align: Center">
-                              <button type="button" class="btn btn-primary" id="save" disabled>
+                              <button type="button" class="btn btn-primary" id="save">
                                 {{locals['Add New Category']}}
                               </button>
                               &nbsp;
@@ -103,6 +103,8 @@
 <script>
 
     $(document).ready(function () {
+        
+        $("#baseprice").val(0);
 
         $("#save").click(function () {
 
@@ -111,7 +113,7 @@
             nameen = $("#nameen").val();
             namekh = $("#namekh").val();
             parentid = $("#parentid").val();
-            details = $("#details").val();
+            baseprice = $("#baseprice").val();
 
 
             item = {};
@@ -119,7 +121,7 @@
             item['nameen'] = nameen;
             item['namekh'] = namekh;
             item['parentid'] = parentid;
-            item['details'] = details;
+            item['baseprice'] = baseprice;
 
             $.ajax({
                 type: "POST",
@@ -147,7 +149,7 @@
             $("#nameen").val("");
             $("#namekh").val("");
             $("#parentid").val(0);
-            $("#details").val("");
+            $("#baseprice").val(0);
             
             
         })

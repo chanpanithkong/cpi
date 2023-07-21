@@ -24,7 +24,7 @@
                             <th scope="col">{{locals['English Name']}}</th>
                             <th scope="col">{{locals['Khmer Name']}}</th>
                             <th scope="col">{{locals['Weight']}}</th>
-                            <!-- <th scope="col">Category</th> -->
+                            <th scope="col">{{locals['Base Price']}}</th>
                             <th scope="col">{{locals['Details']}}</th>
                             <th scope="col">{{locals['Action']}}</th>
                           </tr>
@@ -37,7 +37,7 @@
                             <td>{{pd.nameen}}</td>
                             <td>{{pd.namekh}}</td>
                             <td>{{pd.weight}}</td>
-                            <!-- <td>{{category.find_by_catid(pd.catid).nameen}}</td> -->
+                            <td>{{pd.baseprice}}</td>
                             <td>{{pd.details}}</td>
                             <td>
                                 <a href="/updateproducts/{{pd.catid}}/{{pd.prodid}}" >

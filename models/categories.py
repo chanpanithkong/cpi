@@ -7,14 +7,16 @@ class tbcategories(db.Model):
     nameen = db.Column(db.String)
     namekh = db.Column(db.String)
     parentid = db.Column(db.Integer)
+    baseprice = db.Column(db.Float)
     details = db.Column(db.String)
         
-    def __init__(self, catid=None, catcode=None, nameen=None, namekh=None, parentid=None, details=None):
+    def __init__(self, catid=None, catcode=None, nameen=None, namekh=None, parentid=None,baseprice=None, details=None):
         self.catid = catid
         self.catcode = catcode
         self.nameen = nameen
         self.namekh = namekh
         self.parentid = parentid
+        self.baseprice = baseprice
         self.details = details
         
     @classmethod
