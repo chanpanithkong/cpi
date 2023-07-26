@@ -1,0 +1,130 @@
+<div class="pagetitle">
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">{{locals['Dashboard']}}</a></li>
+            <li class="breadcrumb-item active">{{locals['View Branches']}}</li>
+        </ol>
+    </nav>
+</div>
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <center>
+                        <h5 class="card-title">{{locals['Branch Management']}}</h5>
+                    </center>
+                    <br/>
+                    <div class='row'>
+                        <div class="col-lg-12">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">{{locals['BranchCode']}}</th>
+                                        <th scope="col">{{locals['Branch Name']}}</th>
+                                        <th scope="col">{{locals['Address']}}</th>
+                                        <th scope="col">{{locals['Weight']}}</th>
+                                        <th scope="col">{{locals['Deails']}}</th>
+                                        <th scope="col"><center>{{locals['Action']}}</center></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for br in branches %}
+                                    <tr>
+                                        <td>{{loop.index }}</td>
+                                        <td class="branchcode">{{br.branchcode}}</td>
+                                        <td>{{br['name' + languages.lower() ]}}</td>
+                                        <td>{{br['address' + languages.lower() ]}}</td>
+                                        <td>{{br.weight}}</td>
+                                        <td>{{br.details}}</td>
+                                        <td align="center">
+                                            <button type="button" class="btn btn-warning btn-sm update"
+                                                data-toggle="tooltip" data-placement="top" title="{{locals['Update Branch']}}">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </button>
+                                            &nbsp;
+                                            <button type="button" class="btn btn-danger btn-sm delete"
+                                                data-toggle="tooltip" data-placement="top" title="{{locals['Delete Branch']}}">
+                                                <i class="bi bi-trash-fill"></i>
+                                            </button>
+                                            
+
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        
+
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div style="text-align: Center">
+                                <button type="button" class="btn btn-primary" id="add">
+                                    {{locals['Add New Branch']}}
+                                </button>
+                                &nbsp;
+                                <button type="button" class="btn btn-success" id="refresh">
+                                    {{locals['Refresh']}}
+                                </button>
+                              </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    $(document).ready(function() {
+
+        $('[data-toggle="tooltip"]').tooltip();
+
+
+        $("#refresh").click(function() {
+            window.location.reload();
+        })
+        $("#add").click(function() {
+            
+            window.location = "/createbranch"
+        })
+
+        $(".delete").click(function() {
+            branchcode = $(this).parent().parent().find(".branchcode").text();
+            
+            item = {};
+            item['branchcode'] = branchcode;
+            
+            $.ajax({
+                type: "POST",
+                url: "/api/branch",
+                data: JSON.stringify({ data: item, userrequest: "deletebranch" }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                beforeSend: function () { },
+                success: function (data) {
+                // if(data.msg == "UserID already exist"){
+                //   $("#userexist").modal('show');
+                // }else{  
+                    location.reload();
+                // }
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+
+            })
+            
+            
+
+        })
+        $(".update").click(function(){
+            branchcode = $(this).parent().parent().find(".branchcode").text();
+            window.location = "/updatebranch/" + branchcode
+        })
+        
+    })
+</script>

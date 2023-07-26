@@ -14,6 +14,7 @@ class TransSchema(SQLAlchemyAutoSchema):
     weight = auto_field()
     price   = auto_field()
     baseprice   = auto_field()
+    branchweight   = auto_field()
     
     submitter   = auto_field()
     submitdate = auto_field()

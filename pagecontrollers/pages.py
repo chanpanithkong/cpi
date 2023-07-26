@@ -681,6 +681,192 @@ class AuthorizedTrans(Resource):
         return make_response(render_template('index.html', menus=menus, role=role, catlist=catlist, products=products, batch=batch, trans=trans,languages=languages,locals=locals, task="authorizedtrans",main=""), 200, headers)
 
 
+class SessionDuration(Resource):
+    @classmethod
+    def get(cls):
+
+        if not session.get("userid"):
+            return redirect("/login")
+
+        headers = {'Content-Type': 'text/html'}
+        menus = tbrolemenu
+
+        role = tbroles.find_by_roleid(session.get('roleid'))
+        
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages]
+
+
+        userlogging.degbuglog(clientid, url, userid + " : access Session")
+
+        return make_response(render_template('index.html', menus=menus, role=role, languages=languages, locals=locals, task="sessionduration",main=""), 200, headers)
+
+class BranchSessionDetails(Resource):
+    @classmethod
+    def get(cls, branchcode, page):
+
+        if not session.get("userid"):
+            return redirect("/login")
+
+        headers = {'Content-Type': 'text/html'}
+        menus = tbrolemenu
+
+        role = tbroles.find_by_roleid(session.get('roleid'))
+
+        # branchcode = branchcode
+
+        page = int(page)
+        if page <= 1:
+            page = 1
+
+        limitpage = 10
+        rowdisplay = (page-1) * limitpage
+
+        sql = "select trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status, count(trn.productid) cnt, date(trn.checkerdate) checkdate, trn.batchid from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid group by trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status,date(trn.checkerdate), trn.batchid order by trn.batchid desc limit " + str(rowdisplay) + "," + str(limitpage) 
+        sqlcount = "select count(t1.batchid) cnt from ( select trn.batchid from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid group by trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status,date(trn.checkerdate), trn.batchid) t1 " 
+
+        if role.roleid == 3 or role.roleid == 4:
+            sql = "select trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status, count(trn.productid) cnt, date(trn.checkerdate) checkdate, trn.batchid from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid  where trn.branchcode = '"+ branchcode +"' group by trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status,date(trn.checkerdate), trn.batchid order by trn.batchid desc limit " + str(rowdisplay) + "," + str(limitpage) 
+            sqlcount = "select count(t1.batchid) cnt from ( select trn.batchid from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid  where trn.branchcode = '"+ branchcode +"' group by trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status,date(trn.checkerdate), trn.batchid) t1 " 
+
+            # sql = "select trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status, 10 cnt, date(trn.checkerdate) checkdate from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid where trn.branchcode = '001' limit " + str(rowdisplay) + "," + str(limitpage) 
+        
+        resultcount = db.engine.execute(sqlcount) 
+        result = db.engine.execute(sql) 
+
+        pagelist = []        
+        for rowcount in resultcount:
+            for i in range(0,rowcount[0],limitpage):
+                pagelist.append(int(i/limitpage)+1)
+
+        
+        trans = []
+        for record in result:
+            trans.append(record)
+
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages]
+
+        userlogging.degbuglog(clientid, url, userid + " : access HistoryOfTrans")
+
+        return make_response(render_template('index.html', menus=menus, role=role,trans=trans,pagelist=pagelist,page=page,languages=languages,locals=locals, task="sessiondetails",main=""), 200, headers)
+
+
+class UpdateBranch(Resource):
+    @classmethod
+    def get(cls, branchcode):
+
+        if not session.get("userid"):
+            return redirect("/login")
+
+        headers = {'Content-Type': 'text/html'}
+        menus = tbrolemenu
+
+        role = tbroles.find_by_roleid(session.get('roleid'))
+
+        branch = tbbranches.find_by_branchcode(branchcode)
+
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages]
+
+
+        userlogging.degbuglog(clientid, url, userid + " : access Session")
+
+        return make_response(render_template('index.html', menus=menus, role=role, languages=languages, locals=locals,branch=branch, task="updatebranch",main=""), 200, headers)
+
+
+class CreateBranch(Resource):
+    @classmethod
+    def get(cls):
+
+        if not session.get("userid"):
+            return redirect("/login")
+
+        headers = {'Content-Type': 'text/html'}
+        menus = tbrolemenu
+
+        role = tbroles.find_by_roleid(session.get('roleid'))
+
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages]
+
+
+        userlogging.degbuglog(clientid, url, userid + " : access Session")
+
+        return make_response(render_template('index.html', menus=menus, role=role, languages=languages, locals=locals, task="createbranch",main=""), 200, headers)
+
+
+class ViewBranches(Resource):
+    @classmethod
+    def get(cls):
+
+        if not session.get("userid"):
+            return redirect("/login")
+
+        headers = {'Content-Type': 'text/html'}
+        menus = tbrolemenu
+        
+        role = tbroles.find_by_roleid(session.get('roleid'))
+
+        branches = tbbranches.query.all()
+
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages]
+
+
+        userlogging.degbuglog(clientid, url, userid + " : access Session")
+
+        return make_response(render_template('index.html', menus=menus,  role=role, languages=languages, locals=locals,branches=branches, task="viewbranches",main=""), 200, headers)
+
+
+class BranchSession(Resource):
+    @classmethod
+    def get(cls):
+
+        if not session.get("userid"):
+            return redirect("/login")
+
+        headers = {'Content-Type': 'text/html'}
+        menus = tbrolemenu
+
+        role = tbroles.find_by_roleid(session.get('roleid'))
+
+        branches = tbbranches.getallbranches()
+
+        sql = "select t1.branchcode, t1.status, count(t1.status) as cnt, t1.statusname, t1.details from ( select trn.branchcode,trn.status,  pro.catid, count(pro.catid) as cnt, sts.status statusname, sts.details from tbtrans trn inner join tbstatus sts on sts.statusid = trn.status inner join tbproducts pro on trn.productid = pro.prodid  inner join tbbatches bat on bat.batchid = trn.batchid  where bat.statusid = 9 and sts.statusid in (3,11,13) group by trn.branchcode,trn.status,  pro.catid ) as t1 group by t1.branchcode, t1.status order by t1.statusname "
+        result = db.engine.execute(sql)
+
+        transtatus = []
+        for record in result:
+            transtatus.append(record)
+
+        clientid = request.remote_addr
+        url = request.base_url
+        userid = session.get('userid')
+        languages = session.get('languages')
+        locals = lang[languages]
+
+
+        userlogging.degbuglog(clientid, url, userid + " : access Session")
+
+        return make_response(render_template('index.html', menus=menus, role=role, branches=branches, transtatus=transtatus,languages=languages, locals=locals, task="session",main=""), 200, headers)
+
+
 class CheckedTrans(Resource):
     @classmethod
     def get(cls):

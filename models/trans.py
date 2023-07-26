@@ -17,6 +17,7 @@ class tbtrans(db.Model):
     weight = db.Column(db.Float)
     price = db.Column(db.Float)
     baseprice = db.Column(db.Float)
+    branchweight = db.Column(db.Float)
 
     submitter = db.Column(db.String)
     submitdate = db.Column(db.DateTime)

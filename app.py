@@ -9,7 +9,7 @@ from urllib.parse import quote
 
 from models.menus import tbmenus
 
-from controls.branches import Branch, BranchesList, IndexPage
+from controls.branches import Branch, BranchesList, IndexPage, APICreateBranch
 from controls.categories import CreateCategory, CategoriesList, Category, CategoriesParent, CategoriesChildFromParent
 from controls.measurement import Measurement, MeasurementList
 from controls.menus import Menu, MenusList
@@ -20,7 +20,7 @@ from controls.status import Status, StatusList
 from controls.trans import Tran, TransList, InputterInsertTran, AuthorizerUpdateTran, InputterUpdateTran, CheckerUpdateTransaction, AuthorizerUpdateTransaction, InsertAllProductToTrans, UpdateTranByCategories, TransWithBatchWherePriceAndWeightIsEmpty, TransWithBatchCategoryWherePriceAndWeightIsEmpty, TransWithBatchCategory
 from controls.batches import Batch, BatchesList, CreateBatch, CloseBatch, ReopenBatch
 from controls.users import User, UsersList, UserLogin, ChangePasswordForUser, UpdateUserProfile
-from pagecontrollers.pages import UpdateRoles,ViewUsers,ViewDeleteUsers, UpdateUsers, CreateUsers, CreateStatus, UpdateStatus, ViewStatus, AttachedRolePermission, CreatePermission, CreateRoles, CreateBatches, ViewBatches, UpdateBatches, Logout, UserLoginPage, LoginPage, HomePage, SubmittedTrans, AuthorizedTrans, CheckedTrans, CheckedTransDetails, HistoryOfTrans, TransactionDetails, BeverageTobacco, Restaurant, ClothShoes, Shipping, Medicine, Housing
+from pagecontrollers.pages import UpdateRoles,ViewUsers,ViewDeleteUsers, UpdateUsers, CreateUsers, CreateStatus, UpdateStatus, ViewStatus, AttachedRolePermission, CreatePermission, CreateRoles, CreateBatches, ViewBatches, UpdateBatches, Logout, UserLoginPage, LoginPage, HomePage, SubmittedTrans, AuthorizedTrans, CheckedTrans,BranchSession,BranchSessionDetails,SessionDuration,ViewBranches, CreateBranch, UpdateBranch, CheckedTransDetails, HistoryOfTrans, TransactionDetails, BeverageTobacco, Restaurant, ClothShoes, Shipping, Medicine, Housing
 from pagecontrollers.usersetting import UserProfile, ChangePassword
 from pagecontrollers.food import Rice, Ingredient, Meat, FishSeaFood, Fruit, Vegetables
 from pagecontrollers.categoryproduct import ListProducts, CreateProducts, CreateCategories, UpdateProducts, UpdateCategories, ViewProducts, ViewCategories
@@ -132,6 +132,16 @@ api.add_resource(AuthorizedTrans, "/authorizedtrans")
 api.add_resource(CheckedTrans, "/checkedtrans")
 api.add_resource(CheckedTransDetails, "/checkedtransdetail/<branchcode>")
 
+# session
+api.add_resource(BranchSession, "/branchsession")
+api.add_resource(BranchSessionDetails, "/sessiondetails/<branchcode>/<page>")
+api.add_resource(SessionDuration, "/sessionduration")
+
+# Branch
+api.add_resource(ViewBranches, "/viewbranches")
+api.add_resource(CreateBranch, "/createbranch")
+api.add_resource(UpdateBranch, "/updatebranch/<branchcode>")
+
 # historyoftrans
 api.add_resource(HistoryOfTrans, "/historyoftrans/<page>")
 api.add_resource(TransactionDetails, "/transactiondetails/<batchid>")
@@ -169,7 +179,7 @@ api.add_resource(UpdateUsers, "/updateusers/<userid>")
 # api.add_resource(UpdateUserProfile, "/api/createuser")
 
 # api.add_resource(IndexPage, "/api/")
-# api.add_resource(Branch, "/api/branch/<branchcode>")
+api.add_resource(APICreateBranch, "/api/branch")
 # api.add_resource(BranchesList, "/api/brancheslist")
 api.add_resource(CreateCategory, "/api/createcategory")
 # api.add_resource(Category, "/api/category/<catid>")

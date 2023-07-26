@@ -7,15 +7,17 @@ class tbbranches(db.Model):
     namekh = db.Column(db.String)
     addressen = db.Column(db.String)
     addresskh = db.Column(db.String)
+    weight = db.Column(db.Float)
     details = db.Column(db.String)
     
     
-    def __init__(self, branchcode, nameen, namekh, addressen,addresskh, details):
+    def __init__(self, branchcode=None, nameen=None, namekh=None, addressen=None,addresskh=None,weight=None, details=None):
         self.branchcode = branchcode
         self.nameen = nameen
         self.namekh = namekh
         self.addressen = addressen
         self.addresskh = addresskh
+        self.weight = weight
         self.details = details
         
         

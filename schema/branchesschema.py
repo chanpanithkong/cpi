@@ -13,6 +13,7 @@ class BranchesSchema(SQLAlchemyAutoSchema):
     namekh = auto_field()
     addressen = auto_field()
     addresskh = auto_field()
+    weight = auto_field()
     details = auto_field()
     
 

@@ -9,6 +9,7 @@ from models.trans import tbtrans
 from models.products import tbproducts
 from models.categories import tbcategories
 from models.batches import tbbatches
+from models.branches import tbbranches
 from models.users import tbusers
 
 from schema.transschema import TransSchema
@@ -58,8 +59,8 @@ class InsertAllProductToTrans(Resource):
                         currentdatetime = now.strftime("%y-%m-%dT%H:%M:%S")
                         
                         get_trandata.submitdate = currentdatetime
-                        get_trandata.authorizedate = currentdatetime
-                        get_trandata.checkerdate = currentdatetime
+                        get_trandata.authorizedate = ""
+                        get_trandata.checkerdate = ""
                         get_trandata.valuedate = currentdatetime
                         get_trandata.trandate = currentdatetime
                         get_trandata.countsubmitted = 0
@@ -77,6 +78,7 @@ class InsertAllProductToTrans(Resource):
                         get_trandata.tid = maxtid
                 
                         get_trandata.branchcode = users.branchcode
+                        get_trandata.branchweight = tbbranches.find_by_branchcode(users.branchcode).weight
                         get_trandata.productid = dt['prodid']
                 
                         get_trandata.weight = dt['weight']
@@ -103,8 +105,8 @@ class InsertAllProductToTrans(Resource):
                         currentdatetime = now.strftime("%y-%m-%dT%H:%M:%S")
                     
                         get_trandata.submitdate = currentdatetime
-                        get_trandata.authorizedate = currentdatetime
-                        get_trandata.checkerdate = currentdatetime
+                        get_trandata.authorizedate = ""
+                        get_trandata.checkerdate = ""
                         get_trandata.valuedate = currentdatetime
                         get_trandata.trandate = currentdatetime
                         get_trandata.countsubmitted = 0

@@ -1,0 +1,164 @@
+<div class="pagetitle">
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">{{locals['Dashboard']}}</a></li>
+            <li class="breadcrumb-item"><a href="/viewbranches">{{locals['View Branches']}}</a></li>
+            <li class="breadcrumb-item active">{{locals['Update Branch']}}</li>
+        </ol>
+    </nav>
+</div>
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <center>
+                        <h5 class="card-title">{{locals['Branch Management']}}</h5>
+                    </center>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-8">
+                                <label for="inputEmail5" class="form-label">{{locals['BranchCode']}}</label>
+                                <input type="text" class="form-control" id="branchcode" disabled
+                                    placeholder="{{locals['Please fill here']}}" name="branchcode" value="{{branch.branchcode}}" >
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-4">
+                                <label for="inputEmail5" class="form-label">{{locals['English Branch Name']}}</label>
+                                <input type="text" class="form-control" id="nameen"
+                                    placeholder="{{locals['Please fill here']}}" name="nameen" value="{{branch.nameen}}">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="inputPassword5" class="form-label">{{locals['Khmer Branch Name']}}</label>
+                                <input type="text" class="form-control" id="namekh"
+                                    placeholder="{{locals['Please fill here']}}" name="namekh" value="{{branch.namekh}}">
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-4">
+                                <label for="inputEmail5" class="form-label">{{locals['English Address']}}</label>
+                                <input type="text" class="form-control" id="addressen"
+                                    placeholder="{{locals['Please fill here']}}" name="addressen" value="{{branch.addressen}}">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="inputPassword5" class="form-label">{{locals['Khmer Address']}}</label>
+                                <input type="text" class="form-control" id="addresskh"
+                                    placeholder="{{locals['Please fill here']}}" name="addresskh" value="{{branch.addresskh}}">
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div><br/>
+                        <div class="row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-4">
+                                <label for="inputEmail5" class="form-label">{{locals['Weight']}}</label>
+                                <input type="text" class="form-control" id="weight"
+                                    placeholder="{{locals['Please fill here']}}" name="weight" value="{{branch.weight}}">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="inputPassword5" class="form-label">{{locals['Details']}}</label>
+                                <input type="text" class="form-control" id="details"
+                                    placeholder="{{locals['Please fill here']}}" name="details" value="{{branch.details}}">
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        
+                        <br/>
+                        <div>
+                            <div style="text-align: Center">
+                              <button type="button" class="btn btn-primary" id="update">
+                                {{locals['Update Branch']}}
+                              </button>
+                              &nbsp;
+                              <button type="button" class="btn btn-danger" id="clear">
+                                {{locals['Clear']}}
+                              </button>
+                              &nbsp;
+                              <button type="button" class="btn btn-success" id="back">
+                                {{locals['View Branches']}}
+                              </button>
+                            </div>
+                        </div>
+
+
+                </div>
+
+
+
+            </div>
+
+            
+        </div>
+    </div>
+</section>
+
+<script>
+
+    $(document).ready(function () {
+        
+        $("#update").click(function () {
+
+            branchcode =  $("#branchcode").val();
+            nameen = $("#nameen").val();
+            namekh = $("#namekh").val();
+            addresskh = $("#addresskh").val();
+            addressen = $("#addressen").val();
+            weight = $("#weight").val();
+            details = $("#details").val();
+
+            item = {};
+            item['branchcode'] = branchcode;
+            item['nameen'] = nameen;
+            item['namekh'] = namekh;
+            item['addressen'] = addressen;
+            item['addresskh'] = addresskh;
+            item['weight'] = weight;
+            item['details'] = details;
+
+            $.ajax({
+                type: "POST",
+                url: "/api/branch",
+                data: JSON.stringify({ data: item, userrequest:"updatebranch" }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                beforeSend: function() {    },
+                success: function (data) {
+                    console.log(data);
+                    location.reload();
+                },
+                error: function(data) {
+                    console.log(data);
+                }
+
+            })
+
+
+
+        })
+        $("#clear").click(function () {
+            $("#branchcode").val("");
+            $("#nameen").val("");
+            $("#namekh").val("");
+            $("#addresskh").val("");
+            $("#addressen").val("");
+            $("#weight").val(0);
+            $("#details").val("");
+            
+        })
+
+        $("#back").click(function () {
+            window.location = "/viewbranches"
+        })
+
+
+    })
+
+</script>

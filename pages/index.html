@@ -348,8 +348,24 @@
     {% include 'authorizedtrans.html' %}
     {% elif task == 'checkedtrans' %}
     {% include 'checkedtrans.html' %}
+
+    <!-- session -->
+    {% elif task == 'session' %}
+    {% include 'session.html' %}
+    {% elif task == 'sessiondetails' %}
+    {% include 'sessiondetails.html' %}
+    {% elif task == 'sessionduration' %}
+    {% include 'sessionduration.html' %}
     {% elif task == 'checkedtransdetail' %}
     {% include 'checkedtransdetail.html' %}
+    <!-- branches -->
+    {% elif task == 'viewbranches' %}
+    {% include 'branches/viewbranches.html' %}
+    {% elif task == 'createbranch' %}
+    {% include 'branches/createbranch.html' %}
+    {% elif task == 'updatebranch' %}
+    {% include 'branches/updatebranch.html' %}
+
     <!-- history of trans -->
     {% elif task == 'historyoftrans' %}
     {% include 'historyoftrans.html' %}
