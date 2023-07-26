@@ -1,0 +1,99 @@
+<div class="pagetitle">
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">{{locals['Dashboard']}}</a></li>
+      <li class="breadcrumb-item active">{{locals['Session Duration']}}</li>
+    </ol>
+  </nav>
+</div>
+<!-- End Page Title -->
+
+<section class="section">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <center>
+            <h5 class="card-title">{{locals['Session Duration Management']}}</h5>
+          </center>
+          <br />
+          <br />
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-2">
+              <label for="inputEmail5" class="form-label">Start Day</label>
+
+              <select id="startday" class="form-select" name="startday">
+
+                <option value="Monday"​ selected>Monday</option>
+                <option value="Tuesday">Tuesday</option>
+                <option value="Wednesday">Wednesday</option>
+                <option value="Thursday">Thursday</option>
+                <option value="Friday">Friday</option>
+                <option value="Saturday">Saturday</option>
+                <option value="Sunday">Sunday</option>
+
+              </select>
+              
+            </div>
+            <div class="col-md-2">
+              <label for="inputEmail5" class="form-label">Start Time</label>
+
+              <input class="form-control" type="time" id="starttime" value="07:00"/>
+
+            </div>
+            <div class="col-md-2">
+              <label for="inputEmail5" class="form-label">End Day</label>
+
+              <select id="startday" class="form-select" name="startday">
+
+                <option value="Monday">Monday</option>
+                <option value="Tuesday">Tuesday</option>
+                <option value="Wednesday">Wednesday</option>
+                <option value="Thursday">Thursday</option>
+                <option value="Friday" selected>Friday</option>
+                <option value="Saturday">Saturday</option>
+                <option value="Sunday">Sunday</option>
+
+              </select>
+              
+            </div>
+            <div class="col-md-2">
+              <label for="inputEmail5" class="form-label">End Time</label>
+              <input class="form-control" type="time" id="endtime" value="17:30"/>
+            </div>
+            <div class="col-md-2"></div>
+          </div>
+          <br />
+          <br />
+          <div>
+            <div style="text-align: Center">
+              <button type="button" class="btn btn-primary" id="save">
+                {{locals['Save']}}
+              </button>
+              &nbsp;
+              <button type="button" class="btn btn-success" id="refresh">
+                {{locals['Refresh']}}
+              </button>
+            </div>
+          </div>
+
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  $(document).ready(function () {
+
+    $("#refresh").click(function () {
+
+      window.location.reload();
+
+    })
+
+
+  });
+</script>

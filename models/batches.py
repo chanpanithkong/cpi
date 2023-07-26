@@ -33,7 +33,15 @@ class tbbatches(db.Model):
     def find_by_branch(cls, branch) -> "tbbatches":
         filters = (db.Column("branch") == branch)
         return cls.query.filter(filters).first()
-
+    @classmethod
+    def find_by_branchbatchopenlist(cls, branch) -> "tbbatches":
+        filters = (db.Column("branch") == branch) & (db.Column("statusid") == 9)
+        return cls.query.filter(filters).order_by(desc(db.Column("batchid"))).all()
+    
+    @classmethod
+    def find_by_batchopen(cls) -> "tbbatches":
+        filters = (db.Column("statusid") == 9)
+        return cls.query.filter(filters).all()
     @classmethod
     def find_by_branchbatchopen(cls, branch) -> "tbbatches":
         filters = (db.Column("branch") == branch) & (db.Column("statusid") == 9)

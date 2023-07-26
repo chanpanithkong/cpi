@@ -2,6 +2,7 @@
     <nav>
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/">{{locals['Dashboard']}}</a></li>
+        <li class="breadcrumb-item"><a href="/branchsession">{{locals['Session']}}</a></li>
         <li class="breadcrumb-item active">{{locals['Session Details']}}</li>
       </ol>
     </nav>
@@ -20,14 +21,12 @@
               <thead>
                 <tr>
                   <th scope="col">#</th>
-                  <th scope="col">{{locals['BranchCode']}}</th>
-                  <th scope="col">{{locals['Inputter']}}</th>
-                  <th scope="col">{{locals['Authorizer']}}</th>
-                  <th scope="col">{{locals['Checker']}}</th>
-                  <th scope="col">{{locals['Status']}}</th>
-                  <th scope="col">{{locals['Number of Products']}}</th>
-                  <th scope="col">{{locals['Date']}}</th>
                   <th scope="col">{{locals['Batch ID']}}</th>
+                  <th scope="col">{{locals['Batch Name']}}</th>
+                  <th scope="col">{{locals['Details']}}</th>
+                  <th scope="col">{{locals['Create Date']}}</th>
+                  <th scope="col">{{locals['Create By']}}</th>
+                  <th scope="col">{{locals['BranchCode']}}</th>
                   <th scope="col" style="text-align: center;">{{locals['Action']}}</th>
                 </tr>
               </thead>
@@ -39,16 +38,19 @@
                   <td>{{trn[1]}}</td>
                   <td>{{trn[2]}}</td>
                   <td>{{trn[3]}}</td>
-                  <td>{{locals[trn[4]]}}</td>
+                  <td>{{trn[4]}}</td>
                   <td>{{trn[5]}}</td>
-                  <td>{{trn[6]}}</td>
-                  <td>{{trn[7]}}</td>
                   <td>
-                    <a class="page-link" href="/transactiondetails/{{trn[7]}}" style="text-align: center;">
-                      <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="{{locals['Transaction Details']}}">
-                        <i class="bx bx-spreadsheet"></i>
-                    </button>
-                    </a>
+                    <div class="form-check form-switch">
+                      {% set ischecksub = "" %}
+                      {% if trn[6] == 9 %}
+                      {% set ischecksub = "checked" %}
+                      {% endif %}
+                      <input class="form-check-input" type="checkbox" {{ischecksub}}
+                          role="switch" id="flexSwitchCheckDefault">
+                      <input type="hidden" name="batchid{{trn[0]}}" id="batchid{{trn[0]}}" value="{{trn[0]}}" />
+                      <input type="hidden" name="branchcode{{trn[5]}}" id="branchcode{{trn[5]}}" value="{{trn[5]}}" />
+                  </div>
                   </td>
                 </tr>
                 {% endfor %}
@@ -71,9 +73,9 @@
                 {% for pageindex in pagelist %}
                 {% if pageindex < page + 3 and pageindex > page - 3 %}
                 {% if pageindex == page %}
-                <li class="page-item"><a class="page-link active" href="/historyoftrans/{{pageindex}}">{{pageindex}}</a></li>
+                <li class="page-item"><a class="page-link active" href="/sessiondetails/{{branchcode}}/{{pageindex}}">{{pageindex}}</a></li>
                 {% else %}
-                <li class="page-item"><a class="page-link" href="/historyoftrans/{{pageindex}}">{{pageindex}}</a></li>
+                <li class="page-item"><a class="page-link" href="/sessiondetails/{{branchcode}}/{{pageindex}}">{{pageindex}}</a></li>
                 {% endif %}
                 
                 {% endif %}
@@ -85,7 +87,7 @@
                   {% if page < pagelist|length %}
                   {% set disable = "" %}
                   {% endif %}
-                  <a class="page-link {{disable}}" href="/historyoftrans/{{next}}" aria-label="Previous">
+                  <a class="page-link {{disable}}" href="/sessiondetails/{{branchcode}}/{{next}}" aria-label="Previous">
                     <span aria-hidden="true">Next</span>
                     <span class="sr-only"></span>
                   </a>
@@ -118,7 +120,35 @@
   <script>
     $(document).ready(function () {
      
-        
+        $(".form-check-input").click(function () {
+
+          batchid = $(this).parent().find("input[name^='batchid']").val();
+          branchcode = $(this).parent().find("input[name^='branchcode']").val();
+          
+          item = {};
+          item['batchid'] = batchid;
+          item['branchcode'] = branchcode;
+
+          $.ajax({
+            type: "POST",
+            url: "/api/openandclosebatch",
+            data: JSON.stringify({ userrequest: "openandclosebatch",  data: item}),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            beforeSend: function() {
+              $("#loading").modal('show');
+            },
+            success: function (data) {
+              console.log(data.msg);
+              location.reload();
+            },
+            error: function (errMsg) {
+              console.log(errMsg);
+            },
+          });
+
+
+        })
         
   
     });

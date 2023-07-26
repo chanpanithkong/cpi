@@ -18,7 +18,7 @@ from controls.rolemenu import RoleMenu, RoleMenuList, RoleMenuParents, RoleMenuC
 from controls.roles import Role, RoleList, RoleManagement
 from controls.status import Status, StatusList
 from controls.trans import Tran, TransList, InputterInsertTran, AuthorizerUpdateTran, InputterUpdateTran, CheckerUpdateTransaction, AuthorizerUpdateTransaction, InsertAllProductToTrans, UpdateTranByCategories, TransWithBatchWherePriceAndWeightIsEmpty, TransWithBatchCategoryWherePriceAndWeightIsEmpty, TransWithBatchCategory
-from controls.batches import Batch, BatchesList, CreateBatch, CloseBatch, ReopenBatch
+from controls.batches import Batch, BatchesList, CreateBatch, CloseBatch, ReopenBatch,OpenBatchForAllBranches, CloseBatchForAllBranches,OpenAndCloseBatch
 from controls.users import User, UsersList, UserLogin, ChangePasswordForUser, UpdateUserProfile
 from pagecontrollers.pages import UpdateRoles,ViewUsers,ViewDeleteUsers, UpdateUsers, CreateUsers, CreateStatus, UpdateStatus, ViewStatus, AttachedRolePermission, CreatePermission, CreateRoles, CreateBatches, ViewBatches, UpdateBatches, Logout, UserLoginPage, LoginPage, HomePage, SubmittedTrans, AuthorizedTrans, CheckedTrans,BranchSession,BranchSessionDetails,SessionDuration,ViewBranches, CreateBranch, UpdateBranch, CheckedTransDetails, HistoryOfTrans, TransactionDetails, BeverageTobacco, Restaurant, ClothShoes, Shipping, Medicine, Housing
 from pagecontrollers.usersetting import UserProfile, ChangePassword
@@ -234,6 +234,10 @@ api.add_resource(CheckerUpdateTransaction, "/api/checkerupdatetransactions")
 api.add_resource(CreateBatch, "/api/createbatch")
 api.add_resource(CloseBatch, "/api/closebatch")
 api.add_resource(ReopenBatch, "/api/reopenbatch")
+api.add_resource(OpenBatchForAllBranches, "/api/openbatchforallbranches")
+api.add_resource(CloseBatchForAllBranches, "/api/closebatchforallbranches")
+api.add_resource(OpenAndCloseBatch, "/api/openandclosebatch")
+
 
 # api.add_resource(User, "/api/user/<userid>")
 # api.add_resource(UsersList, "/api/userslist")

@@ -716,8 +716,6 @@ class BranchSessionDetails(Resource):
 
         role = tbroles.find_by_roleid(session.get('roleid'))
 
-        # branchcode = branchcode
-
         page = int(page)
         if page <= 1:
             page = 1
@@ -725,15 +723,9 @@ class BranchSessionDetails(Resource):
         limitpage = 10
         rowdisplay = (page-1) * limitpage
 
-        sql = "select trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status, count(trn.productid) cnt, date(trn.checkerdate) checkdate, trn.batchid from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid group by trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status,date(trn.checkerdate), trn.batchid order by trn.batchid desc limit " + str(rowdisplay) + "," + str(limitpage) 
-        sqlcount = "select count(t1.batchid) cnt from ( select trn.batchid from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid group by trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status,date(trn.checkerdate), trn.batchid) t1 " 
-
-        if role.roleid == 3 or role.roleid == 4:
-            sql = "select trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status, count(trn.productid) cnt, date(trn.checkerdate) checkdate, trn.batchid from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid  where trn.branchcode = '"+ branchcode +"' group by trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status,date(trn.checkerdate), trn.batchid order by trn.batchid desc limit " + str(rowdisplay) + "," + str(limitpage) 
-            sqlcount = "select count(t1.batchid) cnt from ( select trn.batchid from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid  where trn.branchcode = '"+ branchcode +"' group by trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status,date(trn.checkerdate), trn.batchid) t1 " 
-
-            # sql = "select trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status, 10 cnt, date(trn.checkerdate) checkdate from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid where trn.branchcode = '001' limit " + str(rowdisplay) + "," + str(limitpage) 
-        
+        sql = "SELECT * FROM tbbatches bat where bat.branch = "+ branchcode +" order by bat.batchid desc limit " + str(rowdisplay) + "," + str(limitpage) 
+        sqlcount = "SELECT count(*) FROM tbbatches bat where bat.branch = " + branchcode + " order by bat.batchid desc" 
+       
         resultcount = db.engine.execute(sqlcount) 
         result = db.engine.execute(sql) 
 
@@ -755,7 +747,7 @@ class BranchSessionDetails(Resource):
 
         userlogging.degbuglog(clientid, url, userid + " : access HistoryOfTrans")
 
-        return make_response(render_template('index.html', menus=menus, role=role,trans=trans,pagelist=pagelist,page=page,languages=languages,locals=locals, task="sessiondetails",main=""), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role,trans=trans,branchcode=branchcode,pagelist=pagelist,page=page,languages=languages,locals=locals, task="sessiondetails",main=""), 200, headers)
 
 
 class UpdateBranch(Resource):
@@ -848,6 +840,8 @@ class BranchSession(Resource):
 
         branches = tbbranches.getallbranches()
 
+        batch = tbbatches
+
         sql = "select t1.branchcode, t1.status, count(t1.status) as cnt, t1.statusname, t1.details from ( select trn.branchcode,trn.status,  pro.catid, count(pro.catid) as cnt, sts.status statusname, sts.details from tbtrans trn inner join tbstatus sts on sts.statusid = trn.status inner join tbproducts pro on trn.productid = pro.prodid  inner join tbbatches bat on bat.batchid = trn.batchid  where bat.statusid = 9 and sts.statusid in (3,11,13) group by trn.branchcode,trn.status,  pro.catid ) as t1 group by t1.branchcode, t1.status order by t1.statusname "
         result = db.engine.execute(sql)
 
@@ -864,7 +858,7 @@ class BranchSession(Resource):
 
         userlogging.degbuglog(clientid, url, userid + " : access Session")
 
-        return make_response(render_template('index.html', menus=menus, role=role, branches=branches, transtatus=transtatus,languages=languages, locals=locals, task="session",main=""), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role,batch=batch, branches=branches, transtatus=transtatus,languages=languages, locals=locals, task="session",main=""), 200, headers)
 
 
 class CheckedTrans(Resource):

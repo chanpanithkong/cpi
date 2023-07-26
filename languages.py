@@ -176,12 +176,15 @@ lang = {
         "Batch ID":"Batch ID",
         "Base Price":"Base Price",
         "Open Session":"Open Session",
+        "Open Session Fro All Branches":"Open Session Fro All Branches",
         "Close Session":"Close Session",
+        "Close Session Fro All Branches":"Close Session Fro All Branches",
         "Reopen Session":"Reopen Session",
         "Session":"Session",
         "Session Details":"Session Details",
         "Session Detail Management":"Session Detail Management",
         "Session Duration":"Session Duration",
+        "Session Duration Management":"Session Duration Management",
         "Branch Management":"Branch Management",
         "Add New Branch":"Add New Branch",
         "Address":"Address",
@@ -193,6 +196,12 @@ lang = {
         "English Branch Name":"English Branch Name",
         "Khmer Address":"Khmer Address",
         "English Address":"English Address",
+        "Start Session":"Start Session",
+        "End Session":"End Session",
+        "Batch Name":"Batch Name",
+        "Create Date":"Create Date",
+        "Create By":"Create By",
+        
 
     },
     "KH":{
@@ -372,6 +381,8 @@ lang = {
         "Base Price":"តម្លៃមូលដ្ឋាន",
         "Open Session":"បើករយៈពេល",
         "Close Session":"បិទរយៈពេល",
+        "Open Session Fro All Branches":"បើកវគ្គសម្រាប់គ្រប់សាខា",
+        "Close Session Fro All Branches":"បិទវគ្គសម្រាប់គ្រប់សាខា",
         "Reopen Session":"បើករយៈពេលឡើងវិញ",
         "Session":"រយៈពេល",
         "Session Details":"រយៈពេលលំអិត",
@@ -388,6 +399,11 @@ lang = {
         "English Branch Name":"ឈ្មោះសាខាភាសាអង់គ្លេស",
         "Khmer Address":"អាស័យដ្ឋានខ្មែរ",
         "English Address":"អាសយដ្ឋានភាសាអង់គ្លេស",
-
+        "Session Duration Management":"ការគ្រប់គ្រងពេលវេលារយៈពេល",
+        "Start Session":"បើករយៈពេល",
+        "End Session":"បិទរយៈពេល",
+        "Batch Name":"ឈ្មោះបាច់",
+        "Create Date":"បង្កើតកាលបរិច្ឆេទ",
+        "Create By":"បង្កើតដោយ",
     }
 }
