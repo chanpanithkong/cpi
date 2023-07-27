@@ -13,7 +13,22 @@
             {% for br in branches %}
             <td style="padding-right: 10px;vertical-align: top;">
                 <div class="card bg-light mb-3" style="max-width: 18rem;">
-                <a href="/checkedtransdetail/{{br.branchcode}}" ><div class="card-header"​ style="text-align: center; color:black;font-weight: bold;background-color: aqua;">{{locals['BranchCode']}} : {{br.branchcode}}</div></a>
+                <a href="/checkedtransdetail/{{br.branchcode}}" >
+                  
+                  {% for ts in transtatus %}
+                  {% if br.branchcode == ts[0] and ts[2] == 12 %}
+                  <div class="card-header"​ style="text-align: center; color:white;font-weight: bold;background-color: #34CBEE;">
+                    {{locals['BranchCode']}} : {{br.branchcode}}
+                  </div>
+                  {% else %}
+                  <div class="card-header"​ style="text-align: center; color:black;font-weight: bold;background-color: #FFFFFF;">
+                    {{locals['BranchCode']}} : {{br.branchcode}}
+                  </div>
+                  {% endif %}
+                  {% endfor %}
+                  
+                  
+                </a>
                 <div class="card-body">
                   <h5 class="card-title">
                     {{br['name' + languages.lower()]}}

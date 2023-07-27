@@ -59,8 +59,8 @@ class InsertAllProductToTrans(Resource):
                         currentdatetime = now.strftime("%y-%m-%dT%H:%M:%S")
                         
                         get_trandata.submitdate = currentdatetime
-                        get_trandata.authorizedate = ""
-                        get_trandata.checkerdate = ""
+                        get_trandata.authorizedate = None
+                        get_trandata.checkerdate = None
                         get_trandata.valuedate = currentdatetime
                         get_trandata.trandate = currentdatetime
                         get_trandata.countsubmitted = 0
@@ -105,8 +105,8 @@ class InsertAllProductToTrans(Resource):
                         currentdatetime = now.strftime("%y-%m-%dT%H:%M:%S")
                     
                         get_trandata.submitdate = currentdatetime
-                        get_trandata.authorizedate = ""
-                        get_trandata.checkerdate = ""
+                        get_trandata.authorizedate = None
+                        get_trandata.checkerdate = None
                         get_trandata.valuedate = currentdatetime
                         get_trandata.trandate = currentdatetime
                         get_trandata.countsubmitted = 0

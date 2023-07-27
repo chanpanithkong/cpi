@@ -189,11 +189,11 @@ class HistoryOfTrans(Resource):
         limitpage = 10
         rowdisplay = (page-1) * limitpage
 
-        sql = "select trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status, count(trn.productid) cnt, date(trn.checkerdate) checkdate, trn.batchid from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid group by trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status,date(trn.checkerdate), trn.batchid order by trn.batchid desc limit " + str(rowdisplay) + "," + str(limitpage) 
+        sql = "select trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status, count(trn.productid) cnt, date(trn.submitdate) checkdate, trn.batchid from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid group by trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status,date(trn.checkerdate), trn.batchid order by trn.batchid desc limit " + str(rowdisplay) + "," + str(limitpage) 
         sqlcount = "select count(t1.batchid) cnt from ( select trn.batchid from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid group by trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status,date(trn.checkerdate), trn.batchid) t1 " 
 
         if role.roleid == 3 or role.roleid == 4:
-            sql = "select trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status, count(trn.productid) cnt, date(trn.checkerdate) checkdate, trn.batchid from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid  where trn.branchcode = '"+ branchcode +"' group by trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status,date(trn.checkerdate), trn.batchid order by trn.batchid desc limit " + str(rowdisplay) + "," + str(limitpage) 
+            sql = "select trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status, count(trn.productid) cnt, date(trn.submitdate) checkdate, trn.batchid from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid  where trn.branchcode = '"+ branchcode +"' group by trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status,date(trn.checkerdate), trn.batchid order by trn.batchid desc limit " + str(rowdisplay) + "," + str(limitpage) 
             sqlcount = "select count(t1.batchid) cnt from ( select trn.batchid from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid  where trn.branchcode = '"+ branchcode +"' group by trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status,date(trn.checkerdate), trn.batchid) t1 " 
 
             # sql = "select trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status, 10 cnt, date(trn.checkerdate) checkdate from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid where trn.branchcode = '001' limit " + str(rowdisplay) + "," + str(limitpage) 
@@ -702,7 +702,7 @@ class SessionDuration(Resource):
 
         userlogging.degbuglog(clientid, url, userid + " : access Session")
 
-        return make_response(render_template('index.html', menus=menus, role=role, languages=languages, locals=locals, task="sessionduration",main=""), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, languages=languages, locals=locals, task="sessionduration",main="session"), 200, headers)
 
 class BranchSessionDetails(Resource):
     @classmethod
@@ -747,7 +747,7 @@ class BranchSessionDetails(Resource):
 
         userlogging.degbuglog(clientid, url, userid + " : access HistoryOfTrans")
 
-        return make_response(render_template('index.html', menus=menus, role=role,trans=trans,branchcode=branchcode,pagelist=pagelist,page=page,languages=languages,locals=locals, task="sessiondetails",main=""), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role,trans=trans,branchcode=branchcode,pagelist=pagelist,page=page,languages=languages,locals=locals, task="sessiondetails",main="session"), 200, headers)
 
 
 class UpdateBranch(Resource):
@@ -773,7 +773,7 @@ class UpdateBranch(Resource):
 
         userlogging.degbuglog(clientid, url, userid + " : access Session")
 
-        return make_response(render_template('index.html', menus=menus, role=role, languages=languages, locals=locals,branch=branch, task="updatebranch",main=""), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, languages=languages, locals=locals,branch=branch, task="updatebranch",main="branchmanagement"), 200, headers)
 
 
 class CreateBranch(Resource):
@@ -797,7 +797,7 @@ class CreateBranch(Resource):
 
         userlogging.degbuglog(clientid, url, userid + " : access Session")
 
-        return make_response(render_template('index.html', menus=menus, role=role, languages=languages, locals=locals, task="createbranch",main=""), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role, languages=languages, locals=locals, task="createbranch",main="branchmanagement"), 200, headers)
 
 
 class ViewBranches(Resource):
@@ -823,7 +823,7 @@ class ViewBranches(Resource):
 
         userlogging.degbuglog(clientid, url, userid + " : access Session")
 
-        return make_response(render_template('index.html', menus=menus,  role=role, languages=languages, locals=locals,branches=branches, task="viewbranches",main=""), 200, headers)
+        return make_response(render_template('index.html', menus=menus,  role=role, languages=languages, locals=locals,branches=branches, task="viewbranches",main="branchmanagement"), 200, headers)
 
 
 class BranchSession(Resource):
@@ -858,7 +858,7 @@ class BranchSession(Resource):
 
         userlogging.degbuglog(clientid, url, userid + " : access Session")
 
-        return make_response(render_template('index.html', menus=menus, role=role,batch=batch, branches=branches, transtatus=transtatus,languages=languages, locals=locals, task="session",main=""), 200, headers)
+        return make_response(render_template('index.html', menus=menus, role=role,batch=batch, branches=branches, transtatus=transtatus,languages=languages, locals=locals, task="branchsession",main="session"), 200, headers)
 
 
 class CheckedTrans(Resource):
@@ -888,6 +888,7 @@ class CheckedTrans(Resource):
         languages = session.get('languages')
         locals = lang[languages]
 
+        pprint(transtatus)
 
         userlogging.degbuglog(clientid, url, userid + " : access CheckedTrans")
 
