@@ -14,10 +14,20 @@
             <td style="padding-right: 10px;vertical-align: top;">
                 <div class="card bg-light mb-3" style="max-width: 18rem;">
                 <a href="/checkedtransdetail/{{br.branchcode}}" >
-                  
+                
+                {% if transtatus|length == 1 %}
+
                   {% for ts in transtatus %}
-                  {% if br.branchcode == ts[0] and ts[2] == 12 %}
+                  {% if br.branchcode == ts[0] and ts[2] == 12 and ts[1] == 13 %}
                   <div class="card-header"​ style="text-align: center; color:white;font-weight: bold;background-color: #34CBEE;">
+                    {{locals['BranchCode']}} : {{br.branchcode}}
+                  </div>
+                  {% elif br.branchcode == ts[0] and ts[2] == 12 and ts[1] == 3 %}
+                  <div class="card-header"​ style="text-align: center; color:white;font-weight: bold;background-color: #248855;">
+                    {{locals['BranchCode']}} : {{br.branchcode}}
+                  </div>
+                  {% elif br.branchcode == ts[0] and ts[2] == 12 and ts[1] == 11 %}
+                  <div class="card-header"​ style="text-align: center; color:black;font-weight: bold;background-color: #D83148;">
                     {{locals['BranchCode']}} : {{br.branchcode}}
                   </div>
                   {% else %}
@@ -26,8 +36,11 @@
                   </div>
                   {% endif %}
                   {% endfor %}
-                  
-                  
+                {% else %}
+                <div class="card-header"​ style="text-align: center; color:black;font-weight: bold;background-color: #FFFFFF;">
+                  {{locals['BranchCode']}} : {{br.branchcode}}
+                </div>
+                {% endif %}
                 </a>
                 <div class="card-body">
                   <h5 class="card-title">
