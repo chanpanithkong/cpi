@@ -234,15 +234,16 @@ class OpenAndCloseBatch(Resource):
             if data['userrequest'] == "openandclosebatch":
             
                 branchcode = data['data']['branchcode']
-                
+                batchid = data['data']['batchid']
                 batches = tbbatches.find_by_branchbatchopenlist(branchcode)
                 for batch in batches:
-                    batch.statusid = 8
-                    db.session.commit()
-                    
-                    userlogging.degbuglog(clientid, url, userid + " : close batch id " + str(batch.batchid))
+                    if int(batch.batchid) != int(batchid):
+                        batch.statusid = 8
+                        db.session.commit()
+                        
+                        userlogging.degbuglog(clientid, url, userid + " : close batch id " + str(batch.batchid))
                 
-                batchid = data['data']['batchid']
+                
                 batches = tbbatches.find_by_batchid(batchid) 
                 if batches.statusid == 8:
                     batches.statusid = 9
