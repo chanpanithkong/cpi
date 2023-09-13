@@ -2,7 +2,8 @@ import os
 from flask import Flask, request, json, jsonify, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Api
-from dbinfo import dbconfig
+from dbinfo import dbconfig, dboracleconfig
+import cx_Oracle
 from flask_cors import CORS
 # app = Flask(__name__, template_folder='templates')
 app = Flask(__name__)
@@ -19,7 +20,21 @@ app.config['SECRET_KEY'] = 'eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJpc3MiOiJodHRw
 # MySQL closes it self the stale connections (8 hours of inactivity by default). You can set the pool recycle to solve this problem.
 app.config["SQLALCHEMY_POOL_RECYCLE"] = 300
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + dbconfig.username + ':' + dbconfig.password + '@' + dbconfig.url + ':' + dbconfig.port + '/' + dbconfig.mysqldb
+
+#oracle connection url 
+# cx_Oracle.init_oracle_client(lib_dir=r"C:/instantclient_21_10")
+oracle_connection_string = 'oracle+cx_oracle://{username}:{password}@' + cx_Oracle.makedsn('{hostname}', '{port}', service_name='{service_name}')
+
+
+app.config['SQLALCHEMY_DATABASE_URI'] = oracle_connection_string.format(
+  username=dboracleconfig.username,
+  password=dboracleconfig.password,
+  hostname=dboracleconfig.url,
+  port=dboracleconfig.port,
+  service_name=dboracleconfig.db
+)
+
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + dbconfig.username + ':' + dbconfig.password + '@' + dbconfig.url + ':' + dbconfig.port + '/' + dbconfig.mysqldb
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # app.config['CORS_HEADERS'] = 'Content-Type'
 DEBUG = False

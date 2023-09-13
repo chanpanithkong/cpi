@@ -129,8 +129,8 @@ class DeleteInsertRoleMenu(Resource):
                     tb_rolemenu.createby = userid
             
                     now = datetime.now()
-                    currentdatetime = now.strftime("%y-%m-%dT%H:%M:%S")
-                    tb_rolemenu.createdate = currentdatetime
+                    # currentdatetime = now.strftime("%Y-%m-%d %H:%M:%S")
+                    tb_rolemenu.createdate = now
             
                     db.session.add(tb_rolemenu)
                     db.session.commit()

@@ -11,7 +11,7 @@ class cypertext:
         key = Fernet.generate_key()
         secret_key = Fernet(key)
         password = secret_key.encrypt(bytes(password, encoding='ASCII'))
-        return key, password
+        return key.decode(), password.decode()
     
     def encryptkey(self,key=None, password=None):
         secret_key = Fernet(key)

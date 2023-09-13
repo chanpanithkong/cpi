@@ -70,27 +70,44 @@
                                         <tbody>
                                             
                                             {% for prod in products.find_by_catid(cl[0]) %}
-                                            <tr  data-toggle="tooltip" title="{{trans.find_by_submitterbatchidprodid(batch.batchid,prod.prodid).checkernote}}">
+                                            <tr>
                                               <td scope="row">{{loop.index}}</td>
                                               <td>{{prod['name' + languages.lower() ]}}<input type="hidden" name="prodid{{prod.prodid}}" value="{{prod.prodid}}"/> </td>
                                               <td>{{prod.weight}}</td>
                                               <td>{{prod['unit' + languages.lower() ]}}</td>
                                               <td>{{trans.find_by_submitterbatchidprodid(batch.batchid,prod.prodid).price}}</td>
-                                              <td>{{trans.find_by_submitterbatchidprodid(batch.batchid,prod.prodid).submitternote}}</td>
+                                              <td>
+                                                {% if trans.find_by_submitterbatchidprodid(batch.batchid,prod.prodid).submitternote %}
+                                                {{trans.find_by_submitterbatchidprodid(batch.batchid,prod.prodid).submitternote}}
+                                                {% endif %}
+                                                </td>
                                               <td>
                                                 {% if textcolor == "color: green;" %}
-                                                <input type="text" class="form-control" name="authorizernote{{prod.prodid}}"
-                                                value="{{trans.find_by_submitterbatchidprodid(batch.batchid,prod.prodid).authorizernote}}" />
+                                                    {% if trans.find_by_submitterbatchidprodid(batch.batchid,prod.prodid).authorizernote %}
+                                                    <input type="text" class="form-control" name="authorizernote{{prod.prodid}}"
+                                                    value="{{trans.find_by_submitterbatchidprodid(batch.batchid,prod.prodid).authorizernote}}" />
+                                                    {% else %}
+                                                    <input type="text" class="form-control" name="authorizernote{{prod.prodid}}"
+                                                    value="" />
+                                                    {% endif %}
+                                                
                                                 {% else %}
+                                                {% if trans.find_by_submitterbatchidprodid(batch.batchid,prod.prodid).authorizernote %}
                                                 {{trans.find_by_submitterbatchidprodid(batch.batchid,prod.prodid).authorizernote}}
                                                 {% endif %}
+                                                
+                                                {% endif %}
                                             </td>
-                                            <td>{{trans.find_by_submitterbatchidprodid(batch.batchid,prod.prodid).checkernote}}</th>
+                                            <td>
+                                                {% if trans.find_by_submitterbatchidprodid(batch.batchid,prod.prodid).checkernote %}
+                                                {{trans.find_by_submitterbatchidprodid(batch.batchid,prod.prodid).checkernote}}
+                                                {% endif %}
+                                                </th>
                                             </tr>
                                             {% endfor %}
                                             {% if textcolor == "color: green;" or textcolor == "color: blue;" %}
                                             <tr>
-                                                <td colspan="7">
+                                                <td colspan="8">
                                                     <div style="text-align: Center">
                                                       <button type="button" class="btn btn-danger aureject" {{disabled}}>
                                                         {{locals['Rejected']}}

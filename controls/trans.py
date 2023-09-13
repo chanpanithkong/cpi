@@ -56,13 +56,13 @@ class InsertAllProductToTrans(Resource):
                             userlogging.degbuglog(clientid, url, userid + " : saved tran id " + str(trans.tid))
                         
                         now = datetime.now()
-                        currentdatetime = now.strftime("%y-%m-%dT%H:%M:%S")
+                        # currentdatetime = now.strftime("%Y-%m-%d %H:%M:%S")
                         
-                        get_trandata.submitdate = currentdatetime
+                        get_trandata.submitdate = now
                         get_trandata.authorizedate = None
                         get_trandata.checkerdate = None
-                        get_trandata.valuedate = currentdatetime
-                        get_trandata.trandate = currentdatetime
+                        get_trandata.valuedate = now
+                        get_trandata.trandate = now
                         get_trandata.countsubmitted = 0
                         
                         db.session.commit()       
@@ -102,13 +102,13 @@ class InsertAllProductToTrans(Resource):
                             userlogging.degbuglog(clientid, url, userid + " : saved tran id " + str(maxtid))
                             
                         now = datetime.now()
-                        currentdatetime = now.strftime("%y-%m-%dT%H:%M:%S")
+                        # currentdatetime = now.strftime("%Y-%m-%d %H:%M:%S")
                     
-                        get_trandata.submitdate = currentdatetime
+                        get_trandata.submitdate = now
                         get_trandata.authorizedate = None
                         get_trandata.checkerdate = None
-                        get_trandata.valuedate = currentdatetime
-                        get_trandata.trandate = currentdatetime
+                        get_trandata.valuedate = now
+                        get_trandata.trandate = now
                         get_trandata.countsubmitted = 0
                         get_trandata.batchid = batches.batchid
                     
@@ -157,11 +157,11 @@ class InputterInsertTran(Resource):
             get_trandata.status = 1
             
             now = datetime.now()
-            currentdatetime = now.strftime("%y-%m-%dT%H:%M:%S")
+            # currentdatetime = now.strftime("%Y-%m-%d %H:%M:%S")
 
-            get_trandata.submitdate = currentdatetime
-            get_trandata.valuedate = currentdatetime
-            get_trandata.trandate = currentdatetime
+            get_trandata.submitdate = now
+            get_trandata.valuedate = now
+            get_trandata.trandate = now
             get_trandata.countsubmitted = 0
             get_trandata.batchid = 1
 
@@ -200,10 +200,10 @@ class InputterUpdateTran(Resource):
                 tran_data.status = 1
                 
                 now = datetime.now()
-                currentdatetime = now.strftime("%y-%m-%dT%H:%M:%S")
-                tran_data.submitdate = currentdatetime
-                tran_data.valuedate = currentdatetime
-                tran_data.trandate = currentdatetime
+                # currentdatetime = now.strftime("%Y-%m-%d %H:%M:%S")
+                tran_data.submitdate = now
+                tran_data.valuedate = now
+                tran_data.trandate = now
                 tran_data.countsubmitted = tran_data.countsubmitted + 1
                 db.session.commit()
 
@@ -253,10 +253,10 @@ class UpdateTranByCategories(Resource):
                             tran_data.status = 1
                             
                         now = datetime.now()
-                        currentdatetime = now.strftime("%y-%m-%dT%H:%M:%S")
-                        tran_data.submitdate = currentdatetime
-                        tran_data.valuedate = currentdatetime
-                        tran_data.trandate = currentdatetime
+                        # currentdatetime = now.strftime("%Y-%m-%d %H:%M:%S")
+                        tran_data.submitdate = now
+                        tran_data.valuedate = now
+                        tran_data.trandate = now
                         # tran_data.countsubmitted = tran_data.countsubmitted + 1
 
                         db.session.commit()
@@ -301,9 +301,9 @@ class CheckerUpdateTransaction(Resource):
                 
                         tran_data.checker = userid
                         now = datetime.now()
-                        currentdatetime = now.strftime("%y-%m-%dT%H:%M:%S")
+                        # currentdatetime = now.strftime("%Y-%m-%d %H:%M:%S")
                 
-                        tran_data.checkerdate = currentdatetime
+                        tran_data.checkerdate = now
                         tran_data.checkernote = dt['checkernoted']
                 
                         if data['userrequest'] == 'reject':
@@ -346,9 +346,9 @@ class AuthorizerUpdateTransaction(Resource):
                 
                     tran_data.authorizer = userid
                     now = datetime.now()
-                    currentdatetime = now.strftime("%y-%m-%dT%H:%M:%S")
+                    # currentdatetime = now.strftime("%Y-%m-%d %H:%M:%S")
                         
-                    tran_data.authorizedate = currentdatetime
+                    tran_data.authorizedate = now
                     tran_data.authorizernote = dt['authorizernote']
     
                     if data['userrequest'] == 'reject':
@@ -383,9 +383,9 @@ class AuthorizerUpdateTran(Resource):
                 tran_data.authorizer = data['data']['authorizer']
 
                 now = datetime.now()
-                currentdatetime = now.strftime("%y-%m-%dT%H:%M:%S")
+                # currentdatetime = now.strftime("%Y-%m-%d %H:%M:%S")
 
-                tran_data.authorizedate = currentdatetime
+                tran_data.authorizedate = now
                 tran_data.authorizernote = data['data']['authorizernote']
                 tran_data.status = 3
                 

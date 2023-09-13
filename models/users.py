@@ -38,3 +38,7 @@ class tbusers(db.Model):
     @classmethod
     def find_by_userid(cls, userid) -> "tbusers":
         return cls.query.filter_by(userid=userid).first()
+    
+    @classmethod
+    def find_count_by_userid(cls, userid) -> "tbusers":
+        return cls.query.filter_by(userid=userid).all()

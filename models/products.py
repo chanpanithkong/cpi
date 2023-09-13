@@ -4,7 +4,7 @@ class tbproducts(db.Model):
     
     prodid = db.Column("prodid", db.Integer, primary_key = True)
     productcode = db.Column(db.String)
-    nameen = db.Column(db.Integer)
+    nameen = db.Column(db.String)
     namekh = db.Column(db.String)
     weight = db.Column(db.Float)
     baseprice = db.Column(db.Float)
@@ -36,9 +36,9 @@ class tbproducts(db.Model):
     def find_by_catid(cls, catid) -> "tbproducts":
         return cls.query.filter_by(catid=catid).all()
 
-    @classmethod
-    def find_by_catid(cls, catid) -> "tbproducts":
-        return cls.query.filter_by(catid=catid).all()
+    # @classmethod
+    # def find_by_catid(cls, catid) -> "tbproducts":
+    #     return cls.query.filter_by(catid=catid).all()
     
     @classmethod
     def find_by_prodcode(cls, productcode) -> "tbproducts":

@@ -11,6 +11,7 @@ from config.userlogging import userlogging
 from flask import session
 from sqlalchemy import func
 from datetime import datetime
+from config.timestramp import convertdate
 from pprint import pprint
 jwt = JWTManager(app)
 
@@ -111,13 +112,13 @@ class CreateBatch(Resource):
                     maxtid = maxtid + 1
                 
                 now = datetime.now()
-                currentdatetime = now.strftime("%y-%m-%dT%H:%M:%S")
+                # currentdatetime = now.strftime("%Y-%m-%d %H:%M:%S")
                 
                 batchobject = tbbatches()
                 batchobject.batchid = maxtid
                 batchobject.batch = "batch" + str(maxtid)
                 batchobject.detail = session.get('userid') + session.get('branchcode')
-                batchobject.createdate = currentdatetime
+                batchobject.createdate = now
                 batchobject.createby = session.get('userid')
                 batchobject.branch = session.get('branchcode')
                 batchobject.statusid = 9
@@ -163,13 +164,13 @@ class OpenBatchForAllBranches(Resource):
                             maxtid = maxtid + 1
                         
                         now = datetime.now()
-                        currentdatetime = now.strftime("%y-%m-%dT%H:%M:%S")
+                        # currentdatetime = now.strftime("%Y-%m-%d %H:%M:%S")
                         
                         batchobject = tbbatches()
                         batchobject.batchid = maxtid
                         batchobject.batch = "batch" + str(maxtid)
                         batchobject.detail = session.get('userid') + session.get('branchcode')
-                        batchobject.createdate = currentdatetime
+                        batchobject.createdate = now
                         batchobject.createby = session.get('userid')
                         batchobject.branch = branch.branchcode
                         batchobject.statusid = 9

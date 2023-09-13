@@ -10,7 +10,6 @@ from models.users import tbusers
 from schema.usersschema import UserSchema
 from pprint import pprint
 from config.cypertext import cypertext
-from config.cypertext import cypertext
 from config.userlogging import userlogging
 jwt = JWTManager(app)
 
@@ -65,7 +64,7 @@ class UpdateUserProfile(Resource):
                 telegram = data['data']['telegram']
                 roleid = data['data']['roleid']
                 
-                if tbusers.find_by_userid(userid) is None:
+                if len(tbusers.find_count_by_userid(userid)) < 1:
 
                     user_data = tbusers()
                     user_data.userid = userid

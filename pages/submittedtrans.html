@@ -61,14 +61,22 @@
                                         <tbody>
 
                                             {% for prod in products.find_by_catid(cl[0]) %}
-                                            <tr data-toggle="tooltip" title="{{trans.find_by_submitterbatchidprodid(batch.batchid,prod.prodid).authorizernote}}">
+                                            <tr>
                                               <td scope="row">{{loop.index}}</td>
                                               <td>{{prod['name' + languages.lower() ]}}</td>
                                               <td>{{prod.weight}}</td>
                                               <td>{{prod['unit' + languages.lower() ]}}</td>
                                               <td>{{trans.find_by_submitterbatchidprodid(batch.batchid,prod.prodid).price}}</td>
-                                              <td>{{trans.find_by_submitterbatchidprodid(batch.batchid,prod.prodid).submitternote}}</td>
-                                              <td>{{trans.find_by_submitterbatchidprodid(batch.batchid,prod.prodid).authorizernote}}</td>
+                                              <td>
+                                                {% if trans.find_by_submitterbatchidprodid(batch.batchid,prod.prodid).submitternote %}
+                                                {{trans.find_by_submitterbatchidprodid(batch.batchid,prod.prodid).submitternote}}
+                                                {% endif %}
+                                                </td>
+                                              <td>
+                                                {% if trans.find_by_submitterbatchidprodid(batch.batchid,prod.prodid).authorizernote %}
+                                                {{trans.find_by_submitterbatchidprodid(batch.batchid,prod.prodid).authorizernote}}
+                                                {% endif %}
+                                              </td>
                                             </tr>
                                             {% endfor %}
   

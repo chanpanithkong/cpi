@@ -29,7 +29,11 @@
                     <input type="number" onkeydown="javascript: return event.keyCode == 69 ? false : true" class="form-control" name="price{{prod.prodid}}" value ="{{tbtrans.find_by_batchidprodid(batch.batchid,prod.prodid).price}}" />
                   </td>
                   <td>
+                    {% if tbtrans.find_by_batchidprodid(batch.batchid,prod.prodid).submitternote %}
                     <input type="text" class="form-control" name="note{{prod.prodid}}" value = "{{tbtrans.find_by_batchidprodid(batch.batchid,prod.prodid).submitternote}}" />
+                    {% else %}
+                    <input type="text" class="form-control" name="note{{prod.prodid}}" value = "" />
+                    {% endif %}
                   </td>
                 </tr>
                 {% endfor %}

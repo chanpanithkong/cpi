@@ -119,39 +119,62 @@ class HomePage(Resource):
         tbbat = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
         
         # sql = "select '10' sts, sum(cntpro) cntpro, 'Total' status, 'primary' details, 'bx bxl-firebase' icon, sum(cntcat) cntcat from ( 	select sum(t1.cntpro) cntpro, count(t1.catid) cntcat from ( 	select count(pro.prodid) cntpro, cat.catid 	from tbcategories cat inner join tbproducts pro on pro.catid = cat.catid 	group by cat.catid 	) t1 ) t3"
-        sql = " select '10' sts, sum(procnt) procnt, 'Total' status, 'primary' details, 'bx bxl-firebase' icon, (select count(*) from tbcategories cat where cat.parentid = 0) catcnt from ( select   t2.sts,   sum(cnt) procnt,  t2.status,   t2.details,   t2.icon,    count(t2.catid) catcnt  from (	select t1.*,   sts.status,	   sts.details,	   sts.icon	from (	select cat.catid,    '10'  sts,    count(pro.prodid) cnt from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid group by catid, sts ) t1 inner join tbstatus sts on t1.sts = sts.statusid where t1.sts = sts.statusid ) t2 group by t2.sts,  t2.status,  t2.details, t2.icon ) t3 "
+        sql = " select '10' sts, t3.procnt procnt, 'Total' status, 'primary' details, 'bx bxl-firebase' icon, (select count(*) from tbcategories cat where cat.parentid = 0) catcnt from ( select   t2.sts,   sum(cnt) procnt,  t2.status,   t2.details,   t2.icon,    count(t2.catid) catcnt  from (	select t1.*,   sts.status,	   sts.details,	   sts.icon	from (	select cat.catid,    '10'  sts,    count(pro.prodid) cnt from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid group by cat.catid, '10' ) t1 inner join tbstatus sts on t1.sts = sts.statusid where t1.sts = sts.statusid ) t2 group by t2.sts,  t2.status,  t2.details, t2.icon ) t3 "
                 
         result = []
         transtatus = []
         
         if tbbat is not None :
             if role.roleid == 3 or role.roleid == 4:
-                sql = (" select   t2.sts,   sum(cnt) procnt,  t2.status,   t2.details,   t2.icon,    count(t2.catid) catcnt " +
-                      " from (	select t1.*,   sts.status,	   sts.details,	   sts.icon " +
-                      "      from (select * from ( " + 
-                      "  select (case when cat.parentid = 0 then cat.catid else cat.parentid end) as catid, " +  
-                      "      (case when trn.status is null then 7 else trn.status end) sts,   " +
-                      "      (case when (case when cat.parentid = 0 then cat.catid else cat.parentid end) = 1 then (case when (SELECT count(pro.prodid) FROM tbproducts pro inner join tbcategories cat on cat.catid = pro.catid where cat.parentid = 1) = count(pro.prodid) then count(pro.prodid) else 0 end) else count(pro.prodid) end) cnt "+
-                      "          from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid   " +
-                      "                              left join  tbtrans trn on pro.prodid = trn.productid	" +
-                      "          where trn.batchid = " + str(tbbat.batchid) + " group by catid, sts " +
-                      "          ) t0 where t0.catid != 1 or t0.cnt = (SELECT count(pro.prodid) FROM tbproducts pro inner join tbcategories cat on cat.catid = pro.catid where cat.parentid = 1)) "+
-                      "      t1 inner join tbstatus sts on t1.sts = sts.statusid "+
-                      "      where t1.sts = sts.statusid ) "+
-                      "  t2 " +
-                      "  group by t2.sts,  t2.status,  t2.details, t2.icon " +
-                      " union " +
-                      " select '10' sts, (select count(pro.prodid) from tbproducts pro) procnt, 'Total' status, 'primary' details, 'bx bxl-firebase' icon, (select count(*) from tbcategories cat where cat.parentid = 0) catcnt from ( select   t2.sts,   sum(cnt) procnt,  t2.status,   t2.details,   t2.icon,    count(t2.catid) catcnt  from (	select t1.*,   sts.status,	   sts.details,	   sts.icon	from (	select cat.catid,    '10'  sts,    count(pro.prodid) cnt from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid where cat.parentid = 0 group by catid, sts ) t1 inner join tbstatus sts on t1.sts = sts.statusid where t1.sts = sts.statusid ) t2 group by t2.sts,  t2.status,  t2.details, t2.icon ) t3 ")
+                sql = " select '10' sts, "\
+                      " (select count(pro.prodid) from tbproducts pro) procnt, "\
+                      " 'Total' status, 'primary' details, 'bx bxl-firebase' icon, "\
+                      " (select count(cat.catid) from tbcategories cat where cat.parentid = 0) catcnt "\
+                      " from ( select   t2.sts,   "\
+                      "         sum(cnt) procnt,  "\
+                      "         t2.status,   "\
+                      "         t2.details,   "\
+                      "         t2.icon,    "\
+                      "         count(t2.catid) catcnt  "\
+                      " from (	select t1.*,   "\
+                      "                  sts.status,	   "\
+                      "                   sts.details,	   "\
+                      "                   sts.icon	"\
+                      "           from (	select cat.catid,    "\
+                      "                           '10'  sts,    "\
+                      "                           count(pro.prodid) cnt "\
+                      "                   from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid where cat.parentid = 0 group by cat.catid, '10' "\
+                      "                   ) t1 inner join tbstatus sts on t1.sts = sts.statusid where t1.sts = sts.statusid "\
+                      "           ) t2 group by t2.sts,  t2.status,  t2.details, t2.icon ) t3 "
                     
                     # pending status but it is not correct yet
                     #   " union "
                       
-                    #   " select '7' sts, (case when ttt1.procnt is null then (select count(*) from tbproducts) else (ttt2.procnt - ttt1.procnt) end)  procnt, 'Pending' status, 'warning' details, 'bx bx-grid-alt' icon, (case when ttt1.procnt is null then 12 else (ttt2.catcnt - ttt1.catcnt) end) catcnt "\
-                    #   " from (select sum(tt1.procnt) procnt ,sum(tt1.catcnt) catcnt from( select   t2.sts,   sum(cnt) procnt,  t2.status,   t2.details,   t2.icon,    count(t2.catid) catcnt from (	select t1.*,   sts.status,	   sts.details,	   sts.icon	from (	select cat.catid,   (case when trn.status is null then 7 else trn.status end) sts,   count(pro.prodid) cnt from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid   left join  tbtrans trn on pro.prodid = trn.productid	where trn.batchid = " + str(tbbat.batchid) + " group by catid, sts ) t1 inner join tbstatus sts on t1.sts = sts.statusid where t1.sts = sts.statusid ) t2 group by t2.sts,  t2.status,  t2.details, t2.icon  ) tt1 ) ttt1 "\
-                    #   " , (select '10' sts, sum(procnt) procnt, 'Total' status, 'primary' details, 'bx bxl-firebase' icon, sum(catcnt) catcnt from ( select   t2.sts,   sum(cnt) procnt,  t2.status,   t2.details,   t2.icon,    count(t2.catid) catcnt  from (	select t1.*,   sts.status,	   sts.details,	   sts.icon	from (	select cat.catid,    '10'  sts,    count(pro.prodid) cnt from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid group by catid, sts ) t1 inner join tbstatus sts on t1.sts = sts.statusid where t1.sts = sts.statusid ) t2 group by t2.sts,  t2.status,  t2.details, t2.icon ) t3) ttt2 "
             else:
-                sql = " select '10' sts, sum(procnt) procnt, 'Total' status, 'primary' details, 'bx bxl-firebase' icon, (select count(*) from tbcategories cat where cat.parentid = 0) catcnt from ( select   t2.sts,   sum(cnt) procnt,  t2.status,   t2.details,   t2.icon,    count(t2.catid) catcnt  from (	select t1.*,   sts.status,	   sts.details,	   sts.icon	from (	select cat.catid,    '10'  sts,    count(pro.prodid) cnt from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid group by catid, sts ) t1 inner join tbstatus sts on t1.sts = sts.statusid where t1.sts = sts.statusid ) t2 group by t2.sts,  t2.status,  t2.details, t2.icon ) t3 "
+                sql = " select '10' sts, "\
+                      "  sum(procnt) procnt, "\
+                      "  'Total' status, 'primary' details, "\
+                      "  'bx bxl-firebase' icon, "\
+                      "  7 catcnt "\
+                      " from ( select   t2.sts,   "\
+                      "              sum(cnt) procnt,  "\
+                      "              t2.status,   "\
+                      "              t2.details,   "\
+                      "              t2.icon,    "\
+                      "              count(t2.catid) catcnt  "\
+                      "  from (  select t1.*,   "\
+                      "                  sts.status,     "\
+                      "                  sts.details,     "\
+                      "                  sts.icon  "\
+                      "          from (  select cat.catid,    "\
+                      "                          '10'  sts,    "\
+                      "                          count(pro.prodid) cnt "\
+                      "                  from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid group by cat.catid, '10' "\
+                      "                  ) t1 inner join tbstatus sts on t1.sts = sts.statusid where t1.sts = sts.statusid "\
+                      "          ) t2 group by t2.sts,  t2.status,  t2.details, t2.icon "\
+                      "  ) t3 "
                       
+                
         result = db.engine.execute(sql)
         for record in result:
             transtatus.append(record)
@@ -189,13 +212,39 @@ class HistoryOfTrans(Resource):
         limitpage = 10
         rowdisplay = (page-1) * limitpage
 
-        sql = "select trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status, count(trn.productid) cnt, date(trn.submitdate) checkdate, trn.batchid from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid group by trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status,date(trn.checkerdate), trn.batchid order by trn.batchid desc limit " + str(rowdisplay) + "," + str(limitpage) 
-        sqlcount = "select count(t1.batchid) cnt from ( select trn.batchid from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid group by trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status,date(trn.checkerdate), trn.batchid) t1 " 
-
+        sql = " select trn.branchcode, "\
+              " trn.submitter, "\
+              " trn.authorizer, "\
+              " trn.checker, "\
+              " sts.status, "\
+              " count(trn.productid) cnt, "\
+              " to_date(trn.submitdate) checkdate, "\
+              " trn.batchid  "\
+              " from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid "\
+              " group by trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status,to_date(trn.submitdate), trn.batchid "\
+              " order by trn.batchid desc "\
+              " OFFSET " + str(rowdisplay) +" ROWS FETCH NEXT " + str(limitpage) + " ROWS ONLY"
+        sqlcount = " select count(t1.batchid) cnt "\
+                   " from ( select trn.batchid from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid "\
+                   " group by trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status,to_date(trn.checkerdate), trn.batchid) t1 "
         if role.roleid == 3 or role.roleid == 4:
-            sql = "select trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status, count(trn.productid) cnt, date(trn.submitdate) checkdate, trn.batchid from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid  where trn.branchcode = '"+ branchcode +"' group by trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status,date(trn.checkerdate), trn.batchid order by trn.batchid desc limit " + str(rowdisplay) + "," + str(limitpage) 
-            sqlcount = "select count(t1.batchid) cnt from ( select trn.batchid from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid  where trn.branchcode = '"+ branchcode +"' group by trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status,date(trn.checkerdate), trn.batchid) t1 " 
+            sql = " select trn.branchcode, "\
+                  " trn.submitter, "\
+                  " trn.authorizer, "\
+                  " trn.checker, "\
+                  " sts.status, "\
+                  " count(trn.productid) cnt, "\
+                  " to_date(trn.submitdate) checkdate, "\
+                  " trn.batchid "\
+                  " from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid  "\
+                  " where trn.branchcode = '"+ branchcode +"' "\
+                  " group by trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status,to_date(trn.submitdate), trn.batchid "\
+                  " OFFSET " + str(rowdisplay) +" ROWS FETCH NEXT " + str(limitpage) + " ROWS ONLY"
 
+            sqlcount = " select count(t1.batchid) cnt "\
+                       " from ( select trn.batchid from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid  "\
+                       " where trn.branchcode = '"+ branchcode +"' "\
+                       " group by trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status,to_date(trn.checkerdate), trn.batchid) t1 "
             # sql = "select trn.branchcode, trn.submitter, trn.authorizer, trn.checker, sts.status, 10 cnt, date(trn.checkerdate) checkdate from tbtrans trn inner join tbstatus sts on trn.status = sts.statusid where trn.branchcode = '001' limit " + str(rowdisplay) + "," + str(limitpage) 
         
         resultcount = db.engine.execute(sqlcount) 
@@ -568,15 +617,51 @@ class SubmittedTrans(Resource):
         batch = tbbatches.find_by_branchbatchopen(session.get("branchcode"))
         if batch is not None:
             
-            sql = "	select t1.catid,  t1.nameen, sta.statusid,  t1.procnt, sta.status,  sta.details,  sta.icon,  t1.functions, t1.namekh, (select  cat.nameen parenten from tbcategories cat where cat.catid  = ( select cat.parentid from tbcategories cat where cat.parentid != 0 and cat.catid = t1.catid)) parenten, (select  cat.namekh parentkh from tbcategories cat where cat.catid  = ( select cat.parentid from tbcategories cat where cat.parentid != 0 and cat.catid = t1.catid)) parentkh "\
-                  " from (select cat.catid,  cat.nameen, cat.namekh, 7 sts ,   count(pro.prodid) procnt,men.functions "\
-                  " from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid  inner join tbmenus men on cat.catid = men.iscat "\
-                  " group by catid,cat.nameen,men.functions	) t1 inner join tbstatus sta on t1.sts = sta.statusid "
+            sql = ("	select t1.catid,  " +
+                  "	t1.nameen, " +
+                  "	sta.statusid,  "  + 
+                  "	t1.procnt,  "  +
+                  "	sta.status,   "  +
+                  "	sta.details,  "  +
+                  "	sta.icon,  "  +
+                  "	t1.functions, "  +
+                  "	t1.namekh, "  +
+                  "	(select  cat.nameen parenten from tbcategories cat where cat.catid  = ( select cat.parentid from tbcategories cat where cat.parentid != 0 and cat.catid = t1.catid)) parenten, "\
+                  "	(select  cat.namekh parentkh from tbcategories cat where cat.catid  = ( select cat.parentid from tbcategories cat where cat.parentid != 0 and cat.catid = t1.catid)) parentkh  "\
+                  "	from ( select cat.catid,  " +
+                  "	        cat.nameen, " +
+                  "	        cat.namekh, " +
+                  "	        7 sts ,   " +
+                  "	        count(pro.prodid) procnt, " +
+                  "	        men.functions  " +
+                  "	from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid  " +
+                  "	inner join tbmenus men on cat.catid = men.iscat  group by cat.catid,  " +
+                  "	        cat.nameen, " +
+                  "	        cat.namekh, " +
+                  "	        7, " +
+                  "	        men.functions 	" +
+                  "	) t1 inner join tbstatus sta on t1.sts = sta.statusid " )
             
             result = db.engine.execute(sql)
 
-            sql1 = "select t1.catid, t1.nameen, t1.sts, t1.cnt,  sts.status,  sts.details, sts.icon, men.functions, t1.namekh, (select  cat.nameen parenten from tbcategories cat where cat.catid  = ( select cat.parentid from tbcategories cat where cat.parentid != 0 and cat.catid = t1.catid)) parenten, (select  cat.namekh parentkh from tbcategories cat where cat.catid  = ( select cat.parentid from tbcategories cat where cat.parentid != 0 and cat.catid = t1.catid)) parentkh	from ( select cat.catid,  cat.nameen,cat.namekh,  (case when trn.status is null then 7 else trn.status end) sts,  count(pro.prodid) cnt from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid  left join  tbtrans trn on pro.prodid = trn.productid	where trn.batchid = " + str(batch.batchid) + " group by catid,cat.nameen, sts ) t1 inner join tbstatus sts on t1.sts = sts.statusid inner join tbmenus men on t1.catid = men.iscat where t1.sts = sts.statusid order by t1.catid"
-            
+            sql1 = (" select t1.catid, " +
+                   "  t1.nameen, " +
+                   "  t1.sts, " +
+                   "  t1.cnt,  " +
+                   "  sts.status,  " +
+                   "  sts.details, " +
+                   "  sts.icon, " +
+                   "  men.functions, " +
+                   "  t1.namekh, " +
+                   "  (select  cat.nameen parenten from tbcategories cat where cat.catid  = ( select cat.parentid from tbcategories cat where cat.parentid != 0 and cat.catid = t1.catid)) parenten, " +
+                   "  (select  cat.namekh parentkh from tbcategories cat where cat.catid  = ( select cat.parentid from tbcategories cat where cat.parentid != 0 and cat.catid = t1.catid)) parentkh	" +
+                   "  from ( select  cat.catid,  cat.nameen,cat.namekh, " +
+                   "          (case when trn.status is null then 7 else trn.status end) sts, " +  
+                   "          count(pro.prodid) cnt " +
+                   "  from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid  left join  tbtrans trn on pro.prodid = trn.productid " +	
+                   "  where trn.batchid = " + str(batch.batchid) + " group by cat.catid, cat.nameen, cat.namekh, (case when trn.status is null then 7 else trn.status end) " +
+                   "  ) t1 inner join tbstatus sts on t1.sts = sts.statusid inner join tbmenus men on t1.catid = men.iscat where t1.sts = sts.statusid order by t1.catid" )
+
             result1 = db.engine.execute(sql1)
 
         catlist1 = []
@@ -639,15 +724,51 @@ class AuthorizedTrans(Resource):
             # catlist = tbtrans.find_by_authorizecatbatchid(batch.batchid)
             trans = tbtrans
 
-            sql = "	select t1.catid,  t1.nameen, sta.statusid,  t1.procnt, sta.status,  sta.details,  sta.icon,  t1.functions, t1.namekh, (select  cat.nameen parenten from tbcategories cat where cat.catid  = ( select cat.parentid from tbcategories cat where cat.parentid != 0 and cat.catid = t1.catid)) parenten, (select  cat.namekh parentkh from tbcategories cat where cat.catid  = ( select cat.parentid from tbcategories cat where cat.parentid != 0 and cat.catid = t1.catid)) parentkh "\
-                  " from (select cat.catid,  cat.nameen, cat.namekh, 7 sts ,   count(pro.prodid) procnt,men.functions "\
-                  " from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid  inner join tbmenus men on cat.catid = men.iscat "\
-                  " group by catid,cat.nameen,men.functions	) t1 inner join tbstatus sta on t1.sts = sta.statusid "
+            sql = ("	select t1.catid,  " +
+                  "	t1.nameen, " +
+                  "	sta.statusid,  "  + 
+                  "	t1.procnt,  "  +
+                  "	sta.status,   "  +
+                  "	sta.details,  "  +
+                  "	sta.icon,  "  +
+                  "	t1.functions, "  +
+                  "	t1.namekh, "  +
+                  "	(select  cat.nameen parenten from tbcategories cat where cat.catid  = ( select cat.parentid from tbcategories cat where cat.parentid != 0 and cat.catid = t1.catid)) parenten, "\
+                  "	(select  cat.namekh parentkh from tbcategories cat where cat.catid  = ( select cat.parentid from tbcategories cat where cat.parentid != 0 and cat.catid = t1.catid)) parentkh  "\
+                  "	from ( select cat.catid,  " +
+                  "	        cat.nameen, " +
+                  "	        cat.namekh, " +
+                  "	        7 sts ,   " +
+                  "	        count(pro.prodid) procnt, " +
+                  "	        men.functions  " +
+                  "	from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid  " +
+                  "	inner join tbmenus men on cat.catid = men.iscat  group by cat.catid,  " +
+                  "	        cat.nameen, " +
+                  "	        cat.namekh, " +
+                  "	        7, " +
+                  "	        men.functions 	" +
+                  "	) t1 inner join tbstatus sta on t1.sts = sta.statusid " )
             
             result = db.engine.execute(sql)
 
-            sql1 = "select t1.catid, t1.nameen, t1.sts, t1.cnt,  sts.status,  sts.details, sts.icon, men.functions, t1.namekh, (select  cat.nameen parenten from tbcategories cat where cat.catid  = ( select cat.parentid from tbcategories cat where cat.parentid != 0 and cat.catid = t1.catid)) parenten, (select  cat.namekh parentkh from tbcategories cat where cat.catid  = ( select cat.parentid from tbcategories cat where cat.parentid != 0 and cat.catid = t1.catid)) parentkh	from ( select cat.catid,  cat.nameen,cat.namekh,  (case when trn.status is null then 7 else trn.status end) sts,  count(pro.prodid) cnt from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid  left join  tbtrans trn on pro.prodid = trn.productid	where trn.batchid = " + str(batch.batchid) + " group by catid,cat.nameen, sts ) t1 inner join tbstatus sts on t1.sts = sts.statusid inner join tbmenus men on t1.catid = men.iscat where t1.sts = sts.statusid order by t1.catid"
-            
+            sql1 = (" select t1.catid, " +
+                   "  t1.nameen, " +
+                   "  t1.sts, " +
+                   "  t1.cnt,  " +
+                   "  sts.status,  " +
+                   "  sts.details, " +
+                   "  sts.icon, " +
+                   "  men.functions, " +
+                   "  t1.namekh, " +
+                   "  (select  cat.nameen parenten from tbcategories cat where cat.catid  = ( select cat.parentid from tbcategories cat where cat.parentid != 0 and cat.catid = t1.catid)) parenten, " +
+                   "  (select  cat.namekh parentkh from tbcategories cat where cat.catid  = ( select cat.parentid from tbcategories cat where cat.parentid != 0 and cat.catid = t1.catid)) parentkh	" +
+                   "  from ( select  cat.catid,  cat.nameen,cat.namekh, " +
+                   "          (case when trn.status is null then 7 else trn.status end) sts, " +  
+                   "          count(pro.prodid) cnt " +
+                   "  from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid  left join  tbtrans trn on pro.prodid = trn.productid " +	
+                   "  where trn.batchid = " + str(batch.batchid) + " group by cat.catid, cat.nameen, cat.namekh, (case when trn.status is null then 7 else trn.status end) " +
+                   "  ) t1 inner join tbstatus sts on t1.sts = sts.statusid inner join tbmenus men on t1.catid = men.iscat where t1.sts = sts.statusid order by t1.catid" )
+
             result1 = db.engine.execute(sql1)
 
         catlist1 = []
@@ -723,7 +844,8 @@ class BranchSessionDetails(Resource):
         limitpage = 10
         rowdisplay = (page-1) * limitpage
 
-        sql = "SELECT * FROM tbbatches bat where bat.branch = "+ branchcode +" order by bat.batchid desc limit " + str(rowdisplay) + "," + str(limitpage) 
+        sql = " SELECT * FROM tbbatches bat where bat.branch = "+ branchcode +" order by bat.batchid desc "\
+              " OFFSET " + str(rowdisplay) +" ROWS FETCH NEXT " + str(limitpage) + " ROWS ONLY"
         sqlcount = "SELECT count(*) FROM tbbatches bat where bat.branch = " + branchcode + " order by bat.batchid desc" 
        
         resultcount = db.engine.execute(sqlcount) 
@@ -842,7 +964,22 @@ class BranchSession(Resource):
 
         batch = tbbatches
 
-        sql = "select t1.branchcode, t1.status, count(t1.status) as cnt, t1.statusname, t1.details from ( select trn.branchcode,trn.status,  pro.catid, count(pro.catid) as cnt, sts.status statusname, sts.details from tbtrans trn inner join tbstatus sts on sts.statusid = trn.status inner join tbproducts pro on trn.productid = pro.prodid  inner join tbbatches bat on bat.batchid = trn.batchid  where bat.statusid = 9 and sts.statusid in (3,11,13) group by trn.branchcode,trn.status,  pro.catid ) as t1 group by t1.branchcode, t1.status order by t1.statusname "
+        sql = "select t1.branchcode, "\
+              " t1.status, "\
+              " count(t1.status) as cnt, "\
+              " t1.statusname, "\
+              " t1.details "\
+              " from ( select trn.branchcode, "\
+              "           trn.status,  "\
+              "           pro.catid, "\
+              "           count(pro.catid) as cnt, "\
+              "           sts.status statusname, "\
+              "           sts.details "\
+              "       from tbtrans trn inner join tbstatus sts on sts.statusid = trn.status "\
+              "                       inner join tbproducts pro on trn.productid = pro.prodid  "\
+              "                       inner join tbbatches bat on bat.batchid = trn.batchid  "\
+              "       where bat.statusid = 9 and sts.statusid in (3,11,13) group by trn.branchcode,trn.status,  pro.catid, sts.status ,  sts.details "\
+              "   ) t1 group by t1.branchcode, t1.status, t1.statusname, t1.details  order by t1.statusname "
         result = db.engine.execute(sql)
 
         transtatus = []
@@ -875,7 +1012,23 @@ class CheckedTrans(Resource):
 
         branches = tbbranches.getallbranches()
 
-        sql = "select t1.branchcode, t1.status, count(t1.status) as cnt, t1.statusname, t1.details from ( select trn.branchcode,trn.status,  pro.catid, count(pro.catid) as cnt, sts.status statusname, sts.details from tbtrans trn inner join tbstatus sts on sts.statusid = trn.status inner join tbproducts pro on trn.productid = pro.prodid  inner join tbbatches bat on bat.batchid = trn.batchid  where bat.statusid = 9 and sts.statusid in (3,11,13) group by trn.branchcode,trn.status,  pro.catid ) as t1 group by t1.branchcode, t1.status order by t1.statusname "
+        sql = "select t1.branchcode, "\
+              " t1.status, "\
+              " count(t1.status) as cnt, "\
+              " t1.statusname, "\
+              " t1.details "\
+              " from ( select trn.branchcode, "\
+              "           trn.status,  "\
+              "           pro.catid, "\
+              "           count(pro.catid) as cnt, "\
+              "           sts.status statusname, "\
+              "           sts.details "\
+              "       from tbtrans trn inner join tbstatus sts on sts.statusid = trn.status "\
+              "                       inner join tbproducts pro on trn.productid = pro.prodid  "\
+              "                       inner join tbbatches bat on bat.batchid = trn.batchid  "\
+              "       where bat.statusid = 9 and sts.statusid in (3,11,13) group by trn.branchcode,trn.status,  pro.catid, sts.status ,  sts.details "\
+              "   ) t1 group by t1.branchcode, t1.status, t1.statusname, t1.details  order by t1.statusname "
+        
         result = db.engine.execute(sql)
 
         transtatus = []
@@ -921,15 +1074,51 @@ class CheckedTransDetails(Resource):
         if batch is not None:
             # catlist = tbtrans.find_by_authorizecatbatchid(batch.batchid)
             trans = tbtrans
-            sql = "	select t1.catid,  t1.nameen, sta.statusid,  t1.procnt, sta.status,  sta.details,  sta.icon,  t1.functions, t1.namekh, (select  cat.nameen parenten from tbcategories cat where cat.catid  = ( select cat.parentid from tbcategories cat where cat.parentid != 0 and cat.catid = t1.catid)) parenten, (select  cat.namekh parentkh from tbcategories cat where cat.catid  = ( select cat.parentid from tbcategories cat where cat.parentid != 0 and cat.catid = t1.catid)) parentkh "\
-                  " from (select cat.catid,  cat.nameen, cat.namekh, 7 sts ,   count(pro.prodid) procnt,men.functions "\
-                  " from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid  inner join tbmenus men on cat.catid = men.iscat "\
-                  " group by catid,cat.nameen,men.functions	) t1 inner join tbstatus sta on t1.sts = sta.statusid "
+            sql = ("	select t1.catid,  " +
+                  "	t1.nameen, " +
+                  "	sta.statusid,  "  + 
+                  "	t1.procnt,  "  +
+                  "	sta.status,   "  +
+                  "	sta.details,  "  +
+                  "	sta.icon,  "  +
+                  "	t1.functions, "  +
+                  "	t1.namekh, "  +
+                  "	(select  cat.nameen parenten from tbcategories cat where cat.catid  = ( select cat.parentid from tbcategories cat where cat.parentid != 0 and cat.catid = t1.catid)) parenten, "\
+                  "	(select  cat.namekh parentkh from tbcategories cat where cat.catid  = ( select cat.parentid from tbcategories cat where cat.parentid != 0 and cat.catid = t1.catid)) parentkh  "\
+                  "	from ( select cat.catid,  " +
+                  "	        cat.nameen, " +
+                  "	        cat.namekh, " +
+                  "	        7 sts ,   " +
+                  "	        count(pro.prodid) procnt, " +
+                  "	        men.functions  " +
+                  "	from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid  " +
+                  "	inner join tbmenus men on cat.catid = men.iscat  group by cat.catid,  " +
+                  "	        cat.nameen, " +
+                  "	        cat.namekh, " +
+                  "	        7, " +
+                  "	        men.functions 	" +
+                  "	) t1 inner join tbstatus sta on t1.sts = sta.statusid " )
             
             result = db.engine.execute(sql)
 
-            sql1 = "select t1.catid, t1.nameen, t1.sts, t1.cnt,  sts.status,  sts.details, sts.icon, men.functions, t1.namekh, (select  cat.nameen parenten from tbcategories cat where cat.catid  = ( select cat.parentid from tbcategories cat where cat.parentid != 0 and cat.catid = t1.catid)) parenten, (select  cat.namekh parentkh from tbcategories cat where cat.catid  = ( select cat.parentid from tbcategories cat where cat.parentid != 0 and cat.catid = t1.catid)) parentkh	from ( select cat.catid,  cat.nameen,cat.namekh,  (case when trn.status is null then 7 else trn.status end) sts,  count(pro.prodid) cnt from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid  left join  tbtrans trn on pro.prodid = trn.productid	where trn.batchid = " + str(batch.batchid) + " group by catid,cat.nameen, sts ) t1 inner join tbstatus sts on t1.sts = sts.statusid inner join tbmenus men on t1.catid = men.iscat where t1.sts = sts.statusid order by t1.catid"
-            
+            sql1 = (" select t1.catid, " +
+                   "  t1.nameen, " +
+                   "  t1.sts, " +
+                   "  t1.cnt,  " +
+                   "  sts.status,  " +
+                   "  sts.details, " +
+                   "  sts.icon, " +
+                   "  men.functions, " +
+                   "  t1.namekh, " +
+                   "  (select  cat.nameen parenten from tbcategories cat where cat.catid  = ( select cat.parentid from tbcategories cat where cat.parentid != 0 and cat.catid = t1.catid)) parenten, " +
+                   "  (select  cat.namekh parentkh from tbcategories cat where cat.catid  = ( select cat.parentid from tbcategories cat where cat.parentid != 0 and cat.catid = t1.catid)) parentkh	" +
+                   "  from ( select  cat.catid,  cat.nameen,cat.namekh, " +
+                   "          (case when trn.status is null then 7 else trn.status end) sts, " +  
+                   "          count(pro.prodid) cnt " +
+                   "  from tbcategories cat inner join tbproducts pro on cat.catid = pro.catid  left join  tbtrans trn on pro.prodid = trn.productid " +	
+                   "  where trn.batchid = " + str(batch.batchid) + " group by cat.catid, cat.nameen, cat.namekh, (case when trn.status is null then 7 else trn.status end) " +
+                   "  ) t1 inner join tbstatus sts on t1.sts = sts.statusid inner join tbmenus men on t1.catid = men.iscat where t1.sts = sts.statusid order by t1.catid" )
+
             result1 = db.engine.execute(sql1)
 
         catlist1 = []
