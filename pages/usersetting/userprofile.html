@@ -243,10 +243,10 @@
                   >
                   <div class="col-md-8 col-lg-9">
                     <input
-                      name="address"
+                      name="phonenumber"
                       type="text"
                       class="form-control"
-                      id="email"
+                      id="phonenumber"
                       value="{{user.phonenumber}}"
                     />
                   </div>
@@ -257,10 +257,10 @@
                   >
                   <div class="col-md-8 col-lg-9">
                     <input
-                      name="address"
+                      name="telegram"
                       type="text"
                       class="form-control"
-                      id="email"
+                      id="telegram"
                       value="{{user.telegram}}"
                     />
                   </div>
@@ -366,6 +366,8 @@
       branchcode = $("#branchcode").val();
       department = $("#department").val();
       position = $("#position").val();
+      phonenumber = $("#phonenumber").val();
+      telegram = $("#telegram").val();
       email = $("#email").val();
       languages = $("#languages").val();
 
@@ -375,6 +377,8 @@
           item['branchcode'] = branchcode
           item['department'] = department;
           item['position'] = position;
+          item['phonenumber'] = phonenumber;
+          item['telegram'] = telegram;
           item['email'] = email;
           item['languages'] = languages;
       

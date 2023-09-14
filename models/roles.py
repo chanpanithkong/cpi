@@ -15,4 +15,7 @@ class tbroles(db.Model):
         
     @classmethod
     def find_by_roleid(cls, roleid) -> "tbroles":
-        return cls.query.filter_by(roleid=roleid).first()
+        result = None
+        if len(cls.query.filter_by(roleid=roleid).all()) > 0:
+            result = cls.query.filter_by(roleid=roleid).first()
+        return result
