@@ -48,7 +48,7 @@
               <select id="roleid" class="form-select" name="roleid">
                 {% for role in tb_roles.query.all() %}
                 
-                    <option value="{{role.roleid}}">{{locals[role.rolename]}}</option>
+                    <option value="{{role.roleid}}">{{role.rolename}}</option>
               
                 {% endfor %}
             </select>

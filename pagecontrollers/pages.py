@@ -63,7 +63,7 @@ class UserLoginPage(Resource):
             return make_response(render_template('login.html', data="Wrong userid and password !!!"), 200, headers)
             
         except Exception as err:
-            userlogging.degbuglog(clientid, url, err)
+            # userlogging.degbuglog(clientid, url, err)
             return make_response(render_template('login.html', data=err), 200, headers)
 
 

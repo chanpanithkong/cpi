@@ -58,7 +58,7 @@
                     {% if user[1].roleid == role.roleid %}
                       <option value="{{role.roleid}}" selected>{{locals[role.rolename]}}</option>
                     {% else %}
-                      <option value="{{role.roleid}}">{{locals[role.rolename]}}</option>
+                      <option value="{{role.roleid}}">{{role.rolename}}</option>
                     {% endif %}
                     
               
