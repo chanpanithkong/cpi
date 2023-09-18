@@ -90,7 +90,7 @@
             <div class="col-md-4">
               <label for="inputPassword5" class="form-label">{{locals['Department']}}</label>
               <input type="text" class="form-control" id="department" placeholder="Please fill Department" name="department"
-                value="{{user[0].details}}">
+                value="{% if user[0].details %}{{user[0].details}}{% endif %}">
             </div>
             <div class="col-md-2"></div>
           </div>
@@ -100,12 +100,12 @@
             <div class="col-md-4">
               <label for="inputPassword5" class="form-label">{{locals['Position']}}</label>
               <input type="text" class="form-control" id="position" placeholder="Please fill Position" name="position"
-                value="{{user[0].position}}">
+                value="{% if user[0].position %}{{user[0].position}}{% endif %}">
             </div>
             <div class="col-md-4">
               <label for="inputEmail5" class="form-label">{{locals['Email']}}</label>
               <input type="text" class="form-control" id="email" placeholder="Please fill Email"
-                name="email" value="{{user[0].email}}">
+                name="email" value="{% if user[0].email %}{{user[0].email}}{% endif %}">
             </div>
             <div class="col-md-2"></div>
           </div>
@@ -116,12 +116,12 @@
             <div class="col-md-4">
               <label for="inputPassword5" class="form-label">{{locals['PhoneNumber']}}</label>
               <input type="text" class="form-control" id="phonenumber" placeholder="Please fill Position" name="phonenumber"
-                value="{{user[0].phonenumber}}">
+                value="{% if user[0].phonenumber %}{{user[0].phonenumber}}{% endif %}">
             </div>
             <div class="col-md-4">
               <label for="inputEmail5" class="form-label">{{locals['Telegram']}}</label>
               <input type="text" class="form-control" id="telegram" placeholder="Please fill Email"
-                name="telegram" value="{{user[0].telegram}}">
+                name="telegram" value="{% if user[0].telegram %}{{user[0].telegram}}{% endif %}">
             </div>
             <div class="col-md-2"></div>
           </div>

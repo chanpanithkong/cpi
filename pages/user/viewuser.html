@@ -40,10 +40,21 @@
                                     {{user[2]['name' + languages.lower()]}}
                                 </td>
                                 <td>{{ locals[user[1].rolename] }}</td>
-                                <td>{{ user[0].details }}</td>
-                                <td>{{ user[0].email }}</td>
-                                <td>{{ user[0].phonenumber }}</td>
-                                <td>{{ user[0].telegram }}</td>
+                                <td>
+                                    {% if user[0].details %}
+                                    {{ user[0].details }}
+                                    {% endif %}
+                                </td>
+                                <td>{% if user[0].email %}
+                                    {{ user[0].email }}
+                                    {% endif %}
+                                </td>
+                                <td>{% if user[0].phonenumber %}
+                                    {{ user[0].phonenumber }}
+                                    {% endif %}</td>
+                                <td>{% if user[0].telegram %}
+                                    {{ user[0].telegram }}
+                                    {% endif %}</td>
                                 <td>
                                     <button type="button" class="btn btn-warning btn-sm update" data-toggle="tooltip" data-placement="top" title="{{locals['Update User']}}">
                                         <i class="bi bi-pencil-square"></i>
