@@ -38,13 +38,16 @@ class LoginPage(Resource):
 class UserLoginPage(Resource):
     @classmethod
     def post(cls):
-        headers = {'Content-Type': 'text/html'}
-        cyper= cypertext()
-        clientid = request.remote_addr
-        url = request.base_url
-        userid = request.form.get('userid')
-        password = request.form.get('password')
+
         try:
+
+            headers = {'Content-Type': 'text/html'}
+            cyper= cypertext()
+            clientid = request.remote_addr
+            url = request.base_url
+            userid = request.form.get('userid')
+            password = request.form.get('password')
+        
             user_data = tbusers.find_by_userid(userid)
             if user_data is not None:
                 if cyper.issame(password,user_data.key,user_data.password):

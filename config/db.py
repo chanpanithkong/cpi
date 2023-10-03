@@ -5,11 +5,20 @@ from flask_restful import Api
 from dbinfo import dbconfig, dboracleconfig
 import cx_Oracle
 from flask_cors import CORS
+import logging
+from flask_session import Session
+
 # app = Flask(__name__, template_folder='templates')
 app = Flask(__name__)
 
 api = Api(app)
 
+log = logging.getLogger('werkzeug')
+log.disabled = True
+    
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
 #cambodia
 app.config['SECRET_KEY'] = 'eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJpc3MiOiJodHRwczovL2p3dC1pZHAuZXhhbXBsZS5jb20iLCJzdWIiOiJtYWlsdG86bWlrZUBleGFtcGxlLmNvbSIsIm5iZiI6MTY1NzI3NTA4MiwiZXhwIjoxNjU3Mjc4NjgyLCJpYXQiOjE2NTcyNzUwODIsImp0aSI6ImlkMTIzNDU2IiwidHlwIjoiaHR0cHM6Ly9leGFtcGxlLmNvbS9yZWdpc3RlciJ9.'
@@ -18,7 +27,8 @@ app.config['SECRET_KEY'] = 'eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJpc3MiOiJodHRw
 #localdb
 
 # MySQL closes it self the stale connections (8 hours of inactivity by default). You can set the pool recycle to solve this problem.
-app.config["SQLALCHEMY_POOL_RECYCLE"] = 300
+app.config["SQLALCHEMY_POOL_RECYCLE"] = 120
+app.config["SQLALCHEMY_POOL_TIMEOUT"] = 120
 
 
 #oracle connection url 

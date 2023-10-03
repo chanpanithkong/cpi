@@ -38,10 +38,9 @@ import cx_Oracle
 app = Flask(__name__, template_folder='pages')
 api = Api(app)
 
-# log = logging.getLogger('werkzeug')
-# log.disabled = True
+log = logging.getLogger('werkzeug')
+log.disabled = True
     
-
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
@@ -52,8 +51,8 @@ app.config['SECRET_KEY'] = 'eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJpc3MiOiJodHRw
 # app.config['PROPAGATE_EXCEPTIONS'] = True
 
 # MySQL closes it self the stale connections (8 hours of inactivity by default). You can set the pool recycle to solve this problem.
-app.config["SQLALCHEMY_POOL_RECYCLE"] = 300
-
+app.config["SQLALCHEMY_POOL_RECYCLE"] = 120
+app.config["SQLALCHEMY_POOL_TIMEOUT"] = 120
 
 #oracle connection url 
 cx_Oracle.init_oracle_client(lib_dir=r"C:/instantclient_21_10")
