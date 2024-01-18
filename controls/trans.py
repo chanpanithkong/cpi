@@ -286,6 +286,11 @@ class CheckerUpdateTransaction(Resource):
                 tran_data = tbtrans.findbybatchid(batch.batchid)
                 for tran in tran_data:
                     if tran.status == 3:
+                        
+                        tran_data.checker = userid
+                        now = datetime.now()
+                        tran_data.checkerdate = now
+
                         tran.status = 13
                         db.session.commit()
                 msg = "accept all"    

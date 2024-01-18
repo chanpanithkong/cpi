@@ -26,7 +26,7 @@ class UpdateUserProfile(Resource):
             data = json.loads(request.data)
             
             if data['userrequest'] == 'updateuserprofile':
-                print(data['data'])
+                
                 fullname = data['data']['fullname']
                 gender = data['data']['gender']
                 branchcode = data['data']['branchcode']

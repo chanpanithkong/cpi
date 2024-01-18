@@ -18,7 +18,7 @@ log.disabled = True
     
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
-Session(app)
+sess = Session(app)
 
 #cambodia
 app.config['SECRET_KEY'] = 'eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJpc3MiOiJodHRwczovL2p3dC1pZHAuZXhhbXBsZS5jb20iLCJzdWIiOiJtYWlsdG86bWlrZUBleGFtcGxlLmNvbSIsIm5iZiI6MTY1NzI3NTA4MiwiZXhwIjoxNjU3Mjc4NjgyLCJpYXQiOjE2NTcyNzUwODIsImp0aSI6ImlkMTIzNDU2IiwidHlwIjoiaHR0cHM6Ly9leGFtcGxlLmNvbS9yZWdpc3RlciJ9.'
@@ -27,15 +27,16 @@ app.config['SECRET_KEY'] = 'eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJpc3MiOiJodHRw
 #localdb
 
 # MySQL closes it self the stale connections (8 hours of inactivity by default). You can set the pool recycle to solve this problem.
-app.config["SQLALCHEMY_POOL_RECYCLE"] = 120
-app.config["SQLALCHEMY_POOL_TIMEOUT"] = 120
+# app.config["SQLALCHEMY_POOL_RECYCLE"] = 10
+# app.config["SQLALCHEMY_POOL_TIMEOUT"] = 10
+# app.config["SQLALCHEMY_POOL_SIZE"] = 10
 
 
 #oracle connection url 
 # cx_Oracle.init_oracle_client(lib_dir=r"C:/instantclient_21_10")
 oracle_connection_string = 'oracle+cx_oracle://{username}:{password}@' + cx_Oracle.makedsn('{hostname}', '{port}', service_name='{service_name}')
 
-
+CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = oracle_connection_string.format(
   username=dboracleconfig.username,
   password=dboracleconfig.password,

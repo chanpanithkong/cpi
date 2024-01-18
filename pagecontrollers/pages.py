@@ -67,7 +67,9 @@ class UserLoginPage(Resource):
             
         except Exception as err:
             # userlogging.degbuglog(clientid, url, err)
-            return make_response(render_template('login.html', data=err), 200, headers)
+            db.session.rollback()
+            raise
+	        # return make_response(render_template('login.html', data=err), 200, headers)
 
 
 class Logout(Resource):
@@ -75,6 +77,7 @@ class Logout(Resource):
     def get(cls):
         headers = {'Content-Type': 'text/html'}
         session.clear()
+        db.session.close()
         return make_response(render_template('login.html'), 200, headers)
 
 
